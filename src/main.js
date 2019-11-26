@@ -10,8 +10,8 @@ import './assets/css/resize.css'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 
-
-Vue.use(vueAxios, http,ElementUI)//
+Vue.use(ElementUI,{})
+Vue.use(vueAxios, http)
 Vue.config.productionTip = false
 
 new Vue({
