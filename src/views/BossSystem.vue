@@ -1,16 +1,14 @@
 <template>
-  <div>
-    
-  </div>
+    <div class="app-boss">
+        <h1>我是boss系统</h1>
+    </div>
 </template>
 
 <script>
-// import HelloWorld from '@/components/HelloWorld.vue'
-
 export default {
-  name: 'bossSystem',
-  components: {
-    // HelloWorld
+    name: "appboss",
+    components: {
+
   }
 }
 </script>
