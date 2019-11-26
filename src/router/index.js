@@ -13,10 +13,74 @@ const routes = [
   {
     path: '/about',
     name: 'about',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+    component: () => import('../views/About.vue')
+  },
+  //周鑫路由
+  {
+    path: '/financial',
+    name: 'financial',
+    component: () => import('../views/Financial.vue')
+  },
+  {
+    path: '/income',
+    name: 'income',
+    component: () => import('../views/Income.vue')
+  },
+  {
+    path: '/payment',
+    name: 'payment',
+    component: () => import('../views/Payment.vue')
+  },
+  //黄杰路由
+  {
+    path: '/index',
+    name: 'index',
+    component: () => import('../views/Index.vue')
+  },
+  {
+    path: '/orderDetail',
+    name: 'orderDetail',
+    component: () => import('../views/OrderDetail.vue')
+  },
+  {
+    path: '/orderMngDetail',
+    name: 'orderMngDetail',
+    component: () => import('../views/OrderMngDetail.vue')
+  },
+  {
+    path: '/oderUserDetail',
+    name: 'oderUserDetail',
+    component: () => import('../views/OderUserDetail.vue')
+  },
+  
+  // 李钰路由
+  {
+    path: '/bossSystem',
+    name: 'bossSystem',
+    component: () => import('../views/BossSystem.vue')
+  },
+  // 李立新路由
+  {
+    path: '/mindex',
+    name: 'mindex',
+    component: () => import('../views/Mindex.vue')
+  },
+  // 陈家坤路由
+  {
+    path: '/worker',
+    name: 'worker',
+    component: () => import('../views/Worker.vue')
+  },
+  // 王小明路由
+  {
+    path: '/login',
+    name: 'login',
+    component: () => import('../views/Login.vue')
+  },
+  {
+    path: '/register',
+    name: 'register',
+    component: () => import('../views/Register.vue')
   }
 ]
 
