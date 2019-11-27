@@ -3,7 +3,11 @@ import App from './App.vue'
 import './registerServiceWorker'
 import router from './router/index'
 import store from './store'
+<<<<<<< HEAD
 // import 'amfe-flexible' 
+=======
+/* import 'amfe-flexible'  */
+>>>>>>> 移动端配置注释
 import http from './utils/http'
 import vueAxios from 'vue-axios'
 import './assets/css/resize.css'

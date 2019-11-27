@@ -1,5 +1,9 @@
 module.exports = {
+<<<<<<< HEAD
    /*  css: {
+=======
+    /* css: {
+>>>>>>> 移动端配置注释
         loaderOptions: {
             postcss: {
                 plugins: [
