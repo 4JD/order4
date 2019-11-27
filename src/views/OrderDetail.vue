@@ -1,5 +1,7 @@
 <template>
-  
+  <div class="forsure-pay">
+    
+  </div>
 </template>
 
 <script>
