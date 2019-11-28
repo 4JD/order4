@@ -1,5 +1,10 @@
 <template>
   <div id="worker">
+    <el-breadcrumb separator-class="el-icon-arrow-right">
+      <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
+      <el-breadcrumb-item>员工管理</el-breadcrumb-item>
+    </el-breadcrumb>
+
     <!-- 员工管理图标 -->
     <div class="worker-icon">
       <i class="el-icon-menu"></i>
@@ -8,8 +13,8 @@
 
     <!-- 添加与搜索 -->
     <div class="operate">
-      <el-button type="danger" icon="el-icon-delete">批量删除</el-button>
-      <el-button type="primary" icon="el-icon-plus" @click="dialogFormVisible = true">添加员工</el-button>
+      <el-button type="danger" icon="el-icon-delete" @click="delAll">批量删除</el-button>
+      <AddWorker></AddWorker>
       <el-input
         placeholder="请输入你要搜索的员工信息"
         v-model="input"
@@ -100,15 +105,17 @@
           label="操作"
           align="center"
           width="250">
-          <template slot-scope="scope">
-            <el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>
-            <el-button type="text" size="small">编辑</el-button>
-            <el-button type="text" size="small" @click="del">删除</el-button>
+          <template class="worker-operate">
+            
+            <LookWorker></LookWorker>
+            <AlterWorker></AlterWorker>
+            
+            <el-button type="text" size="small" @click="del" icon="el-icon-delete" class="del-btn">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
 
-      <el-button @click="toggleSelection()">取消选择</el-button>
+      <el-button @click="toggleSelection()" class="cancel-btn">取消选择</el-button>
 
       <el-pagination
         background
@@ -118,96 +125,20 @@
 
     </div>
 
-    <!-- 添加员工弹框 -->
-    <el-dialog title="添加员工"
-     :visible.sync="dialogFormVisible"
-     >
-      <el-form :model="form">
-        <el-form-item label="ID：" :label-width="formLabelWidth">
-          <el-input  autocomplete="off"></el-input>
-        </el-form-item>
-
-        <el-form-item label="姓名：" :label-width="formLabelWidth">
-          <el-input  autocomplete="off"></el-input>
-        </el-form-item>
-
-        <el-form-item label="性别：" :label-width="formLabelWidth" class="choose-sex">
-          <input type="radio" name="sex" checked>男
-          <input type="radio" name="sex">女
-          <input type="radio" name="sex">保密
-        </el-form-item>
-
-        <el-form-item label="入职日期：" :label-width="formLabelWidth">
-          <div class="block">
-            <el-date-picker
-              v-model="workdate"
-              align="right"
-              type="date"
-              placeholder="选择日期"
-              :picker-options="pickerOptions">
-            </el-date-picker>
-          </div>
-        </el-form-item>
-
-        <el-form-item label="生日：" :label-width="formLabelWidth">
-          <div class="block">
-            <el-date-picker
-              v-model="birthdate"
-              align="right"
-              type="date"
-              placeholder="选择日期"
-              :picker-options="pickerOptions">
-            </el-date-picker>
-          </div>
-        </el-form-item>
-
-        <el-form-item label="手机：" :label-width="formLabelWidth">
-          <el-input autocomplete="off"></el-input>
-        </el-form-item>
-
-        <el-form-item label="地址：" :label-width="formLabelWidth">
-          <el-input autocomplete="off"></el-input>
-        </el-form-item>
-
-        <el-form-item label="职位：" :label-width="formLabelWidth">
-          <select name="" id="">
-            <option value="">厨师</option>
-            <option value="">服务员</option>
-            <option value="">收营员</option>
-          </select>
-        </el-form-item>
-
-        <el-form-item label="在职状态：" :label-width="formLabelWidth">
-          <el-switch
-            style="display: block"
-            v-model="valuestate"
-            active-color="#13ce66"
-            inactive-color="#ff4949"
-            active-text="在职"
-            inactive-text="离职">
-          </el-switch>
-        </el-form-item>
-      </el-form>
-
-
-
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="dialogFormVisible = false">添 加</el-button>
-      </div>
-    </el-dialog>
-
-    
-
   </div>
 </template>
 
 <script>
+import AddWorker from "../components/AddWorker";
+import LookWorker from "../components/LookWorker";
+import AlterWorker from "../components/AlterWorker";
 
 export default {
   name: 'worker',
   components: {
-    
+    AddWorker,
+    LookWorker,
+    AlterWorker
   },
   data() {
     return {
@@ -247,51 +178,8 @@ export default {
       //默认都没有选中
       multipleSelection: [],
       //搜索输入框
-      input:'',
-      //添加员工弹出模态框
-      dialogFormVisible: false,
-      form: {
-        name: '',
-        region: '',
-        date1: '',
-        date2: '',
-        delivery: false,
-        type: [],
-        resource: '',
-        desc: '',
-        tel:''
-      },
-      formLabelWidth: '120px',
-      //入职日期选择
-       pickerOptions: {
-        disabledDate(time) {
-          return time.getTime() > Date.now();
-        },
-        shortcuts: [{
-          text: '今天',
-          onClick(picker) {
-            picker.$emit('pick', new Date());
-          }
-        }, {
-          text: '昨天',
-          onClick(picker) {
-            const date = new Date();
-            date.setTime(date.getTime() - 3600 * 1000 * 24);
-            picker.$emit('pick', date);
-          }
-        }, {
-          text: '一周前',
-          onClick(picker) {
-            const date = new Date();
-            date.setTime(date.getTime() - 3600 * 1000 * 24 * 7);
-            picker.$emit('pick', date);
-          }
-        }]
-      },
-      workdate: '',
-      birthdate:'',
-      //在职状态
-      valuestate:'true'
+      input:''
+
     }
   },
   methods: {
@@ -327,8 +215,27 @@ export default {
           message: '已取消删除'
         });          
       });
+    },
+    //批量删除员工
+    delAll() {
+      this.$confirm('此操作将删除该员工, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
+        center: true
+      }).then(() => {
+        this.$message({
+          type: 'success',
+          message: '删除成功!'
+        });
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        });
+      });
     }
-
+    
   }
   
   
@@ -336,6 +243,10 @@ export default {
 </script>
 
 <style lang="less" scoped>
+  /* *{
+    margin: 0;
+    padding: 0;
+  } */
   //员工管理图标
   .worker-icon{
     font-size: 20px;
@@ -372,12 +283,15 @@ export default {
     margin-top: 10px;
     margin-right: 20px;
   }
-  //选择性别
-  .choose-sex{
-    text-align: left;
+
+  //单个删除按钮
+  .worker-table .el-button[data-v-06627738]{
+    margin-top: 0;
+    float: left;
+    margin-left: 5px;
   }
-  //日期选择
-  .block{
-    text-align: left;
+  //取消选中按钮
+  .cancel-btn{
+    margin-left: 0;
   }
 </style>
