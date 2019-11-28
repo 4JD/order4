@@ -31,6 +31,11 @@ const routes = [
     name: 'payment',
     component: () => import('../views/Payment.vue')
   },
+  {
+    path: '/storecenter',
+    name: 'storecenter',
+    component: () => import('../views/Storecenter.vue')
+  },
   //黄杰路由
   {
     path: '/index',
