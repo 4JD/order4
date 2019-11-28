@@ -10,6 +10,7 @@ const routes = [
     name: 'home',
     component: Home
   },
+
   {
     path: '/about',
     name: 'about',
@@ -83,7 +84,7 @@ const routes = [
     component: () => import('../views/wang/Login.vue')
   },
   {
-    path: '/Register',
+    path: '/register',
     name: 'Register',
     component: () => import('../views/wang/Register.vue')
   },
@@ -104,7 +105,7 @@ const routes = [
   },
   {
     path: '/userpage',
-    name: 'admin',
+    name: 'userpage',
     component: () => import('../views/wang/UserPage.vue')
   }
 ];

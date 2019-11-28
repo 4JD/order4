@@ -14,14 +14,18 @@
                     <div class="header-left-bottom agileinfo">
                         <div >
                             <div class="icon1">
+
                                 <label>
                                     <input type="text" placeholder="手机号" >
                                 </label>
+
                             </div>
                             <div class="icon1">
+
                                 <label>
                                     <input type="text" class="yanzheng"  style="width: 60%" placeholder="请输入验证码">
                                 </label>
+
                                 <button class="yz-btn">获取验证码</button>
                             </div>
 

@@ -15,25 +15,31 @@
                     <div class="header-left-bottom agileinfo">
                         <div >
                             <div class="icon1">
+
                                 <label>
                                     <input type="text" placeholder="手机号" >
                                 </label>
+
                             </div>
                             <div class="icon1">
+
                                 <label>
                                     <input type="password" placeholder="密码">
                                 </label>
+
                             </div>
                             <div class="icon1">
                                 <form action="">
+
                                     <label>
                                         <input type="password" placeholder="确认密码">
                                     </label>
+
                                 </form>
 
                             </div>
                             <div class="bottom">
-                                <input type="submit" value="注册" >
+                                <input type="button" value="注册" >
                             </div>
 
                         </div>

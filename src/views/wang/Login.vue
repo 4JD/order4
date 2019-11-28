@@ -17,19 +17,23 @@
                     <div class="header-left-bottom agileinfo">
                         <div>
                             <div class="icon1">
-                                <label>
-                                    <input type="text" placeholder="手机号" >
+                                <label >
+                                    <input type="text" placeholder="手机号" v-model="username">
+
                                 </label>
+
                             </div>
                             <div class="icon1">
+
                                 <label>
-                                    <input type="password" placeholder="密码" >
+                                    <input type="password" placeholder="密码" v-model="userpass" >
                                 </label>
+
 
                             </div>
 
                             <div class="bottom">
-                                <input type="submit" value="登录" >
+                                <input type="button" value="登录"  >
                             </div>
                             <p class="dibu">
                                 <a  href="#">忘记密码</a>
@@ -46,8 +50,16 @@
 </template>
 
 <script>
+
+
     export default {
-        name: "login"
+        name: "login",
+       data(){
+          return{
+            username: "",
+            userpass: "",
+          }
+       }
     }
 </script>
 

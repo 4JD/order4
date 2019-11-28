@@ -14,15 +14,19 @@
                     <div class="header-left-bottom agileinfo">
                         <div >
                             <div class="icon1">
+
                                 <label>
                                     <input type="text" placeholder="输入密码">
                                 </label>
 
+
                             </div>
                             <div class="icon1">
+
                                 <label>
                                     <input type="text" placeholder="确认密码">
                                 </label>
+
                             </div>
 
                             <div class="bottom">
