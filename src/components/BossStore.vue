@@ -1,16 +1,16 @@
 <template>
   <div class="boss-store">
-    <div v-for="(item, index) in storelist" data-storeid="index" :key="index" class="storebox">
+    <div v-for="(item, index) in storelist" data-storeid="index" :key="index" class="storebox" @click="showStoreMsg">
       <div class="storeimg">
-        <img src="../assets/logo.png" alt="店铺图片" />
+        <img src="../assets/images/store1.jpg" alt="店铺图片" />
       </div>
       <div class="storemsg">
         <p>店铺名称:{{item.storeName}}</p>
         <p>主营类型:{{item.storeMainType}}</p>
         <p>联系人:{{item.storeLinkPople}}</p>
+        <p>联系方式:{{item.storeLinkTel}}</p>
         <!-- 
         <p>营业时间:{{item.storeHour}}</p>
-        <p>联系方式:{{item.storeLinkTel}}</p>
         <p>门面地址:{{item.storeAddress}}</p>
         <p>店铺备注:{{item.storeRemark}}</p> -->
       </div>
@@ -126,12 +126,21 @@ export default {
     };
   },
   methods: {
+      /*  
+      param: 新增店铺的点击事件
+      */
       newStore() {
           console.log(document.getElementsByClassName("newstorebox"));
         //   var storeboxheight = document.getElementsByClassName("storebox")[1].scrollHeight;
         //   var storeboxwidth = document.getElementsByClassName("storebox")[1].scrollWidth;
         
       },
+      /*  
+      param: 点击查看店铺详情页
+      */
+      showStoreMsg() {
+        
+      }
   }
 };
 </script>
@@ -144,6 +153,14 @@ export default {
     .storeimg img {
         width: 150px;
         height: 150px;
+        margin: 5px;
+        // border: 1px solid rosybrown;
+        border-radius: 50%;
+    }
+    .storemsg {
+      p {
+        margin: 5px 0;
+      }
     }
 text-align: center;
 display: inline-block;
