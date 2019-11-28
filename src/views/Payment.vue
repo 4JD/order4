@@ -9,7 +9,7 @@
     </el-row>
     <el-form ref="form">
       <el-row>
-        <el-col :span="6">
+        <!-- <el-col :span="6">
           <el-form-item label="支出类型：">
             <el-select placeholder="支出类型">
               <el-option label="工资" value="gongzi"></el-option>
@@ -27,7 +27,7 @@
               <el-option label="王五" value="wangwu"></el-option>
             </el-select>
           </el-form-item>
-        </el-col>
+        </el-col> -->
 
         <el-col :span="8">
           <el-form-item label="时间：">
@@ -60,11 +60,41 @@
     </el-form>
 
     <el-table stripe style="width: 90%; " border :data="tableData">
-      <el-table-column prop="id" label="支出id" align="center"></el-table-column>
+      <el-table-column 
+      prop="id" 
+      label="支出id" 
+      align="center"
+      ></el-table-column>
 
-      <el-table-column prop="payType" label="支出类型" align="center"></el-table-column>
+      <el-table-column 
+      prop="payType" 
+      label="支出类型" 
+      align="center"
+         :filters="[{ text: '房租', value: '房租' }, { text: '工资', value: '工资' },{ text: '原材料', value: '原材料' },{ text: '其他', value: '其他' }]"
+        :filter-method="filtertype"
+        filter-placement="bottom-end"
+      >
+        <template slot-scope="scope">
+          <el-tag
+            :type="scope.row.payType === '房租' ? 'primary' : 'success'"
+            disable-transitions
+          >{{scope.row.payType}}</el-tag>
+        </template></el-table-column>
 
-      <el-table-column prop="payUser" label="操作者" align="center"></el-table-column>
+      <el-table-column 
+      prop="payUser" 
+      label="操作者" 
+      align="center"
+          :filters="[{ text: '张三', value: '张三' }, { text: '李四', value: '李四' },{ text: '王五', value: '王五' }]"
+        :filter-method="filterUser"
+        filter-placement="bottom-end"
+      >
+        <template slot-scope="scope">
+          <el-tag
+            :type="scope.row.payUser === '张三' ? 'primary' : 'success'"
+            disable-transitions
+          >{{scope.row.payUser}}</el-tag>
+        </template></el-table-column>
 
       <el-table-column prop="payPrice" label="支出金额/(元)" align="center"></el-table-column>
 
@@ -72,6 +102,14 @@
 
       <el-table-column prop="remark" label="备注" align="center"></el-table-column>
     </el-table>
+     <el-pagination
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :current-page.sync="currentPage3"
+      :page-size="100"
+      layout="prev, pager, next, jumper"
+      :total="1000">
+    </el-pagination>
   </div>
 </template>
 
@@ -86,6 +124,7 @@ export default {
   data() {
     return {
       value3: "",
+      currentPage3: 5,
       pickerOptions: {
         shortcuts: [
           {
@@ -121,23 +160,45 @@ export default {
         {
           date: "2016-05-02 09:20:00",
           id: "1",
-          payType: "二两面条",
-          payUser: "面食",
+          payType: "工资",
+          payUser: "张三",
+          payPrice: "7",
+          remark: "无"
+        },
+        {
+          date: "2016-05-02 09:20:00",
+          id: "1",
+          payType: "房租",
+          payUser: "李四",
           payPrice: "7",
           remark: "2"
         },
         {
           date: "2016-05-02 09:20:00",
           id: "1",
-          payType: "二两面条",
-          payUser: "面食",
+          payType: "原材料",
+          payUser: "王五",
           payPrice: "7",
           remark: "2"
         }
       ]
     };
   },
-  methods: {}
+  methods: {
+    filtertype(value, row) {
+      return row.payType === value;
+    },
+    filterUser(value, row) {
+      return row.payUser === value;
+    },
+     handleSizeChange(val) {
+        console.log(`每页 ${val} 条`);
+      },
+      handleCurrentChange(val) {
+        console.log(`当前页: ${val}`);
+      }
+  
+  }
 };
 </script>
 

@@ -1,14 +1,12 @@
 <template>
   <div>
-    <el-button type="text" @click="dialogFormVisible = true">
+    <el-button type="primary" @click="dialogFormVisible = true" id="addPay">
       <i class="el-icon-upload el-icon--right"></i>添加支出
     </el-button>
 
     <el-dialog title="请在下方添加支出" :visible.sync="dialogFormVisible">
       <el-form :model="ruleForm" :rules="rules" ref="ruleForm">
-        <el-form-item label="支出id" :label-width="formLabelWidth">
-          <el-input autocomplete="off"></el-input>
-        </el-form-item>
+     
         <el-form-item label="支出类型" :label-width="formLabelWidth">
           <el-select v-model="ruleForm.type" placeholder="请选择支出类型"> 
             <el-option label="工资" value="工资"></el-option>
@@ -62,12 +60,18 @@ export default {
 </script>
 
 <style scoped>
+  .el-dialog__header .el-dialog__title {
+    font-size: 24px;
+  }
   .el-select {
     width: 80%;
   }
   .el-textarea {
     width: 80%;
     text-align: center;
+  }
+  #addPay {
+    float: left;
   }
 
 </style>
