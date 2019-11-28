@@ -2,7 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 
-Vue.use(VueRouter)
+Vue.use(VueRouter);
 
 const routes = [
   {
@@ -30,6 +30,11 @@ const routes = [
     path: '/payment',
     name: 'payment',
     component: () => import('../views/Payment.vue')
+  },
+  {
+    path: '/storecenter',
+    name: 'storecenter',
+    component: () => import('../views/Storecenter.vue')
   },
   //黄杰路由
   {
@@ -73,22 +78,42 @@ const routes = [
   },
   // 王小明路由
   {
-    path: '/login',
-    name: 'login',
-    component: () => import('../views/Login.vue')
+    path: '/Login',
+    name: 'Login',
+    component: () => import('../views/wang/Login.vue')
   },
   {
-    path: '/register',
-    name: 'register',
-    component: () => import('../views/Register.vue')
+    path: '/Register',
+    name: 'Register',
+    component: () => import('../views/wang/Register.vue')
+  },
+
+  {
+    path: '/ForgetPass',
+    name: 'ForgetPass',
+    component: () => import('../views/wang/ForgetPass.vue')
+  },
+  {
+    path: '/ResetPass',
+    name: 'ResetPass',
+    component: () => import('../views/wang/ResetPass.vue')
+  },{
+    path: '/admin',
+    name: 'admin',
+    component: () => import('../views/wang/Administrators.vue')
+  },
+  {
+    path: '/userpage',
+    name: 'admin',
+    component: () => import('../views/wang/UserPage.vue')
   }
-]
+];
 
 const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
   routes
-})
+});
 
 /* // 注册全局守卫
 // 在访问路由之前进行拦截
