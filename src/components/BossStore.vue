@@ -7,10 +7,11 @@
       <div class="storemsg">
         <p>店铺名称:{{item.storeName}}</p>
         <p>主营类型:{{item.storeMainType}}</p>
-        <!-- <p>联系人:{{item.storeLinkPople}}</p>
+        <p>联系人:{{item.storeLinkPople}}</p>
+        <!-- 
+        <p>营业时间:{{item.storeHour}}</p>
         <p>联系方式:{{item.storeLinkTel}}</p>
         <p>门面地址:{{item.storeAddress}}</p>
-        <p>营业时间:{{item.storeHour}}</p>
         <p>店铺备注:{{item.storeRemark}}</p> -->
       </div>
       <!-- <div>收入：{{item.storeIncome}}，支出{{item.storeExpend}}</div> -->
@@ -127,20 +128,35 @@ export default {
   methods: {
       newStore() {
           console.log(document.getElementsByClassName("newstorebox"));
+        //   var storeboxheight = document.getElementsByClassName("storebox")[1].scrollHeight;
+        //   var storeboxwidth = document.getElementsByClassName("storebox")[1].scrollWidth;
+        
       },
   }
 };
 </script>
 
 <style lang="less" scoped>
-* {
+.boss-store {
     text-align: left;
 }
 .storebox {
-    text-align: center;
-  display: inline-block;
-  width: 300px;
-  margin: 20px 0 0 30px;
-  box-shadow: 0 0 5px black;
+    .storeimg img {
+        width: 150px;
+        height: 150px;
+    }
+text-align: center;
+display: inline-block;
+  flex-wrap: wrap;
+  margin: 10px 0 0 10px;
+  box-shadow: 0 0 3px gray;
+  min-width: 250px;
+  min-height: 280px;
+  vertical-align: middle;
+  cursor: pointer;
+}
+.newstorebox {
+    font-size: 70px;
+    line-height: 280px;
 }
 </style>
