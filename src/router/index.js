@@ -65,6 +65,11 @@ const routes = [
     name: 'bossSystem',
     component: () => import('../views/BossSystem.vue')
   },
+  {
+    path: '/menumanagement',
+    name: 'bossSystem',
+    component: () => import('../views/MenuManagement.vue')
+  },
   // 李立新路由
   {
     path: '/mindex',
