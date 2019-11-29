@@ -6,6 +6,7 @@
           </div>
           <div class="onstoreremark">
               <p>店铺名字: {{item.storeName}}</p>
+              <p>主营类型:{{item.storeMainType}}</p>
               <p>营业时间:{{item.storeHour}}</p>
               <p>门面地址:{{item.storeAddress}}</p>
           </div>
@@ -34,6 +35,7 @@ export default {
 .earningsbox {
     text-align: left;
     width: 90%;
+    min-width: 450px;
     min-height: 200px;
     flex-wrap: wrap;
     box-shadow: 0 0 5px gray;

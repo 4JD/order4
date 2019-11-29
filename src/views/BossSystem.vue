@@ -28,33 +28,39 @@
             <BossStore
               v-for="(item, index) in storelist"
               :item="item"
+              :number="index"
               data-storeid="index"
               :key="index"
               class="storebox"
             ></BossStore>
+
             <div class="storebox newstorebox" @click="newStore">
               <i class="el-icon-circle-plus-outline"></i>
             </div>
           </div>
+
           <!-- 店铺详情 -->
           <div class="meaninner" v-show="showMean==2">
             <div class="storesearch">
-              <input type="text" placeholder="请输入搜索店铺名...">
-              <el-button type="primary" icon="el-icon-search">搜索</el-button>
+              <input type="text" placeholder="请输入搜索店铺名..." />
+              <i class="searchBtn el-icon-search"></i>
             </div>
+            <!-- 回到顶部 -->
+            <a href="#top" class="gotop">
+              <i class="el-icon-caret-top"></i>
+            </a>
+            <!-- 店铺信息组件 -->
             <BossShowAllEarnings
               v-for="(item,index) in storelist"
               :key="index"
               :item="item"
-              :storelist="storelist"
               class="earningsbox"
             ></BossShowAllEarnings>
           </div>
+
           <!-- 收益比例 -->
           <div class="meaninner" v-show="showMean==3">
-            <BossShowStoreMsg
-              :storelist="storelist"
-            ></BossShowStoreMsg>
+            <BossShowStoreMsg :storelist="storelist"></BossShowStoreMsg>
           </div>
         </el-main>
       </el-container>
@@ -65,7 +71,7 @@
 <script>
 // 名下所有店铺信息查看，管理店铺
 import BossStore from "../components/BossStore";
-// 每店铺收益详情 
+// 每店铺收益详情
 import BossShowAllEarnings from "../components/BossShowAllEarnings";
 // 店铺收入比例信息
 import BossShowStoreMsg from "../components/BossShowStoreMsg";
@@ -73,7 +79,7 @@ import BossShowStoreMsg from "../components/BossShowStoreMsg";
 var storelist = [
   {
     storeId: 1,
-    storeImg: "../assets/logo.png",
+    storeImg: require("../assets/images/store1.jpg"),
     storeAddress: "四川省.成都市.高新区.天府二街.云华路333号",
     storeName: "内江牛肉面",
     storeRemark: "辣的爽，辣的棒，辣的呱呱叫，快来尝，快来试，永生不能忘。",
@@ -86,7 +92,7 @@ var storelist = [
   },
   {
     storeId: 2,
-    storeImg: "../assets/logo.png",
+    storeImg: require("../assets/images/store1.jpg"),
     storeName: "内江牛肉面",
     storeAddress: "四川省.成都市.高新区.天府二街.云华路333号",
     storeRemark: "辣的爽，辣的棒，辣的呱呱叫，快来尝，快来试，永生不能忘。",
@@ -99,7 +105,7 @@ var storelist = [
   },
   {
     storeId: 3,
-    storeImg: "../assets/logo.png",
+    storeImg: require("../assets/images/store1.jpg"),
     storeName: "内江牛肉面",
     storeAddress: "四川省.成都市.高新区.天府二街.云华路333号",
     storeRemark: "辣的爽，辣的棒，辣的呱呱叫，快来尝，快来试，永生不能忘。",
@@ -112,7 +118,7 @@ var storelist = [
   },
   {
     storeId: 4,
-    storeImg: "../assets/logo.png",
+    storeImg: require("../assets/images/store1.jpg"),
     storeName: "内江牛肉面",
     storeAddress: "四川省.成都市.高新区.天府二街.云华路333号",
     storeRemark: "辣的爽，辣的棒，辣的呱呱叫，快来尝，快来试，永生不能忘。",
@@ -125,7 +131,7 @@ var storelist = [
   },
   {
     storeId: 5,
-    storeImg: "../assets/logo.png",
+    storeImg: require("../assets/images/store1.jpg"),
     storeName: "内江牛肉面",
     storeAddress: "四川省.成都市.高新区.天府二街.云华路333号",
     storeRemark: "辣的爽，辣的棒，辣的呱呱叫，快来尝，快来试，永生不能忘。",
@@ -138,7 +144,7 @@ var storelist = [
   },
   {
     storeId: 6,
-    storeImg: "../assets/logo.png",
+    storeImg: require("../assets/images/store1.jpg"),
     storeName: "内江牛肉面",
     storeAddress: "四川省.成都市.高新区.天府二街.云华路333号",
     storeRemark: "辣的爽，辣的棒，辣的呱呱叫，快来尝，快来试，永生不能忘。",
@@ -151,7 +157,7 @@ var storelist = [
   },
   {
     storeId: 7,
-    storeImg: "../assets/logo.png",
+    storeImg: require("../assets/images/store1.jpg"),
     storeName: "内江牛肉面",
     storeAddress: "四川省.成都市.高新区.天府二街.云华路333号",
     storeRemark: "辣的爽，辣的棒，辣的呱呱叫，快来尝，快来试，永生不能忘。",
@@ -169,11 +175,10 @@ export default {
   components: {
     //   名下所有店铺信息
     BossStore,
-    // 每店铺收益详情 
+    // 每店铺收益详情
     BossShowAllEarnings,
     //   店铺收入比例信息
-    BossShowStoreMsg,
-
+    BossShowStoreMsg
   },
   data() {
     return {
@@ -214,6 +219,7 @@ export default {
 }
 // 头部
 .header {
+  z-index: 99999;
   position: fixed;
   left: 0;
   top: 0;
@@ -228,7 +234,7 @@ export default {
 .inner {
   // 左侧导航
   .left-nav {
-    min-height: 550px;
+    min-height: 1000px;
     background: #23262e;
     position: fixed;
     left: 0;
@@ -263,14 +269,54 @@ export default {
       text-align: center;
       display: inline-block;
       flex-wrap: wrap;
-      margin: 5px 5px;
+      margin: 15px;
       box-shadow: 0 0 3px rgba(0, 0, 0, 0.6);
       min-width: 250px;
-      min-height: 280px;
+      min-height: 290px;
       vertical-align: middle;
       cursor: pointer;
     }
     // 店铺详情
+    // 店铺详情下的搜索
+    .storesearch {
+      margin: 10px 0;
+      text-align: right;
+      position: relative;
+      padding-right: 5%;
+      font-size: 16px;
+      height: 30px;
+      input {
+        height: 100%;
+        width: 30%;
+        border-radius: 15px;
+        text-indent: 10px;
+        border: 1px solid #000;
+      }
+      .searchBtn {
+        position: absolute;
+        top: 0;
+        font-size: 20px;
+        color: #000;
+        line-height: 30px;
+        width: auto;
+        right: 7%;
+      }
+    }
+    // 店铺详情下的回到顶部
+    .gotop {
+      position: fixed;
+      width: 40px;
+      height: 40px;
+      text-align: center;
+      line-height: 40px;
+      font-size: 20px;
+      color: white;
+      background: #ff9a00;
+      border-radius: 50%;
+      bottom: 20px;
+      right: 20px;
+    }
+    // 店铺详情下的每一个组件，店铺组件
     .earningsbox {
       margin: 10px 0;
     }
