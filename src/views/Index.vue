@@ -3,8 +3,14 @@
     <!-- 左侧导航 -->
     <div class="index-nav">
       <ul>
-        <li v-for="(item,index) in currentFoodType(searchfoodType)" :key="index">{{item.typeName}}</li>
+        <li @click="chooseType" v-for="(item,index) in currentFoodType(searchfoodType)" :key="index">{{item.typeName}}</li>
       </ul>
+
+      <div class="navBottom">
+        <router-link to="/orderdetail">
+          <button type="button" class="BtnStyle">前往付款 >></button>
+        </router-link>
+      </div>
     </div>
 
     <!-- 菜单 -->
@@ -41,15 +47,15 @@
                   <h3>{{item1.foodName}}</h3>
                   <p>{{item1.price}}元</p>
                   <div class="count-btn">
-                    <button type="button" @click="decrement(1)"> - </button>
+                    <button type="button" @click="subs()"> - </button>
                     <span> {{item1.count}} </span>
-                    <button type="button" @click="increment(1)"> + </button>
+                    <button type="button" @click="add()"> + </button>
                   </div>
                   <p>{{item1.price * item1.count}}</p>
                 </div>
               </div>
               <div class="forsure-btn">
-                <button class="BtnStyle">确认点餐</button>
+                <button :plain="true" class="BtnStyle" @click="addFoodBtn()">确认点餐</button>
               </div>
             </el-drawer>
           </div>
@@ -61,7 +67,7 @@
 
 <script>
 /* import IndexItems from "@/components/IndexItems.vue"; */
-import { mapState, mapGetters, mapActions, mapMutations } from "vuex";
+import { mapState, mapGetters, mapActions } from "vuex";
 
 export default {
   name: "Index",
@@ -77,19 +83,33 @@ export default {
     };
   },
   computed: {
-    ...mapState(["foodItems", "foosType"]),
-    ...mapGetters(["currentFoodItems", "currentFoodType"]),
-    ...mapState(["count"])
+    ...mapState(["foodItems", "foodType"]),
+    ...mapGetters(["currentFoodItems", "currentFoodType"])
   },
   created() {
     this.getFoodItemsSync(), this.getFoodTypeSync();
   },
   methods: {
-    ...mapMutations(["increment", "decrement"]),
     ...mapActions(["getFoodItemsSync", "getFoodTypeSync"]),
     c1: function(item) {
       this.drawer = true;
       this.item1 = item;
+      console.log(item)
+    },
+    addFoodBtn(item1) {
+      console.log(item1)  //unde
+
+      this.$message({
+        showClose: true,
+        message:"成功添加",
+        type:"success"
+      })
+      this.drawer = false;
+    },
+    chooseType(e,state){
+      console.log(e.target)
+      console.log(state.foodItems)
+      /* var chooseFood = [] */
     }
   }
 };
@@ -107,6 +127,13 @@ ul li {
   position: fixed;
   top: 50px;
   left: 0;
+
+  button{
+    color: #dd0000;
+  }
+  .navBottom{
+    margin-top: 40px;
+  }
 
   li {
     width: 100px;

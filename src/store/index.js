@@ -5,81 +5,106 @@ Vue.use(Vuex)
 
 const foodItems = [
   {
+    foodId:0,
     foodName: "超级至尊披萨1",
     price: 91,
     count:2,
-    photourl: require('../assets/logo.png')
+    photourl: require('../assets/logo.png'),
+    typeId:1
   },
   {
+    foodId:1,
     foodName: "超级至尊披萨2",
     price: 92,
     count:1,
-    photourl: require('../assets/logo.png')
+    photourl: require('../assets/logo.png'),
+    typeId:2
   },
   {
+    foodId:2,
     foodName: "超级至尊披萨3",
     price: 93,
     count:1,
-    photourl: require('../assets/logo.png')
+    photourl: require('../assets/logo.png'),
+    typeId:3
   },
   {
+    foodId:3,
     foodName: "超级至尊披萨4",
     price: 94,
     count:1,
-    photourl: require('../assets/logo.png')
+    photourl: require('../assets/logo.png'),
+    typeId:4
   },
   {
+    foodId:4,
     foodName: "超级至尊披萨5",
     price: 95,
     count:1,
-    photourl: require('../assets/logo.png')
+    photourl: require('../assets/logo.png'),
+    typeId:5
   },
   {
+    foodId:5,
     foodName: "超级至尊披萨6",
     price: 96,
     count:1,
-    photourl: require('../assets/logo.png')
+    photourl: require('../assets/logo.png'),
+    typeId:6
   },
   {
+    foodId:6,
     foodName: "超级至尊披萨7",
     price: 97,
     count:1,
-    photourl: require('../assets/logo.png')
+    photourl: require('../assets/logo.png'),
+    typeId:7
   },
   {
+    foodId:7,
     foodName: "超级至尊披萨8",
     price: 98,
     count:1,
-    photourl: require('../assets/logo.png')
+    photourl: require('../assets/logo.png'),
+    typeId:1
   },
   {
+    foodId:8,
     foodName: "超级至尊披萨9",
     price: 99,
     count:1,
-    photourl: require('../assets/logo.png')
+    photourl: require('../assets/logo.png'),
+    typeId:2
   }
 ]
 const foodType = [
   {
-    typeName: "菜品1"
+    typeName: "菜品1",
+    typeId:1
   },
   {
-    typeName: "菜品1"
+    typeName: "菜品2",
+    typeId:2
   },
   {
-    typeName: "菜品1"
+    typeName: "菜品3",
+    typeId:3
   },
   {
-    typeName: "菜品1"
+    typeName: "菜品4",
+    typeId:4
   },
   {
-    typeName: "菜品1"
+    typeName: "菜品5",
+    typeId:5
   },
   {
-    typeName: "菜品1"
+    typeName: "菜品6",
+    typeId:6
   },
   {
-    typeName: "菜品2"
+    typeName: "菜品7",
+    typeId:7
   },
 ]
 
@@ -100,11 +125,6 @@ const moduleIndexFood = {
       return state.foodType.filter(item => {
         return item.typeName.indexOf(s) > -1
       })
-    },
-    getCount: (state) => (s) => {
-      return state.foodItems.filter(item => {
-        return item.count.indexOf(s) > -1
-      })
     }
   },
   mutations: {
@@ -113,12 +133,6 @@ const moduleIndexFood = {
     },
     getFoodType(state, n) {
       state.foodType = n
-    },
-    increment(state,n){
-      state.count += n
-    },
-    decrement(state,n){
-      state.count -= n
     }
   },
   actions: {
