@@ -1,22 +1,18 @@
 <template>
-  <div class="index-item-box">
-    <div class="foodItems">
-      <div class="index-items-img">
-        <img alt="Vue logo" src="../assets/logo.png" />
-      </div>
-      <div>
-        <h3>{{info.foodName}}</h3>
-        <p><span>{{info.price}}</span>元</p>
-        <button class="BtnStyle">购买</button>
-      </div>
-    </div>
-  </div>
+  
 </template>
 
 <script>
 export default {
   name: "IndexItems",
-  props: ['info']
+  props: ['info'],
+  /* directives: {
+    "focus": {
+      inserted(el) {
+        el.focus()
+      }
+    }
+  } */
 };
 </script>
 
