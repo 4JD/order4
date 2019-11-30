@@ -9,30 +9,12 @@
     </el-row>
     <el-form ref="form">
       <el-row>
-        <!-- <el-col :span="6">
-          <el-form-item label="支出类型：">
-            <el-select placeholder="支出类型">
-              <el-option label="工资" value="gongzi"></el-option>
-              <el-option label="原材料" value="origin"></el-option>
-              <el-option label="房租" value="fangzi"></el-option>
-            </el-select>
-          </el-form-item>
-        </el-col>
-
-        <el-col :span="6">
-          <el-form-item label="操作者：">
-            <el-select placeholder="操作者：">
-              <el-option label="张三" value="zhangsan"></el-option>
-              <el-option label="李四" value="lisi"></el-option>
-              <el-option label="王五" value="wangwu"></el-option>
-            </el-select>
-          </el-form-item>
-        </el-col> -->
+   
 
         <el-col :span="8">
           <el-form-item label="时间：">
             <el-date-picker
-              v-model="value2"
+              v-model="value3"
               type="daterange"
               align="right"
               unlink-panels
@@ -46,7 +28,7 @@
 
         <el-col :span="4">
           <el-form-item>
-            <el-button type="primary" icon="el-icon-search">搜索</el-button>
+            <el-button type="primary" icon="el-icon-search" @click="searchBtn">搜索</el-button>
           </el-form-item>
         </el-col>
       </el-row>
@@ -54,7 +36,7 @@
       <el-row>
         <el-col :span="8">
          
-          <addPayItem></addPayItem>
+          <addPayItem @add="pushItem"></addPayItem>
         </el-col>
       </el-row>
     </el-form>
@@ -115,6 +97,33 @@
 
 <script>
 import addPayItem from "@/components/addPayItem.vue";
+import { formatDate } from "@/assets/js/formatDate.js";
+var  tableData = [
+        {
+          date: "2016-05-02 09:20:00",
+          id: "1",
+          payType: "工资",
+          payUser: "张三",
+          payPrice: "7",
+          remark: "无"
+        },
+        {
+          date: "2016-05-02 09:20:00",
+          id: "1",
+          payType: "房租",
+          payUser: "李四",
+          payPrice: "7",
+          remark: "2"
+        },
+        {
+          date: "2016-05-02 09:20:00",
+          id: "1",
+          payType: "原材料",
+          payUser: "王五",
+          payPrice: "7",
+          remark: "2"
+        }
+      ]
 
 export default {
   name: "payment",
@@ -156,33 +165,14 @@ export default {
           }
         ]
       },
-      tableData: [
-        {
-          date: "2016-05-02 09:20:00",
-          id: "1",
-          payType: "工资",
-          payUser: "张三",
-          payPrice: "7",
-          remark: "无"
-        },
-        {
-          date: "2016-05-02 09:20:00",
-          id: "1",
-          payType: "房租",
-          payUser: "李四",
-          payPrice: "7",
-          remark: "2"
-        },
-        {
-          date: "2016-05-02 09:20:00",
-          id: "1",
-          payType: "原材料",
-          payUser: "王五",
-          payPrice: "7",
-          remark: "2"
-        }
-      ]
+      tableData: []
     };
+  },
+    filters: {
+    formatDate(time) {
+      var date = new Date(time);
+      return formatDate(date, "yyyy-MM-dd");
+    }
   },
   methods: {
     filtertype(value, row) {
@@ -196,13 +186,50 @@ export default {
       },
       handleCurrentChange(val) {
         console.log(`当前页: ${val}`);
+      },
+      pushItem(data) {
+        this.tableData.push(data);
+        console.log("父组件接收"+data);
+      },
+      searchBtn () {
+      console.log(formatDate(this.value3[0], "yyyy-MM-dd"));
+      console.log(formatDate(this.value3[1], "yyyy-MM-dd"));
+
+        //   this.axios.get('/user/searchPay',{
+        //     checkPaytime1:formatDate(this.value3[0], "yyyy-MM-dd"),
+        //     checkPaytime2:formatDate(this.value3[1], "yyyy-MM-dd")
+        // })
+        // .then(res=> {
+        //   console.log('获取支出信息：',res.data);
+        //   this.tableData = res.data.data;
+        // })
+        // .catch(err => {
+        //   console.log(err);
+        // })
       }
+     
+      
   
+  },
+  created () {
+    this.tableData = tableData;
+    // this.axios.get('/user/searchPay',{
+
+    // })
+    // .then(res=> {
+    //   console.log('获取支出信息：',res.data);
+    //   this.tableData = res.data.data;
+    // })
+    // .catch(err => {
+    //   console.log(err);
+    // })
   }
 };
 </script>
 
 <style lang="less">
+@import '../assets/css/base.less';
+
 h2 {
   float: left;
   margin-left: 5%;
@@ -217,7 +244,13 @@ h2 {
 .el-input {
   width: 80%;
 }
-#addPay {
-  float: left;
+.el-button{
+  background:  #ff9a00;
+  border-color:#ff9a00;
 }
+.el-button:hover{
+  background:  #ec9005;
+  border-color:#ec9005;
+}
+
 </style>

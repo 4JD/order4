@@ -27,7 +27,6 @@
         </div>
       </el-col>
     </el-row>
-    <img src="@/assets/images/erweima/1.jpg" alt="">
   </div>
 </template>
 
@@ -93,12 +92,19 @@ export default {
         this.$message.error("上传头像图片大小不能超过 2MB!");
       }
       return isJPG && isLt2M;
+    },
+      load() {
+      this.loading = true;
+      setTimeout(() => {
+        this.count += 2;
+        this.loading = false;
+      }, 2000);
     }
   }
 };
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
 .mesList {
   width: 30%;
   float: left;
@@ -109,6 +115,7 @@ ul li {
 }
 .infinite-list {
   height: 300px;
+  box-shadow: 0 0 5px lightgray;
 }
 .erweimaList {
   width: 25%;

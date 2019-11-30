@@ -8,31 +8,6 @@
       </el-col>
     </el-row>
     <el-form ref="form">
-      <!-- <el-row>
-        <el-col :span="6">
-          <el-form-item label="支付类型：">
-            <el-select placeholder="支付类型" v-model="payType">
-              <el-option label="全部" value="all"></el-option>
-              <el-option label="支付宝" value="zhifubao"></el-option>
-              <el-option label="微信" value="weichat"></el-option>
-              <el-option label="现金" value="cash"></el-option>
-            </el-select>
-          </el-form-item>
-        </el-col>
-        <el-col :span="4">
-          <el-form-item></el-form-item>
-        </el-col>
-        <el-col :span="6">
-          <el-form-item label="商品类型：">
-            <el-select placeholder="商品类型" v-model="goodsType">
-              <el-option label="全部" value="all"></el-option>
-              <el-option label="面食" value="mianshi"></el-option>
-              <el-option label="小炒" value="xiaochao"></el-option>
-            </el-select>
-          </el-form-item>
-        </el-col>
-      </el-row> -->
-
       <el-row>
         <el-col :span="8">
           <el-form-item label="时间：">
@@ -57,7 +32,7 @@
           </el-form-item>
         </el-col>
         <el-col :span="8">
-          <el-button type="primary" icon="el-icon-search" @click="searchBtn">搜索</el-button>
+          <el-button type="primary" icon="el-icon-search" @click="searchBtn" id="searchBtn">搜索</el-button>
         </el-col>
       </el-row>
     </el-form>
@@ -107,52 +82,52 @@
 
       <el-table-column prop="date" label="支付时间" width="190" align="center"></el-table-column>
     </el-table>
-     <el-pagination
+    <el-pagination
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
       :current-page.sync="currentPage3"
       :page-size="100"
       layout="prev, pager, next, jumper"
-      :total="1000">
-    </el-pagination>
+      :total="1000"
+    ></el-pagination>
   </div>
 </template>
 
 
 <script>
-import { formatDate } from '@/assets/js/formatDate.js'
+import { formatDate } from "@/assets/js/formatDate.js";
 var tableData = [
-        {
-          date: "2016-05-02 09:20:00",
-          id: "1",
-          goodsName: "二两面条",
-          goodsType: "面食",
-          price: "7",
-          number: "2",
-          totalPrice: "14",
-          payment: "支付宝"
-        },
-        {
-          date: "2016-05-02 09:20:00",
-          id: "1",
-          goodsName: "二两面条",
-          goodsType: "小炒",
-          price: "7",
-          number: "2",
-          totalPrice: "14",
-          payment: "微信"
-        },
-        {
-          date: "2016-05-02 09:20:00",
-          id: "1",
-          goodsName: "二两面条",
-          goodsType: "面食",
-          price: "7",
-          number: "2",
-          totalPrice: "14",
-          payment: "现金"
-        }
-      ]
+  {
+    date: "2016-05-02 09:20:00",
+    id: "1",
+    goodsName: "二两面条",
+    goodsType: "面食",
+    price: "7",
+    number: "2",
+    totalPrice: "14",
+    payment: "支付宝"
+  },
+  {
+    date: "2016-05-02 09:20:00",
+    id: "1",
+    goodsName: "二两面条",
+    goodsType: "小炒",
+    price: "7",
+    number: "2",
+    totalPrice: "14",
+    payment: "微信"
+  },
+  {
+    date: "2016-05-02 09:20:00",
+    id: "1",
+    goodsName: "二两面条",
+    goodsType: "面食",
+    price: "7",
+    number: "2",
+    totalPrice: "14",
+    payment: "现金"
+  }
+];
 
 export default {
   name: "income",
@@ -195,20 +170,33 @@ export default {
           }
         ]
       },
-      tableData: [
-      ]
+      tableData: []
     };
   },
   filters: {
     formatDate(time) {
-    var date = new Date(time);
-    return formatDate(date, 'yyyy-MM-dd');
-   }
+      var date = new Date(time);
+      return formatDate(date, "yyyy-MM-dd");
+    }
   },
   methods: {
-    
     searchBtn() {
-      console.log(formatDate(this.value2[0], 'yyyy-MM-dd hh:mm:ss'));
+      console.log(formatDate(this.value2[0], "yyyy-MM-dd hh:mm:ss"));
+      console.log(formatDate(this.value2[1], "yyyy-MM-dd hh:mm:ss"));
+      console.log(this.keyword);
+      // this.axios
+      //   .get("/user/searchIncome",{
+      //     payType1:formatDate(this.value2[0], "yyyy-MM-dd hh:mm:ss"),
+      //     payType2:formatDate(this.value2[1], "yyyy-MM-dd hh:mm:ss"),
+      //     keywords:this.keyword
+      //   })
+      //   .then(res => {
+      //     console.log("获取筛选信息：", res.data);
+      //     this.tableData = res.data.data;
+      //   })
+      //   .catch(err => {
+      //     console.log(err);
+      //   });
     },
     filterTag(value, row) {
       return row.payment === value;
@@ -216,21 +204,30 @@ export default {
     filterGoods(value, row) {
       return row.goodsType === value;
     },
-     handleSizeChange(val) {
-        console.log(`每页 ${val} 条`);
-      },
-      handleCurrentChange(val) {
-        console.log(`当前页: ${val}`);
-      }
-  
+    handleSizeChange(val) {
+      console.log(`每页 ${val} 条`);
+    },
+    handleCurrentChange(val) {
+      console.log(`当前页: ${val}`);
+    }
   },
-  created () {
+  created() {
     this.tableData = tableData;
+    this.axios.get('/login')
+    .then(res=> {
+      console.log('获取收入信息：',res);
+      // this.tableData = res.data.data;
+    })
+    .catch(err => {
+      console.log(err);
+    })
   }
 };
 </script>
 
 <style lang="less">
+   @import '../assets/css/base.less';
+
 h2 {
   float: left;
   margin-left: 5%;
@@ -244,5 +241,13 @@ h2 {
 }
 .el-input {
   width: 80%;
+}
+.el-button{
+  background:  #ff9a00;
+  border-color:#ff9a00;
+}
+.el-button:hover{
+  background:  #ec9005;
+  border-color:#ec9005;
 }
 </style>
