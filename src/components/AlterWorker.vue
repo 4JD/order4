@@ -4,29 +4,28 @@
     <el-button type="text" size="small" @click="dialogFormVisible = true" icon="el-icon-edit">编辑</el-button>
     <!-- 修改员工弹框 -->
     <el-dialog title="编辑员工信息" :visible.sync="dialogFormVisible">
-      <el-form :model="form">
+      <el-form >
         <el-form-item label="ID：" :label-width="formLabelWidth">
-          <el-input  autocomplete="off" v-model="form.id" clearable placeholder="请输入员工ID"></el-input>
+          <el-input  autocomplete="off" v-model="info.id" clearable placeholder="请输入员工ID">{{info.id}}</el-input>
         </el-form-item>
 
         <el-form-item label="姓名：" :label-width="formLabelWidth">
-          <el-input  autocomplete="off" v-model="form.name" clearable placeholder="请输入员工姓名"></el-input>
+          <el-input  autocomplete="off" v-model="info.name" clearable placeholder="请输入员工姓名">{{info.name}}</el-input>
         </el-form-item>
 
         <el-form-item label="性别：" :label-width="formLabelWidth" class="choose-sex">
-          <input type="radio" name="sex" checked>男
-          <input type="radio" name="sex">女
-          <input type="radio" name="sex">保密
+          <el-input  autocomplete="off" v-model="info.sex" clearable placeholder="请选择员工性别">{{info.sex}}</el-input>
         </el-form-item>
 
         <el-form-item label="入职日期：" :label-width="formLabelWidth">
           <div class="block">
             <el-date-picker
-              v-model="workdate"
+              v-model="info.date"
               align="right"
               type="date"
               placeholder="选择入职日期"
               :picker-options="pickerOptions">
+              {{info.date}}
             </el-date-picker>
           </div>
         </el-form-item>
@@ -34,40 +33,34 @@
         <el-form-item label="生日：" :label-width="formLabelWidth">
           <div class="block">
             <el-date-picker
-              v-model="birthdate"
+              v-model="info.birthday"
               align="right"
               type="date"
               placeholder="选择生日"
               :picker-options="pickerOptions">
+              {{info.birthday}}
             </el-date-picker>
           </div>
         </el-form-item>
 
         <el-form-item label="手机：" :label-width="formLabelWidth">
-          <el-input  autocomplete="off" v-model="form.tel" clearable placeholder="请输入员工电话号码"></el-input>
+          <el-input  autocomplete="off" v-model="info.tel" clearable placeholder="请输入员工电话号码">{{info.tel}}</el-input>
         </el-form-item>
 
         <el-form-item label="地址：" :label-width="formLabelWidth">
-          <el-input  autocomplete="off" v-model="form.region" clearable placeholder="请输入员工地址"></el-input>
+          <el-input  autocomplete="off" v-model="info.address" clearable placeholder="请输入员工地址">{{info.address}}</el-input>
         </el-form-item>
 
         <el-form-item label="职位：" :label-width="formLabelWidth">
-          <select name="" id="choose-position" >
-            <option value="">厨师</option>
-            <option value="">服务员</option>
-            <option value="">收营员</option>
-          </select>
+          <el-input  autocomplete="off" v-model="info.position" clearable placeholder="请选择员工职位">{{info.position}}</el-input>
+        </el-form-item>
+
+        <el-form-item label="薪资：" :label-width="formLabelWidth">
+          <el-input  autocomplete="off" v-model="info.salary" clearable placeholder="请输入员工薪资">{{info.salary}}</el-input>
         </el-form-item>
 
         <el-form-item label="在职状态：" :label-width="formLabelWidth">
-          <el-switch
-            style="display: block"
-            v-model="valuestate"
-            active-color="#13ce66"
-            inactive-color="#ff4949"
-            active-text="在职"
-            inactive-text="离职" class="choose-state">
-          </el-switch>
+          <el-input  autocomplete="off" v-model="info.state" clearable placeholder="请选择员工在职状态">{{info.state}}</el-input>
         </el-form-item>
 
         <el-form-item label="备注：" :label-width="formLabelWidth">
@@ -75,7 +68,8 @@
           type="textarea"
           :rows="2"
           placeholder="请输入内容"
-          v-model="textarea">
+          v-model="info.remark">
+          {{info.remark}}
         </el-input>
         </el-form-item>
       </el-form>
@@ -83,8 +77,8 @@
 
 
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false;canceladd('form')">取 消</el-button>
-        <el-button type="primary" @click="dialogFormVisible = false;addsuccess()" >添 加</el-button>
+        <el-button @click="dialogFormVisible = false;canceladd()">取 消</el-button>
+        <el-button type="primary" @click="dialogFormVisible = false;addsuccess()" >修 改</el-button>
       </div>
     </el-dialog>
   </div>
@@ -93,22 +87,12 @@
 <script>
 export default {
   name:'alterworker',
+  props:['info'],
   data() {
     return {
       //添加员工弹出模态框
       dialogFormVisible: false,
-      form: {
-        id:'',
-        name: '',
-        region: '',
-        date1: '',
-        date2: '',
-        delivery: false,
-        type: [],
-        resource: '',
-        desc: '',
-        tel:''
-      },
+      
       formLabelWidth: '120px',
       //入职日期选择
       pickerOptions: {
