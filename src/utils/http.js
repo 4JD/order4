@@ -6,12 +6,12 @@ import router from '../router/'
 const http = axios.create({
   baseURL: '/api', // 统一设置请求地址前缀
   timeout: 6000 // 请求超时时间
-})
+});
 
 // 请求拦截，统一在请求时带上 token
 http.interceptors.request.use(function (config) {
   // 获取 token
-  const token = sessionStorage.getItem('token')
+  const token = sessionStorage.getItem('token');
   if(token) {
     // 在请求头上带上 token，固定写法
     config.headers['Authorization'] = 'Bearer ' + token
@@ -24,7 +24,7 @@ http.interceptors.request.use(function (config) {
 
 // 响应拦截，处理错误， 如 token 不合法
 http.interceptors.response.use(function (response) {
-  if(response.data.token) { 
+  if(response.data.token) {
     sessionStorage.setItem('token', response.data.token) // 将服务器返回的最新token更新到本地中
   }
 
@@ -39,7 +39,7 @@ http.interceptors.response.use(function (response) {
         path: '/login',
         query: {redirect: router.currentRoute.fullPath}
       })
-    
+
   }
 
   return Promise.reject(error);

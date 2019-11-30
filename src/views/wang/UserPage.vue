@@ -29,18 +29,18 @@
 
                 <ul>
                     <li>
-                        <a href="javascript:;">柜台点餐</a>
+                        <a href="javascript:;" @click="com=''">柜台点餐</a>
                     </li>
 
                     <li>
-                        <a href="javascript:;">
+                        <a href="javascript:;" @click="com=''">
                             历史订单
                         </a>
 
                     </li>
 
                     <li>
-                        <a href="javascript:;">
+                        <a href="javascript:;" @click="com=''">
                             菜品管理
                         </a>
 
@@ -52,25 +52,29 @@
                             财务管理 <img  src="" alt="图标"></a>
                     </li>
 
-                    <li class="second" v-show="second">
+                    <li class="second" v-show="second" @click="com=''">
                         <a href="javascript:;">支出</a>
                     </li>
 
-                    <li class="second" v-show="second">
+                    <li class="second" v-show="second" @click="com=''">
                         <a href="javascript:;">收入</a>
                     </li>
 
-                    <li class="second"  v-show="second">
+                    <li class="second"  v-show="second" @click="com=''">
                         <a href="javascript:;" v-show="second">盈利</a>
                     </li>
 
                     <li>
-                        <a href="javascript:;">员工管理</a></li>
+                        <a href="javascript:;" @click="com=''">员工管理</a></li>
                 </ul>
             </div>
             <div class="main-right">
 
+                <keep-alive>
+                    <!-- is 等于哪个组件名，就在这渲染哪个组件 -->
+                    <component :is="com"></component>
 
+                </keep-alive>
 
             </div>
         </div>
@@ -80,19 +84,31 @@
 </template>
 
 <script>
+    import income from "../Income"
+
   export default {
-    name: "Administrators",
-    data:function () {
-      return{
-        com:"",
-        second:false,
+    name: "UserPage",
+    components: {
+
+      income
+    },
+    data() {
+      return {
+        com: 'income',
+        second:false
 
       }
-    }
+    },
   }
 </script>
 
 <style scoped lang="less">
+    @import '../../assets/css/resize.css';
+
+    .warp{
+        overflow-y: hidden;
+        overflow-x: hidden;
+    }
 
     .header{
         /*background-color: #da2d2d;*/
@@ -108,7 +124,7 @@
         top: 80px;
         bottom: 0;
         left: 0;
-        overflow: auto;
+        /*overflow: auto;*/
         margin-bottom: 20px;
 
     }
@@ -123,8 +139,9 @@
         overflow-x: hidden;
 
 
+
         li{
-            width: 100%;
+            width: 160px;
             height: 40px;
             line-height: 40px;
             border: 1px skyblue solid;
@@ -145,7 +162,7 @@
     }
     .main-right{
         min-width: 600px;
-        left: 140px;
+        left: 160px;
         top:0;
         right: 0;
         position: absolute;
@@ -182,7 +199,7 @@
         margin-left: -400px;
         float: right;
         a{
-            margin-right: 30px;
+            /*margin-right: 30px;*/
         }
     }
     .icon{

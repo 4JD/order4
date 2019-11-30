@@ -17,44 +17,123 @@
                             <div class="icon1">
 
                                 <label>
-                                    <input type="text" placeholder="手机号" >
+                                    <input type="text" placeholder="用户名" v-model="username">
                                 </label>
 
                             </div>
                             <div class="icon1">
 
                                 <label>
-                                    <input type="password" placeholder="密码">
+                                    <input type="text" placeholder="手机号" v-model="usertel">
+                                </label>
+
+                            </div>
+
+                            <div class="icon1">
+
+                                <label>
+                                    <input type="text"   style="width: 60%" placeholder="请输入验证码" v-model="yanzheng">
+                                </label>
+
+                                <button class="yz-btn">获取验证码</button>
+                            </div>
+
+                            <div class="icon1">
+
+                                <label>
+                                    <input type="password" placeholder="密码" v-model="password">
                                 </label>
 
                             </div>
                             <div class="icon1">
-                                <form action="">
 
                                     <label>
-                                        <input type="password" placeholder="确认密码">
+                                        <input type="password" placeholder="确认密码" v-model="passwordAgain">
                                     </label>
 
-                                </form>
 
                             </div>
                             <div class="bottom">
-                                <input type="button" value="注册" >
+                                <input type="button" value="注册" @click="register" >
                             </div>
 
                         </div>
                     </div>
                 </div>
             </form>
+
+            <el-alert
+                    :title="errCont"
+                    type="error"
+                    v-show="errText"
+            >
+            </el-alert>
+
+
         </div>
+
 
     </div>
 </template>
 
 <script>
     export default {
-        name: "Register"
+      name: "Register",
+      data(){
+        return{
+          username:"",
+          password:"",
+          passwordAgain:"",
+          errText:false,
+          errCont:"",
+          yanzheng:"",
+          usertel:""
+
+
+
+        }
+      },
+
+      methods:{
+          register(){
+            if (this.username==""){
+              this.errText=true;
+              this.errCont="账号不能为空";
+              setTimeout(()=>{
+                this.errText=false;
+              },2000)
+            }else  if(this.usertel==""){
+              this.errText=true;
+              this.errCont="用户名不能为空";
+              setTimeout(()=>{
+                this.errText=false;
+              },2000)
+            }else if(this.yanzheng==""){
+              this.errText=true;
+              this.errCont="验证码不能为空";
+              setTimeout(()=>{
+                this.errText=false;
+              },2000)
+            }
+            else if (this.password==""){
+              this.errText=true;
+              this.errCont="密码不能为空";
+              setTimeout(()=>{
+                this.errText=false;
+              },2000)
+
+            }else {
+              this.errText=true;
+              this.errCont="账号已存在";
+              setTimeout(()=>{
+                this.errText=false;
+              },2000)
+
+            }
+          }
+        }
     }
+
 </script>
 
 <style scoped>

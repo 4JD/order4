@@ -16,27 +16,33 @@
                             <div class="icon1">
 
                                 <label>
-                                    <input type="text" placeholder="手机号" >
+                                    <input type="text" placeholder="手机号"   v-model="telNumber">
                                 </label>
 
                             </div>
                             <div class="icon1">
 
                                 <label>
-                                    <input type="text" class="yanzheng"  style="width: 60%" placeholder="请输入验证码">
+                                    <input type="text" class="yanzheng"  style="width: 60%" placeholder="请输入验证码" v-model="yanzheng">
                                 </label>
 
                                 <button class="yz-btn">获取验证码</button>
                             </div>
 
                             <div class="bottom">
-                                <input type="submit" value="确认">
+                                <input type="button" value="确认" @click="forget">
                             </div>
 
                         </div>
                     </div>
                 </div>
             </form>
+            <el-alert
+                    :title="errCont"
+                    type="error"
+                    v-show="errText"
+            >
+            </el-alert>
         </div>
 
     </div>
@@ -44,7 +50,42 @@
 
 <script>
     export default {
-        name: "forget-pass"
+        name: "forget-pass",
+      data(){
+        return{
+          telNumber:"",
+          yanzheng:"",
+          errText:false,
+          errCont:""
+        }
+      },
+      methods:{
+        forget(){
+
+          if (this.username==1&&this.password==1){
+            console.log("登录成功")
+          }
+          else if(this.telNumber=="") {
+            this.errText=true;
+            this.errCont="账号不能为空";
+            setTimeout(()=>{
+              this.errText=false;
+            },2000)
+          }else if (this.yanzheng=="") {
+            this.errText=true;
+            this.errCont="验证码不能为空";
+            setTimeout(()=>{
+              this.errText=false;
+            },2000)
+          }else {
+            this.errText=true;
+            this.errCont="验证码错误";
+            setTimeout(()=>{
+              this.errText=false;
+            },2000)
+          }
+        }
+      }
     }
 </script>
 

@@ -16,7 +16,7 @@
                             <div class="icon1">
 
                                 <label>
-                                    <input type="text" placeholder="输入密码">
+                                    <input type="password" placeholder="输入密码" v-model="password">
                                 </label>
 
 
@@ -24,20 +24,28 @@
                             <div class="icon1">
 
                                 <label>
-                                    <input type="text" placeholder="确认密码">
+                                    <input type="password" placeholder="确认密码" v-model="passwordAgain">
                                 </label>
 
                             </div>
 
                             <div class="bottom">
 
-                                <input type="submit" value="确认修改" >
+                                <input type="button" value="确认修改" @click="change" >
                             </div>
 
                         </div>
                     </div>
                 </div>
             </form>
+
+            <el-alert
+                    :title="errCont"
+                    type="error"
+                    v-show="errText"
+            >
+            </el-alert>
+
         </div>
 
     </div>
@@ -45,7 +53,37 @@
 
 <script>
     export default {
-        name: "resetPass"
+        name: "resetPass",
+      data(){
+        return{
+
+          password:"",
+
+          passwordAgain:"",
+
+          errText:false,
+          errCont:""
+
+        }
+      },
+      methods:{
+        change(){
+          if (this.password==""||this.passwordAgain==""){
+                this.errText=true;
+                this.errCont="两项不能为空";
+                setTimeout(()=>{
+                  this.errText=false;
+                },2000)
+          }else if (this.password!=this.passwordAgain) {
+            this.errText=true;
+            this.errCont="两次输入不一样";
+            setTimeout(()=>{
+              this.errText=false;
+            },2000)
+          }
+
+        }
+      }
     }
 </script>
 

@@ -84,24 +84,24 @@ const routes = [
   },
   // 王小明路由
   {
-    path: '/Login',
-    name: 'Login',
+    path: '/login',
+    name: 'login',
     component: () => import('../views/wang/Login.vue')
   },
   {
     path: '/register',
-    name: 'Register',
+    name: 'register',
     component: () => import('../views/wang/Register.vue')
   },
 
   {
-    path: '/ForgetPass',
-    name: 'ForgetPass',
+    path: '/forgetPass',
+    name: 'forgetPass',
     component: () => import('../views/wang/ForgetPass.vue')
   },
   {
-    path: '/ResetPass',
-    name: 'ResetPass',
+    path: '/resetPass',
+    name: 'resetPass',
     component: () => import('../views/wang/ResetPass.vue')
   },{
     path: '/admin',
@@ -109,8 +109,8 @@ const routes = [
     component: () => import('../views/wang/Administrators.vue')
   },
   {
-    path: '/userpage',
-    name: 'userpage',
+    path: '/userPage',
+    name: 'userPage',
     component: () => import('../views/wang/UserPage.vue')
   }
 ];

@@ -168,7 +168,7 @@ a:hover {
     letter-spacing: 2px;
 }
 
-.header-left-bottom input[type="submit"] {
+.header-left-bottom input[type="button"] {
     background: #3be8b0;
     color: #FFF;
     font-size: 17px;
@@ -187,7 +187,7 @@ a:hover {
 	width: 100%;
     border-radius: 25px;
 }
-.header-left-bottom input[type="submit"]:hover {
+.header-left-bottom input[type="button"]:hover {
     background: #ff4f81;
     transition: 0.5s all;
     -webkit-transition: 0.5s all;
