@@ -35,6 +35,7 @@ export default {
 .earningsbox {
     text-align: left;
     width: 90%;
+    margin-left: 5%;
     min-width: 450px;
     min-height: 200px;
     flex-wrap: wrap;

@@ -82,6 +82,11 @@ const routes = [
     name: 'worker',
     component: () => import('../views/Worker.vue')
   },
+  {
+    path: '/workersalary',
+    name: 'workersalary',
+    component: () => import('../views/WorkerSalary.vue')
+  },
   // 王小明路由
   {
     path: '/login',

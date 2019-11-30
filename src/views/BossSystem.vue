@@ -12,7 +12,7 @@
               店铺管理
             </div>
             <div class="mean" @click="checkMean" data-show="2">
-              <i class="el-icon-set-up"></i>
+              <i class="el-icon-notebook-2"></i>
               店铺详情
             </div>
             <div class="mean" @click="checkMean" data-show="3">
@@ -222,6 +222,7 @@ export default {
   z-index: 99999;
   position: fixed;
   left: 0;
+  text-align: center;
   top: 0;
   width: 100%;
   height: 50px;
@@ -239,7 +240,7 @@ export default {
     position: fixed;
     left: 0;
     top: 50px;
-
+    text-align: center;
     nav {
       width: 100%;
       .mean {
@@ -318,7 +319,8 @@ export default {
     }
     // 店铺详情下的每一个组件，店铺组件
     .earningsbox {
-      margin: 10px 0;
+      margin: 10px auto;
+      margin-left: 5%;
     }
   }
 }
