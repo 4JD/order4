@@ -26,7 +26,7 @@
         </div>
       </el-col>
     </el-row>
-    <div id="zhu" style="width: 300px;height:300px;"></div>
+    <div id="zhu" ></div>
   </div>
 </template>
 
@@ -53,18 +53,18 @@ export default {
     var myChart = this.echarts.init(document.getElementById("zhu"));
     myChart.setOption({
       title: {
-        text: "ECharts 入门示例"
+        text: "本周收益明细"
       },
       tooltip: {},
       xAxis: {
-        data: ["衬衫", "羊毛衫", "雪纺衫", "裤子", "高跟鞋", "袜子"]
+        data: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat","Sun"]
       },
       yAxis: {},
       series: [
         {
           name: "销量",
           type: "bar",
-          data: [5, 20, 36, 10, 10, 20]
+          data: [5, 20, 36, 10, 10, 20,30]
         }
       ]
     });
@@ -73,9 +73,7 @@ export default {
 </script>
 
 <style lang="less">
-.mesList {
-  text-align: right;
-}
+
 ul li {
   height: 40px;
   font-size: 20px;
@@ -105,5 +103,10 @@ ul li {
 }
 .getPrice {
   border: 20px solid lightcoral;
+}
+#zhu {
+  width: 90%;
+  margin: 2% auto;
+  height: 600px;
 }
 </style>

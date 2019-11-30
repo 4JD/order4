@@ -20,7 +20,7 @@ export default {
   },
   methods: {
     showImages() {
-     
+     console.log(typeof(this.storelist));
     },
   }
 };
