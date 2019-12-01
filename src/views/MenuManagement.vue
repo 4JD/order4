@@ -43,21 +43,21 @@
         <i class="el-icon-close"></i>
       </span>
       <h3>编辑菜品</h3>
-      <input type="text" class="editfoodname" value="菜名" />
+      <input type="text" class="editfoodname" :value="editFoodMsg.foodName" />
       菜品种类:
-      <select name="editfoodtype" class="editfoodtype" value="菜品种类">
+      <select name="editfoodtype" class="editfoodtype" :value="editFoodMsg.foodType">
         <option
           v-for="(item, index) in foodTypeList"
           :key="index"
           :value="item.foodTypeName"
         >{{item.foodTypeName}}</option>
       </select>
-      <input type="number" name="editfoodprice" class="editfoodprice" value="110" />
-      <input type="text" name="editfoodremark" class="editfoodremark" value="菜品备注" />
+      <input type="number" name="editfoodprice" class="editfoodprice" :value="editFoodMsg.foodLargePrice" />
+      <input type="text" name="editfoodremark" class="editfoodremark" :value="editFoodMsg.foodRemark" />
       菜品图片:
       <br />
       <div class="editfoodimg">
-        <img src="../assets/images/store1.jpg" alt />
+        <img :src="editFoodMsg.foodPhoto" alt />
         <input type="file" name="editimg" class="editimg" />
       </div>
 
@@ -316,7 +316,9 @@ export default {
           name: "food.jpeg",
           url: require("../assets/images/store1.jpg")
         }
-      ]
+      ],
+      // 编辑的菜品信息
+      editFoodMsg: {},
     };
   },
   methods: {
@@ -431,6 +433,8 @@ export default {
     },
     // 编辑菜品
     editFood(data, $event) {
+      // 将编辑里要展示的数据变为当前点击那个的
+      this.editFoodMsg = data;
       // 编辑菜品弹框的显示
       document
         .getElementsByClassName("editfoodbox")[0]
@@ -441,31 +445,7 @@ export default {
       document.getElementsByClassName("zhezhao")[0].classList.add("show");
       console.log(data);
       console.log($event);
-      /* document.getElementsByClassName("editfoodbox")[0].innerHTML=`<span class="closeeditfoodbox" @click="closeeditfoodbox">
-        <i class="el-icon-close"></i>
-      </span>
-      <h3>编辑菜品</h3>
-      <input type="text" class="editfoodname" value="菜名">
-      菜品种类:
-      <select name="editfoodtype" class="editfoodtype" value="菜品种类">
-         <option
-          v-for="(item, index) in foodTypeList"
-          :key="index"
-          :value="item.foodTypeName"
-        >{{item.foodTypeName}}</option>
-      </select>
-      <input type="number" name="editfoodprice" class="editfoodprice" value="110">
-      <input type="text" name="editfoodremark" class="editfoodremark" value="菜品备注">
-      菜品图片: <br>
-      <div class="editfoodimg">
-        <img src="../assets/images/store1.jpg" alt="">
-        <input type="file" name="editimg" class="editimg">
-      </div>
-      
-      <div class="enterorcloseedit">
-        <button type="button" class="closeeditfood" @click="closeeditfoodbox">取消</button>
-        <button type="button" class="entereditfood" @click="entereditfood">确定</button>
-      </div>`; */
+     
     },
     // 点击菜品类型，渲染相应的数据
     getTagFood(e) {
