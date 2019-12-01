@@ -26,7 +26,7 @@ export default {
       // 获取店铺支出 
       var storeExpends = [];
       // 利润数组
-      // var lirun =[];
+      var liruns =[];
       this.storelist.forEach(function(item) {
         // 店铺名字数组
         storeNames.push(item.storeName);
@@ -34,9 +34,12 @@ export default {
         storeIncomes.push(item.storeIncome);
         // 店铺支出数组
         storeExpends.push(item.storeExpend);
+        // 店铺利润数组
+        const lirun = Number(item.storeIncome)+Number(item.storeExpend);
+        liruns.push(lirun);
       });
 
-      console.log(storeNames,storeIncomes,storeExpends)
+      // console.log(storeNames,storeIncomes,storeExpends,liruns);
     var myChart = this.echarts.init(document.getElementById("echarts"));
     myChart.setOption({
       tooltip: {
@@ -78,8 +81,8 @@ export default {
               position: "inside"
             }
           },
-          data: [200, 170, 240, 244, 200, 220, 210]
-          // data: lirun
+          // data: [200, 170, 240, 244, 200, 220, 210]
+          data: liruns
         },
         {
           name: "收入",

@@ -13,7 +13,7 @@
     </div>
 
     <!-- 图表内容 -->
-    <div class="echarts"></div>
+    <div id="echart"></div>
   </div>
 </template>
 
@@ -27,7 +27,75 @@ export default {
     return {};
   },
   methods: {},
-
+  mounted() {
+    var myChart = this.echarts.init(document.getElementById("echart"));
+    myChart.setOption({
+      tooltip: {
+        trigger: "axis",
+        axisPointer: {
+          // 坐标轴指示器，坐标轴触发有效
+          type: "shadow" // 默认为直线，可选为：'line' | 'shadow'
+        }
+      },
+      legend: {
+        data: ["利润", "支出", "收入"]
+      },
+      grid: {
+        left: "3%",
+        right: "4%",
+        bottom: "3%",
+        containLabel: true
+      },
+      xAxis: [
+        {
+          type: "value"
+        }
+      ],
+      yAxis: [
+        {
+          type: "category",
+          axisTick: { show: false },
+          data: [this.item.storeName]
+        }
+      ],
+      series: [
+        {
+          name: "利润",
+          type: "bar",
+          label: {
+            normal: {
+              show: true,
+              position: "inside"
+            }
+          },
+          data: [this.item.storeIncome]
+        },
+        {
+          name: "收入",
+          type: "bar",
+          stack: "总量",
+          label: {
+            normal: {
+              show: true
+            }
+          },
+          data: [this.item.storeIncome-this.item.storeExpend]
+        },
+        {
+          name: "支出",
+          type: "bar",
+          stack: "总量",
+          label: {
+            normal: {
+              show: true,
+              position: "left"
+            }
+          },
+          data: [this.item.storeExpend]
+        }
+      ]
+    });
+  }
 };
 </script>
 
@@ -59,5 +127,10 @@ export default {
       min-width: 100px;
     }
   }
+}
+// echart图
+#echart {
+  width: 600px;
+  height: 200px;
 }
 </style>

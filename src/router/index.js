@@ -60,9 +60,9 @@ const routes = [
   
   // 李钰路由
   {
-    path: '/bossSystem',
+    path: '/BossSystems',
     name: 'bossSystem',
-    component: () => import('../views/BossSystem.vue')
+    component: () => import('../views/BossSystems.vue')
   },
   {
     path: '/menumanagement',
