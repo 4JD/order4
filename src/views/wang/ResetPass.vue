@@ -57,6 +57,7 @@
       data(){
         return{
 
+          telNumber:"",
           password:"",
 
           passwordAgain:"",
@@ -80,6 +81,22 @@
             setTimeout(()=>{
               this.errText=false;
             },2000)
+          }else if (this.password==this.passwordAgain) {
+             this.axios.post("/resetpass",{
+               telNumber:sessionStorage.getItem("telNumber"),
+               password:this.password
+             })
+               .then((res)=>{
+                 console.log(res)
+                 this.errText=true;
+                 this.errCont="修改成功";
+                 setTimeout(()=>{
+                   this.errText=false;
+                   var url = this.$route.query.redirect;
+                   url = url ? url : "/login";
+                   this.$router.replace(url)
+                 },2000)
+               })
           }
 
         }

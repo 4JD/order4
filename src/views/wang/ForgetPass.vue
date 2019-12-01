@@ -26,7 +26,7 @@
                                     <input type="text" class="yanzheng"  style="width: 60%" placeholder="请输入验证码" v-model="yanzheng">
                                 </label>
 
-                                <button class="yz-btn">获取验证码</button>
+                                <button class="yz-btn" @click="yanzhengma">获取验证码</button>
                             </div>
 
                             <div class="bottom">
@@ -56,7 +56,8 @@
           telNumber:"",
           yanzheng:"",
           errText:false,
-          errCont:""
+          errCont:"",
+          code:""
         }
       },
       methods:{
@@ -77,12 +78,31 @@
             setTimeout(()=>{
               this.errText=false;
             },2000)
-          }else {
+          }else if (this.yanzheng!=this.code) {
             this.errText=true;
             this.errCont="验证码错误";
             setTimeout(()=>{
               this.errText=false;
             },2000)
+          }else {
+            sessionStorage.setItem("telNumber", this.telNumber);
+             this.$router.replace("/resetPass")
+          }
+        },
+        yanzhengma(){
+          if (this.telNumber==""){
+            this.errText=true;
+            this.errCont="手机号不能为空";
+            setTimeout(()=>{
+              this.errText=false;
+            },2000)
+          }else {
+            this.axios.post("/yanzheng",{
+              telNumber:this.telNumber
+            }).then((res)=>{
+              console.log(res)
+              this.code=res.data.code
+            })
           }
         }
       }

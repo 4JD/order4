@@ -71,29 +71,9 @@
           }
       },
       methods:{
-          // getLogin(){
-          //   this.axios.post("/register",{
-          //     //传递的参数
-          //     userName:this.username,
-          //     userPassword: this.password
-          //   }).
-          //     then((res)=>{
-          //       console.log(res.data)
-          //       // if (res.data.state){
-          //       //   var token = res.data.token;
-          //       //   sessionStorage.setItem("token", token);
-          //       //   var url = this.$route.query.redirect;
-          //       //   url = url ? url : "/";
-          //       //   this.$router.replace(url)
-          //       // }else {
-          //       //     console.log("登录失败")
-          //       // }
-          //   }).catch(err=>{
-          //     console.log(err)
-          //   })
-          // },
-        login(){
 
+
+          getLogin(){
             if (this.username==1&&this.password==1){
               console.log("登录成功")
             }
@@ -110,13 +90,75 @@
                 this.errText=false;
               },2000)
             }else {
-              this.errText=true;
-              this.errCont="账号密码错误";
-              setTimeout(()=>{
-                this.errText=false;
-              },2000)
+
+              this.axios.post("/login",{
+                //传递的参数
+                userName:this.username,
+                userPassword: this.password
+              }).
+              then((res)=>{
+                console.log(res.data)
+
+                if (res.data.state==1){
+                  var token = res.data.token;
+                    sessionStorage.setItem("token", token);
+                    sessionStorage.setItem("telNumber", this.username);
+                    if (res.data.role==1){
+                      this.$router.replace("/home1")
+                    }else if(res.data.role==1){
+                      this.$router.replace("/home2")
+                    }else  if(res.data.role==1){
+                      this.$router.replace("/home3")
+                    }
+
+                } else if (res.data.state==2){
+
+                  this.errText=true;
+                  this.errCont="账号密码错误";
+                  setTimeout(()=>{
+                    this.errText=false;
+                  },2000)
+                }
+                // if (res.data.state){
+                //   var token = res.data.token;
+                //   sessionStorage.setItem("token", token);
+                //   var url = this.$route.query.redirect;
+                //   url = url ? url : "/";
+                //   this.$router.replace(url)
+                // }else {
+                //     console.log("登录失败")
+                // }
+              }).catch(err=>{
+                console.log(err)
+              });
+
             }
-        }
+          },
+        // login(){
+        //
+        //     if (this.username==1&&this.password==1){
+        //       console.log("登录成功")
+        //     }
+        //     else if(this.username=="") {
+        //       this.errText=true;
+        //       this.errCont="账号不能为空";
+        //       setTimeout(()=>{
+        //         this.errText=false;
+        //       },2000)
+        //     }else if (this.password=="") {
+        //       this.errText=true;
+        //       this.errCont="密码不能为空";
+        //       setTimeout(()=>{
+        //         this.errText=false;
+        //       },2000)
+        //     }else {
+        //       this.errText=true;
+        //       this.errCont="账号密码错误";
+        //       setTimeout(()=>{
+        //         this.errText=false;
+        //       },2000)
+        //     }
+        // }
       }
 
     }

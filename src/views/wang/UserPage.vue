@@ -15,9 +15,9 @@
 
                     <img  class="icon " src="" alt="头像">
 
-                    <a href="javascript:;">姓名</a>
+                    <a href="javascript:;" >姓名</a>
 
-                    <a href="javascript:;">注销</a>
+                    <a href="javascript:;" @click="quit">注销</a>
 
 
                 </div>
@@ -28,44 +28,41 @@
             <div class="main-left">
 
                 <ul>
-                    <li>
-                        <a href="javascript:;" @click="com=''">柜台点餐</a>
+                    <li :class="{on :com===1}" @click="com=1">
+                        <a href="javascript:;">柜台点餐</a>
                     </li>
 
-                    <li>
-                        <a href="javascript:;" @click="com=''">
+                    <li :class="{on:com===2}" @click="com=2">
+                        <a href="javascript:;" >
                             历史订单
                         </a>
-
                     </li>
 
-                    <li>
-                        <a href="javascript:;" @click="com=''">
+                    <li :class="{on: com==='3'}" @click="com=3">
+                        <a href="javascript:;" >
                             菜品管理
                         </a>
-
                     </li>
 
-                    <li>
-                        <a href="javascript:;" @click="second=!second">
-
+                    <li :class="{on: com===''}" @click="second=!second">
+                        <a href="javascript:;" >
                             财务管理 <img  src="" alt="图标"></a>
                     </li>
 
-                    <li class="second" v-show="second" @click="com=''">
-                        <a href="javascript:;">支出</a>
+                    <li class="second" v-show="second"  @click="com=''">
+                        <a href="javascript:;" >支出</a>
                     </li>
 
-                    <li class="second" v-show="second" @click="com=''">
-                        <a href="javascript:;">收入</a>
+                    <li class="second" v-show="second"  @click="com=''">
+                        <a href="javascript:;" >收入</a>
                     </li>
 
-                    <li class="second"  v-show="second" @click="com=''">
-                        <a href="javascript:;" v-show="second">盈利</a>
+                    <li class="second"  v-show="second"  @click="com=''">
+                        <a href="javascript:;" >盈利</a>
                     </li>
 
-                    <li>
-                        <a href="javascript:;" @click="com=''">员工管理</a></li>
+                    <li  @click="com=7"  :class="{on: com===7}">
+                        <a href="javascript:;"> 员工管理</a></li>
                 </ul>
             </div>
             <div class="main-right">
@@ -93,11 +90,17 @@
     },
     data() {
       return {
-        com: 'income',
-        second:false
+        com: '',
+        second:false,
+
 
       }
     },
+    methods:{
+      quit(){
+        this.$router.replace("/login")
+      },
+    }
   }
 </script>
 
@@ -113,7 +116,7 @@
     }
 
     .header{
-        background-color: #23262E;
+        background-color: #343335;
         width: 100%;
         height: 80px;
         /*border: #04c9f9 1px solid;*/
@@ -139,7 +142,7 @@
         width: 160px;
         overflow-y: auto;
         overflow-x: hidden;
-        background-color: #23262E;
+        background-color: #272729;
 
 
 
@@ -169,7 +172,7 @@
             }
         }
         li:hover{
-            background: #FF9A00;
+            background: #3D3D3E;
         }
 
     }
@@ -188,8 +191,8 @@
     .head-cont{
         width: 95%;
         margin: 0 auto;
-        height:60px;
-        line-height: 60px;
+        height:80px;
+        line-height: 80px;
         /*border: 1px darkcyan dashed;*/
 
     }
@@ -212,7 +215,7 @@
         margin-left: -400px;
         float: right;
         a{
-            /*margin-right: 30px;*/
+            padding:0 30px;
         }
     }
     .icon{
@@ -227,5 +230,8 @@
         width: 60px;
         height: 60px;
         vertical-align: middle;
+    }
+    .on{
+        background:#3D3D3E;
     }
 </style>

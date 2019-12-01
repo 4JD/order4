@@ -17,14 +17,14 @@
                             <div class="icon1">
 
                                 <label>
-                                    <input type="text" placeholder="用户名" v-model="username">
+                                    <input type="text" placeholder="用户名" v-model="username" maxlength="11">
                                 </label>
 
                             </div>
                             <div class="icon1">
 
                                 <label>
-                                    <input type="text" placeholder="手机号" v-model="usertel">
+                                    <input type="text" placeholder="手机号" v-model="usertel" maxlength="11">
                                 </label>
 
                             </div>
@@ -32,23 +32,23 @@
                             <div class="icon1">
 
                                 <label>
-                                    <input type="text"   style="width: 60%" placeholder="请输入验证码" v-model="yanzheng">
+                                    <input type="text"   style="width: 60%" placeholder="请输入验证码" v-model="yanzheng" maxlength="4">
                                 </label>
 
-                                <button class="yz-btn">获取验证码</button>
+                                <button class="yz-btn" @click="yanzhengma">获取验证码</button>
                             </div>
 
                             <div class="icon1">
 
                                 <label>
-                                    <input type="password" placeholder="密码" v-model="password">
+                                    <input type="password" placeholder="密码" v-model="password" maxlength="11">
                                 </label>
 
                             </div>
                             <div class="icon1">
 
                                     <label>
-                                        <input type="password" placeholder="确认密码" v-model="passwordAgain">
+                                        <input type="password" placeholder="确认密码" v-model="passwordAgain" maxlength="12">
                                     </label>
 
 
@@ -87,7 +87,8 @@
           errText:false,
           errCont:"",
           yanzheng:"",
-          usertel:""
+          usertel:"",
+          code:""
 
 
 
@@ -95,42 +96,86 @@
       },
 
       methods:{
-          register(){
-            if (this.username==""){
-              this.errText=true;
-              this.errCont="账号不能为空";
-              setTimeout(()=>{
-                this.errText=false;
-              },2000)
-            }else  if(this.usertel==""){
-              this.errText=true;
-              this.errCont="用户名不能为空";
-              setTimeout(()=>{
-                this.errText=false;
-              },2000)
-            }else if(this.yanzheng==""){
-              this.errText=true;
-              this.errCont="验证码不能为空";
-              setTimeout(()=>{
-                this.errText=false;
-              },2000)
-            }
-            else if (this.password==""){
-              this.errText=true;
-              this.errCont="密码不能为空";
-              setTimeout(()=>{
-                this.errText=false;
-              },2000)
-
-            }else {
-              this.errText=true;
-              this.errCont="账号已存在";
-              setTimeout(()=>{
-                this.errText=false;
-              },2000)
-
-            }
+        register(){
+          if (this.username==""){
+            this.errText=true;
+            this.errCont="用户名不能为空";
+            setTimeout(()=>{
+              this.errText=false;
+            },2000)
+          }else  if(this.usertel==""){
+            this.errText=true;
+            this.errCont="手机号不能为空";
+            setTimeout(()=>{
+              this.errText=false;
+            },2000)
+          }else if(this.yanzheng==""){
+            this.errText=true;
+            this.errCont="验证码不能为空";
+            setTimeout(()=>{
+              this.errText=false;
+            },2000)
+          }else if(this.yanzheng!=this.code){
+            this.errText=true;
+            this.errCont="验证码错误";
+            setTimeout(()=>{
+              this.errText=false;
+            },2000)
           }
+          else if (this.password==""){
+            this.errText=true;
+            this.errCont="密码不能为空";
+            setTimeout(()=>{
+              this.errText=false;
+            },2000)
+
+          }else  if(this.password!=this.passwordAgain){
+            this.errText=true;
+            this.errCont="两次密码值不一样";
+            setTimeout(()=>{
+              this.errText=false;
+            },2000)
+          }else{
+
+            this.axios.post("./register",{
+              username: this.username,
+              userPassword: this.userPassword,
+
+            }).then((res)=>{
+              if (res.data.state==1){
+                this.errText=true;
+                this.errCont="注册成功";
+                setTimeout(()=>{
+                  this.errText=false;
+                   this.$router.replace("/login")
+                },2000)
+              }else  if (res.data.state==2){
+                this.errText=true;
+                this.errCont="账户已存在";
+                setTimeout(()=>{
+                  this.errText=false;
+                },2000)
+              }
+            })
+          }
+
+        },
+        yanzhengma(){
+          if (this.usertel==""){
+            this.errText=true;
+            this.errCont="手机号不能为空";
+            setTimeout(()=>{
+              this.errText=false;
+            },2000)
+          }else {
+            this.axios.post("/yanzheng",{
+              userTel:this.usertel
+            }).then((res)=>{
+               console.log(res)
+               this.code=res.data.code
+            })
+          }
+        }
         }
     }
 
