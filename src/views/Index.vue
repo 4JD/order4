@@ -3,12 +3,12 @@
     <!-- 左侧导航 -->
     <div class="index-nav">
       <ul>
-        <li @click="chooseType" v-for="(item,index) in currentFoodType(searchfoodType)" :key="index">{{item.typeName}}</li>
+        <li  v-for="(item,index) in currentFoodType('')" :key="index" @click="chooseType(item.typeId)">{{item.typeName}}</li>
       </ul>
 
       <div class="navBottom">
         <router-link to="/orderdetail">
-          <button type="button" class="BtnStyle">前往付款 >></button>
+          <button type="button" class="BtnStyle"> 前往付款{{count}} >></button>
         </router-link>
       </div>
     </div>
@@ -17,7 +17,7 @@
     <div class="index-main">
       <div
         class="index-item-box"
-        v-for="(item,index) in currentFoodItems(searchfoodItems)"
+        v-for="(item,index) in currentFoodItems(newIndex)"
         :key="index"
       >
         <div class="foodItems">
@@ -67,7 +67,7 @@
 
 <script>
 /* import IndexItems from "@/components/IndexItems.vue"; */
-import { mapState, mapGetters, mapActions } from "vuex";
+import { mapState, mapGetters, mapActions, mapMutations } from "vuex";
 
 export default {
   name: "Index",
@@ -79,25 +79,39 @@ export default {
       searchfoodItems: "",
       searchfoodType: "",
       drawer: false,
-      item1: {}
+      item1: {},
+      newIndex: 1
     };
   },
   computed: {
-    ...mapState(["foodItems", "foodType"]),
+    ...mapState(["count"]),
     ...mapGetters(["currentFoodItems", "currentFoodType"])
   },
   created() {
     this.getFoodItemsSync(), this.getFoodTypeSync();
   },
+  beforeMount(){
+    console.log("acbd",this.count)
+  },
   methods: {
     ...mapActions(["getFoodItemsSync", "getFoodTypeSync"]),
+    ...mapMutations(["addOrder"]),
     c1: function(item) {
       this.drawer = true;
       this.item1 = item;
       console.log(item)
     },
-    addFoodBtn(item1) {
-      console.log(item1)  //unde
+    add(){
+      this.item1.count += 1
+    },
+    subs(){
+      if(this.item1.count > 0){
+        this.item1.count -= 1
+      }
+    },
+    addFoodBtn() {
+      console.log("aaaa",this.item1)
+      this.addOrder(this.item1)
 
       this.$message({
         showClose: true,
@@ -106,10 +120,8 @@ export default {
       })
       this.drawer = false;
     },
-    chooseType(e,state){
-      console.log(e.target)
-      console.log(state.foodItems)
-      /* var chooseFood = [] */
+    chooseType(e){
+      this.newIndex = e
     }
   }
 };
