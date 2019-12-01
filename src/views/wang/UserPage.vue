@@ -89,7 +89,6 @@
   export default {
     name: "UserPage",
     components: {
-
       income
     },
     data() {
@@ -105,16 +104,19 @@
 <style scoped lang="less">
     @import '../../assets/css/resize.css';
 
+    *{
+        color: white;
+    }
     .warp{
         overflow-y: hidden;
         overflow-x: hidden;
     }
 
     .header{
-        /*background-color: #da2d2d;*/
+        background-color: #23262E;
         width: 100%;
         height: 80px;
-        border: #04c9f9 1px solid;
+        /*border: #04c9f9 1px solid;*/
         line-height: 80px;
     }
 
@@ -133,10 +135,12 @@
         position: absolute;
         bottom: 0;
         /*background: #ee4540;*/
-        border: 1px #3be8b0  solid;
+        /*border: 1px #3be8b0  solid;*/
         width: 160px;
         overflow-y: auto;
         overflow-x: hidden;
+        background-color: #23262E;
+
 
 
 
@@ -144,19 +148,28 @@
             width: 160px;
             height: 40px;
             line-height: 40px;
-            border: 1px skyblue solid;
+            /*border: 1px skyblue solid;*/
             text-align: center;
             font-size: 20px;
 
             a{
-                color: black;
+
+                color: white;
+
+
             }
             a:link{
-                color: black;
+                color: white;
             }
             a:visited{
-                color: black;
+                color: white;
             }
+            a:hover{
+                opacity: 1;
+            }
+        }
+        li:hover{
+            background: #FF9A00;
         }
 
     }
@@ -177,13 +190,13 @@
         margin: 0 auto;
         height:60px;
         line-height: 60px;
-        border: 1px darkcyan dashed;
+        /*border: 1px darkcyan dashed;*/
 
     }
 
     .head-left,.header-right {
         height: 60px;
-        border: 1px darkcyan dashed;
+        /*border: 1px darkcyan dashed;*/
         font-size:26px ;
         display: inline-block;
     }
@@ -194,7 +207,7 @@
 
     }
     .head-right{
-        border: 1px skyblue solid;
+        /*border: 1px skyblue solid;*/
         width: 240px;
         margin-left: -400px;
         float: right;
