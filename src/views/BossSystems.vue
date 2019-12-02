@@ -3,7 +3,16 @@
     <!-- 内容布局 -->
     <el-container>
       <!-- 头部 -->
-      <el-header class="header" style="height: 50px;">{{bossName}}的管理系统</el-header>
+      <el-header class="header" style="height: 50px;">
+        <h1>{{admin.bossUser}}的管理系统</h1>
+        <div class="adminmsgbox">
+          {{admin.bossUser}}
+          <div class="adminedit">
+            <a href="javascript:;" @click="editadminmsg">修改信息</a>
+            <a href="javascript:;" @click="exitadmin">退出</a>
+          </div>
+        </div>
+      </el-header>
       <el-container class="inner">
         <!-- 左侧导航 -->
         <el-aside style="width: 200px;" class="left-nav">
@@ -103,6 +112,52 @@
         <button type="button" class="enterstoredetail" @click="enterstoredetailbox">确认</button>
       </div>
     </div>
+    <!-- 登录老板信息修改 -->
+    <div class="bossbox">
+      <span class="closebossboxx" @click="closebossbox">
+        <i class="el-icon-close"></i>
+      </span>
+      <h3>个人信息</h3>
+      <div class="bossmsgbox">
+        <span class="titlemsg">用户名：</span>
+        <input type="text" class="adminuser" v-model="admin.bossUser" />
+      </div>
+      <div class="bossmsgbox">
+        <span class="titlemsg">密码：</span>
+        <input type="password" class="adminpassword" v-model="admin.bossPassword" />
+      </div>
+      <div class="bossmsgbox">
+        <span class="titlemsg">姓名：</span>
+        <input type="text" class="adminname" v-model="admin.bossName" />
+      </div>
+      <div class="bossmsgbox">
+        <span class="titlemsg">性别：</span>
+        <label for="boy">
+          <input type="radio" name="adminsex" value="男" id="boy" />男
+        </label>
+        <label for="girl">
+          <input type="radio" name="adminsex" value="女" id="girl" />女
+        </label>
+      </div>
+      <div class="bossmsgbox">
+        <span class="titlemsg">地址：</span>
+        <input type="text" class="adminaddress" v-model="admin.bossAddress" />
+      </div>
+      <div class="bossmsgbox">
+        <span class="titlemsg">备注：</span>
+        <textarea
+          name="adminremark"
+          cols="30"
+          rows="10"
+          class="adminremark"
+          v-model="admin.bossRemark"
+        ></textarea>
+      </div>
+      <div class="enterorclosebossbox">
+        <button type="button" class="closebossbox" @click="closebossbox">取消</button>
+        <button type="button" class="enterbossbox" @click="enterbossbox">确定</button>
+      </div>
+    </div>
     <!-- 遮罩 -->
     <div class="zhezhao" @click="closezhezhao"></div>
   </div>
@@ -115,8 +170,8 @@ import BossStore from "../components/BossStore";
 import BossShowAllEarnings from "../components/BossShowAllEarnings";
 // 店铺收入比例信息
 import BossShowStoreMsg from "../components/BossShowStoreMsg";
-// 数据
-var storelist = [
+// 当前登录老板的店铺数据
+var allstorelist = [
   {
     storeId: 1,
     storeImg: require("../assets/images/store1.jpg"),
@@ -223,6 +278,15 @@ var storelist = [
     storePassword: "1291010010"
   }
 ];
+// 当前登录老板的信息
+var admin = {
+  bossName: "李福军",
+  bossSex: "男",
+  bossAddress: "成都市.高新区.天府三街.云华路333号",
+  bossRemark: "老板备注,我是老板我是老板我是老板我是老板。",
+  bossUser: "BOSS",
+  bossPassword: "123123123"
+};
 // -------------------------------------------------------------------------------------------------------
 
 // -------------------------------------------------------------------------------------------------------
@@ -243,7 +307,7 @@ export default {
       showMean: 1,
       //   老板名称
       bossName: "master boss",
-      storelist,
+      storelist: allstorelist,
       // 显示店铺详情弹框的信息
       showstoredetailmsg: {
         storeId: 1,
@@ -259,7 +323,9 @@ export default {
         storeExpend: 9999.0,
         storeUser: "fairy-liyu",
         storePassword: "1291010010"
-      }
+      },
+      // 当前登录老板的信息
+      admin
     };
   },
   methods: {
@@ -377,6 +443,47 @@ export default {
           });
         });
     },
+    // 打开修改个人中心弹窗
+    editadminmsg() {
+      // 遮罩层的显示
+      document.getElementsByClassName("zhezhao")[0].classList.remove("none");
+      document.getElementsByClassName("zhezhao")[0].classList.add("show");
+      // 修改个人中心弹窗的显示
+      // 遮罩层的关闭
+      document.getElementsByClassName("bossbox")[0].classList.remove("none");
+      document.getElementsByClassName("bossbox")[0].classList.add("show");
+    },
+    // 关闭修改个人信息弹窗
+    closebossbox() {
+      // 点击遮罩层一样的效果
+      this.closezhezhao();
+    },
+    // 确认修改个人信息弹窗
+    enterbossbox() {
+      this.$confirm("确定修改信息吗?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          this.$message({
+            type: "success",
+            message: "修改成功!"
+          });
+          // 点击确定过后要进行的操作
+
+          // 与点击遮罩层一样的作用
+          this.closezhezhao();
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消修改"
+          });
+        });
+    },
+    // 退出
+    exitadmin() {},
     /* 
     遮罩层的点击事件
     */
@@ -391,6 +498,10 @@ export default {
       document
         .getElementsByClassName("storedetailbox")[0]
         .classList.add("none");
+
+      // 老板信息弹窗的关闭
+      document.getElementsByClassName("bossbox")[0].classList.remove("show");
+      document.getElementsByClassName("bossbox")[0].classList.add("none");
     }
   }
 };
@@ -414,11 +525,44 @@ export default {
   background: #23262e;
   color: white;
   letter-spacing: 2px;
+  .adminmsgbox {
+    width: 100px;
+    text-align: center;
+    position: absolute;
+    top: 0;
+    right: 20px;
+    .adminedit {
+      transition: all 0.3s;
+      height: 0px;
+      overflow: hidden;
+      opacity: 0;
+      position: absolute;
+      top: 100%;
+      right: 0;
+      a {
+        width: 100px;
+        color: #fff;
+        text-decoration: none;
+        letter-spacing: 2px;
+        line-height: 30px;
+        background: #23262e;
+        display: block;
+        &:hover {
+          color: #ff9a00;
+        }
+      }
+    }
+    &:hover .adminedit {
+      height: 60px;
+      opacity: 1;
+    }
+  }
 }
 // 内容
 .inner {
   // 左侧导航
   .left-nav {
+    border-top: 2px solid #ff9a00;
     min-height: 1000px;
     background: #23262e;
     position: fixed;
@@ -443,9 +587,10 @@ export default {
   }
   // 右侧内容
   .innerbox {
+    min-width: 620px;
     margin-top: 50px;
     margin-left: 200px;
-    min-width: 200px;
+
     // background: lightcoral;
     .newstorebox {
       font-size: 70px;
@@ -595,6 +740,87 @@ export default {
       float: right;
       background: #ff9a00;
       margin-right: 10px;
+    }
+  }
+}
+// 老板信息修改
+.bossbox {
+  display: none;
+  width: 400px;
+  height: 400px;
+  position: fixed;
+  left: 0;
+  top: 0;
+  right: 0;
+  z-index: 999;
+  bottom: 0;
+  margin: auto;
+  background: white;
+  padding: 20px;
+  box-sizing: border-box;
+  box-shadow: 0 0 5px #000;
+  // 里面的标题
+  h3 {
+    text-align: center;
+  }
+  // 里面的关闭弹窗按钮
+  .closebossboxx {
+    position: absolute;
+    top: 0;
+    right: 0;
+    font-size: 20px;
+    color: black;
+    padding: 10px;
+    cursor: pointer;
+  }
+  // 里面没条信息的样式
+  .bossmsgbox {
+    .titlemsg {
+      width: 20%;
+      text-align-last: justify;
+      text-align: justify;
+      text-justify: distribute-all-lines; // 这行必加，兼容ie浏览器
+      display: inline-block;
+    }
+    input[type="text"],
+    input[type="password"] {
+      width: 80%;
+      height: 30px;
+      margin: 5px 0;
+      border: none;
+      box-shadow: 0 0 2px black;
+    }
+    // 老板的备注信息
+    textarea {
+      width: 100%;
+      height: 60px;
+      margin: 5px 0;
+      border: none;
+      box-shadow: 0 0 2px black;
+      text-indent: 10px;
+      resize: none;
+    }
+  }
+  // 确认或者取消按钮
+  .enterorclosebossbox {
+    padding: 10px;
+    width: 100%;
+    button {
+      width: 60px;
+      height: 30px;
+      border: none;
+      outline: none;
+      color: #fff;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .enterbossbox {
+      float: right;
+      background: #ff9a00;
+      margin-right: 10px;
+    }
+    .closebossbox {
+      background: gray;
     }
   }
 }

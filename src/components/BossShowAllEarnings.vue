@@ -18,6 +18,7 @@
 </template>
 
 <script>
+import echarts from "echarts";
 export default {
   name: "bossshowallearnings",
   props: {
@@ -26,76 +27,99 @@ export default {
   data() {
     return {};
   },
-  methods: {},
+  methods: {
+    // 图表内容
+    init() {
+      this.$nextTick(() => {
+        var myChart = echarts.init(document.getElementById("echart"));
+        const option = {
+          tooltip: {
+            trigger: "axis",
+            axisPointer: {
+              // 坐标轴指示器，坐标轴触发有效
+              type: "shadow" // 默认为直线，可选为：'line' | 'shadow'
+            }
+          },
+          legend: {
+            data: ["利润", "支出", "收入"]
+          },
+          grid: {
+            left: "3%",
+            right: "4%",
+            bottom: "3%",
+            containLabel: true
+          },
+          xAxis: [
+            {
+              type: "value"
+            }
+          ],
+          yAxis: [
+            {
+              type: "category",
+              axisTick: { show: false },
+              data: [this.item.storeName]
+            }
+          ],
+          series: [
+            {
+              name: "利润",
+              type: "bar",
+              label: {
+                normal: {
+                  show: true,
+                  position: "inside"
+                }
+              },
+              data: [this.item.storeIncome]
+            },
+            {
+              name: "收入",
+              type: "bar",
+              stack: "总量",
+              label: {
+                normal: {
+                  show: true
+                }
+              },
+              data: [this.item.storeIncome - this.item.storeExpend]
+            },
+            {
+              name: "支出",
+              type: "bar",
+              stack: "总量",
+              label: {
+                normal: {
+                  show: true,
+                  position: "left"
+                }
+              },
+              data: [this.item.storeExpend]
+            }
+          ]
+        };
+        myChart.setOption(option);
+        window.addEventListener("resize",function() {
+          myChart.resize();
+        })
+      });
+    },
+  },
+  // mounted()
   mounted() {
-    var myChart = this.echarts.init(document.getElementById("echart"));
-    myChart.setOption({
-      tooltip: {
-        trigger: "axis",
-        axisPointer: {
-          // 坐标轴指示器，坐标轴触发有效
-          type: "shadow" // 默认为直线，可选为：'line' | 'shadow'
+    // 图标的内容
+    this.init();
+  },
+  // 通过 watch 对图表进行更新
+  watch: {
+    item() {
+      this.$nextTick(() => {
+        if(this.item) {
+          this.init()
         }
-      },
-      legend: {
-        data: ["利润", "支出", "收入"]
-      },
-      grid: {
-        left: "3%",
-        right: "4%",
-        bottom: "3%",
-        containLabel: true
-      },
-      xAxis: [
-        {
-          type: "value"
-        }
-      ],
-      yAxis: [
-        {
-          type: "category",
-          axisTick: { show: false },
-          data: [this.item.storeName]
-        }
-      ],
-      series: [
-        {
-          name: "利润",
-          type: "bar",
-          label: {
-            normal: {
-              show: true,
-              position: "inside"
-            }
-          },
-          data: [this.item.storeIncome]
-        },
-        {
-          name: "收入",
-          type: "bar",
-          stack: "总量",
-          label: {
-            normal: {
-              show: true
-            }
-          },
-          data: [this.item.storeIncome-this.item.storeExpend]
-        },
-        {
-          name: "支出",
-          type: "bar",
-          stack: "总量",
-          label: {
-            normal: {
-              show: true,
-              position: "left"
-            }
-          },
-          data: [this.item.storeExpend]
-        }
-      ]
-    });
-  }
+      })
+    }
+  },
 };
 </script>
 
@@ -130,7 +154,7 @@ export default {
 }
 // echart图
 #echart {
-  width: 600px;
+  width: 900px;
   height: 200px;
 }
 </style>

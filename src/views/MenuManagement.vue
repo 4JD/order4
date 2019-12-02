@@ -18,7 +18,8 @@
         >{{item.foodTypeName}}</option>
       </select>
       <input type="text" placeholder="请输入菜品备注..." class="isaddfoodRemark" />
-      <input type="number" name="isaddfoodprice" class="isaddfoodprice" placeholder="请输入菜品价格..." />
+      <input type="number" name="isaddfoodpricex" class="isaddfoodpricex" placeholder="请输入菜品小份价格..." />
+      <input type="number" name="isaddfoodpriced" class="isaddfoodpriced" placeholder="请输入菜品大份价格..." />
       <el-upload
         class="upload-demo"
         action="https://jsonplaceholder.typicode.com/posts/"
@@ -52,7 +53,8 @@
           :value="item.foodTypeName"
         >{{item.foodTypeName}}</option>
       </select>
-      <input type="number" name="editfoodprice" class="editfoodprice" :value="editFoodMsg.foodLargePrice" />
+      <input type="number" name="editfoodpricex" class="editfoodpricex" :value="editFoodMsg.foodLargePrice" />
+      <input type="number" name="editfoodpriced" class="editfoodpriced" :value="editFoodMsg.foodLargePrice" />
       <input type="text" name="editfoodremark" class="editfoodremark" :value="editFoodMsg.foodRemark" />
       菜品图片:
       <br />
@@ -569,7 +571,7 @@ export default {
 // 总体
 .app-MenuManagement {
   text-align: left;
-  min-width: 400px;
+  min-width: 620px;
 }
 // 菜品标签的添加与删除部分
 .menutag {
@@ -785,7 +787,7 @@ export default {
   padding: 20px;
   box-sizing: border-box;
   width: 400px;
-  height: 420px;
+  height: 450px;
   box-shadow: 0 0 5px #000;
   position: fixed;
   left: 0;
@@ -857,7 +859,7 @@ export default {
   padding: 20px;
   box-sizing: border-box;
   width: 400px;
-  height: 420px;
+  height: 450px;
   box-shadow: 0 0 5px #000;
   position: fixed;
   left: 0;
