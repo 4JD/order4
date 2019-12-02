@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="finacial-list">
     <el-row>
       <el-col :span="24">
         <h2>当前收益额</h2>
@@ -185,6 +185,9 @@ export default {
 
 <style lang="less">
 @import '../assets/css/base.less';
+.finacial-list {
+  text-align:center;
+}
 
 ul li {
   height: 40px;

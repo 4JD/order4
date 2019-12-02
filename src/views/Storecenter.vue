@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="centerStore">
     <el-row>
       <el-col :span="24">
         <h2>风采展示</h2>
@@ -53,6 +53,9 @@ export default {
 <style lang="less" >
 @import '../assets/css/base.less';
 
+.centerStore {
+  text-align:center;
+}
 .el-row {
   width: 90%;
   margin: 2% auto;
