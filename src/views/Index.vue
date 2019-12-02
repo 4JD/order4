@@ -1,14 +1,15 @@
 <template>
   <div class="index">
+    <h1>点餐</h1>
     <!-- 左侧导航 -->
     <div class="index-nav">
       <ul>
-        <li  v-for="(item,index) in currentFoodType('')" :key="index" @click="chooseType(item.typeId)">{{item.typeName}}</li>
+        <li class="typeList" :class="activeClass == index ? 'active':''" v-for="(item,index) in currentFoodType('')" :key="index" @click="chooseType(item.typeId); getItem(index)">{{item.typeName}}</li>
       </ul>
 
       <div class="navBottom">
         <router-link to="/orderdetail">
-          <button type="button" class="BtnStyle"> 前往付款{{count}} >></button>
+          <button type="button" class="BtnStyle"> 前往付款 >></button>
         </router-link>
       </div>
     </div>
@@ -24,7 +25,7 @@
           <div class="index-items-img">
             <img alt="Vue logo" :src="item.photourl" />
           </div>
-          <div>
+          <div class="underImg">
             <h3>{{item.foodName}}</h3>
             <p>
               <span>{{item.price}}</span>元
@@ -80,7 +81,8 @@ export default {
       searchfoodType: "",
       drawer: false,
       item1: {},
-      newIndex: 1
+      newIndex: 1,
+      activeClass: 0
     };
   },
   computed: {
@@ -89,9 +91,6 @@ export default {
   },
   created() {
     this.getFoodItemsSync(), this.getFoodTypeSync();
-  },
-  beforeMount(){
-    console.log("acbd",this.count)
   },
   methods: {
     ...mapActions(["getFoodItemsSync", "getFoodTypeSync"]),
@@ -122,6 +121,9 @@ export default {
     },
     chooseType(e){
       this.newIndex = e
+    },
+    getItem(index){
+      this.activeClass = index;
     }
   }
 };
@@ -134,11 +136,27 @@ ul li {
   list-style: none;
 }
 
+.active{
+  color: #fff;
+  font-size: 18px;
+}
+
+.index{
+  h1{
+    margin-left: 200px;
+    margin-top: 20px;
+  }
+}
+
 .index-nav {
   width: 100px;
-  position: fixed;
-  top: 50px;
-  left: 0;
+  float: left;
+  margin-top: 40px;
+
+  .typeList:hover{
+    background: #bb6a0e;
+    cursor: pointer;
+  }
 
   button{
     color: #dd0000;
@@ -150,13 +168,15 @@ ul li {
   li {
     width: 100px;
     height: 60px;
-    background: #cacaca;
+    background: @BtnColor;
     line-height: 60px;
     text-align: center;
+    border: 1px solid #d18733;
   }
 }
 
 .index-main {
+  margin-top: 30px;
   margin-left: 170px;
   display: flex;
   flex-wrap: wrap;
@@ -169,6 +189,7 @@ ul li {
   justify-content: space-around;
   align-items: center;
   border: 1px solid @BtnColor;
+  line-height: 40px;
 }
 .forsure-btn {
   display: flex;
@@ -183,6 +204,8 @@ ul li {
   outline: none;
   border-radius: 50%;
   color: #fff;
+  line-height: 25px;
+  cursor: pointer;
 }
 .count-btn button:hover {
   box-shadow: 0 0 5px gray;
@@ -196,13 +219,18 @@ ul li {
   text-align: center;
   padding: 10px 0;
   float: left;
-  margin-top: 10px;
-  margin-left: 10px;
+
+  .underImg{
+    line-height: 40px;
+  }
 
   span {
     color: #dd0000;
     font-size: 20px;
   }
+}
+.index-item-box:hover{
+  box-shadow: 0 0 7px gray;
 }
 
 .index-items-img img {
@@ -211,6 +239,8 @@ ul li {
 }
 
 .index-item-box {
+  margin-left: 10px;
+  margin-top: 10px;
   /* padding: 0 10px; */
   overflow: hidden;
   /* display: flex;

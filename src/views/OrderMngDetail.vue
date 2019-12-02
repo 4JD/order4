@@ -42,9 +42,13 @@
 
 <script>
 // import HelloWorld from '@/components/HelloWorld.vue'
+/* import { mapState, mapMutations } from "vuex"; */
 
 export default {
   name: "orderDetail",
+  data(){
+
+  },
   components: {
     // HelloWorld
   }

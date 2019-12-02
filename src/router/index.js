@@ -53,11 +53,6 @@ const routes = [
     name: 'orderMngDetail',
     component: () => import('../views/OrderMngDetail.vue')
   },
-  {
-    path: '/oderUserDetail',
-    name: 'oderUserDetail',
-    component: () => import('../views/OderUserDetail.vue')
-  },
   
   // 李钰路由
   {

@@ -1,14 +1,16 @@
 <template>
   <div class="orderDetail">
     <h1>支付</h1>
-    <div class="edx">
-      <p>2019-10-16 11:45:32</p>
-    </div>
-    <div class="edx">
-      <p>
-        订单号:{{count}}
-        <span>1515165145</span>
-      </p>
+    <div class="timord">
+      <div class="edx">
+        <p>2019-10-16 11:45:32</p>
+      </div>
+      <div class="edx">
+        <p>
+          订单号:
+          <span>1515165145</span>
+        </p>
+      </div>
     </div>
 
     <div class="ordered-mng">
@@ -23,14 +25,17 @@
           <div>
             <img alt="Vue logo" src="../assets/logo.png" />
           </div>
-          <div>
+          <div class="lineH">
             <h3>{{item.foodName}}</h3>
             <p>
               <span>12</span>号桌
             </p>
           </div>
-          <div>
-            <p>数量：<span>{{item.count}}</span></p>
+          <div class="lineH">
+            <p>
+              数量：
+              <span>{{item.count}}</span>
+            </p>
             <p>
               <span>{{item.count * item.price}}</span> 元
             </p>
@@ -39,12 +44,12 @@
       </div>
     </div>
 
-
     <!-- 确认付款 -->
     <div class="pay-btn">
       <div>
         <p>
-          合计：<span>{{countNum}}</span>
+          合计：
+          <span>{{countNum}}</span> 元
         </p>
       </div>
       <div>
@@ -56,31 +61,30 @@
 
 <script>
 // import HelloWorld from '@/components/HelloWorld.vue'
-import {  mapState} from "vuex";
+import { mapState, mapMutations } from "vuex";
 
 export default {
   name: "orderDetail",
-  data(){
-    return{
-      arr:[0],
-    
-    }
+  data() {
+    return {
+      arr: [0]
+    };
   },
   components: {
     // HelloWorld
   },
   computed: {
-    ...mapState(["count"]),
     ...mapState(["shoppingCar"]),
-    countNum(){
+    countNum() {
       var d = 0;
-      this.shoppingCar.forEach((item) => {
-        d += item.count * item.price
-      })
-      return d
+      this.shoppingCar.forEach(item => {
+        d += item.count * item.price;
+      });
+      return d;
     }
   },
   methods: {
+    ...mapMutations(["delOrderN","addOrderMng"]),
     /* 删除 */
     delOrder() {
       this.$confirm("确认删除?", "提示", {
@@ -89,6 +93,8 @@ export default {
         type: "warning"
       })
         .then(() => {
+          this.delOrderN(this.item)
+          console.log("删除", this.item)
           this.$message({
             type: "success",
             message: "删除成功"
@@ -100,10 +106,12 @@ export default {
             message: "取消删除"
           });
         });
+    },
+    /* 付款 */
+    payBtn(){
+      this.addOrderMng(this.item)
+      console.log("加入",this.item)
     }
-  },
-  created(){
-    console.log(this.shoppingCar)
   }
 };
 </script>
@@ -112,10 +120,22 @@ export default {
 @import "../assets/css/base.less";
 
 .orderDetail {
-  h1 ,
-  .edx{
+  h1,
+  .edx {
     margin-left: 10%;
   }
+}
+
+.timord{
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-left: 10%;
+  margin-top: 10px;
+  border: 1px solid #d4d4d4;
+  width: 80%;
+  background: #e5e5e5;
+  height: 50px;
 }
 
 .ordered-mng {
@@ -129,6 +149,7 @@ export default {
   width: 80%;
   text-align: center;
   border: 1px solid #d4d4d4;
+  margin-top: 20px;
 
   .item-top {
     background: #f1f1f1;
@@ -159,6 +180,10 @@ export default {
   height: 100px;
 }
 
+.lineH{
+  line-height: 30px;
+}
+
 .pay-btn {
   display: flex;
   justify-content: space-around;
@@ -168,5 +193,6 @@ export default {
   border: 1px solid #d4d4d4;
   width: 80%;
   background: #e5e5e5;
+  height: 50px;
 }
 </style>

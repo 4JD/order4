@@ -111,12 +111,11 @@ const foodType = [
 
 /* 主页 &订单 */
 export default new Vuex.Store({
-  /* 主页 &订单 */
   state: {
     foodItems: [],
     foodType: [],
-    count:5,
     shoppingCar: [],
+    orderMng: []
   },
   getters: {
     currentFoodItems: (state) => (s) => {
@@ -140,6 +139,13 @@ export default new Vuex.Store({
     /* 添加购物车 */
     addOrder(state,n){
       state.shoppingCar.push(n)
+    },
+    delOrderN(state,n){
+      state.shoppingCar.slice(n,1)
+    },
+    /* 加入历史订单 */
+    addOrderMng(state,n){
+      state.orderMng.push(n)
     }
   },
   actions: {
