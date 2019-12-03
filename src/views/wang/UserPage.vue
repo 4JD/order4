@@ -28,42 +28,45 @@
             <div class="main-left">
 
                 <ul>
-                    <li :class="{on :com===1}" @click="com=1">
+                    <li :class="{on :com==='index'}" @click="com= 'index'">
                         <a href="javascript:;">柜台点餐</a>
                     </li>
 
-                    <li :class="{on:com===2}" @click="com=2">
+                    <li :class="{on:com==='orderMngDetail'}" @click="com='orderMngDetail'">
                         <a href="javascript:;" >
                             历史订单
                         </a>
                     </li>
 
-                    <li :class="{on: com==='3'}" @click="com=3">
+                    <li :class="{on: com==='menuManagement'}" @click="com='menuManagement'">
                         <a href="javascript:;" >
                             菜品管理
                         </a>
                     </li>
 
-                    <li :class="{on: com===''}" @click="second=!second">
+                    <li  @click="second=!second">
                         <a href="javascript:;" >
                             财务管理 <img  src="" alt="图标"></a>
                     </li>
 
-                    <li class="second" v-show="second"  @click="com=''">
+                    <li class="second" v-show="second" :class="{on: com==='payment'}"  @click="com='payment'">
                         <a href="javascript:;" >支出</a>
                     </li>
 
-                    <li class="second" v-show="second"  @click="com=''">
+                    <li class="second" v-show="second" :class="{on: com==='inCome'}"  @click="com='inCome'">
                         <a href="javascript:;" >收入</a>
                     </li>
 
-                    <li class="second"  v-show="second"  @click="com=''">
+                    <li class="second"  v-show="second" :class="{on: com==='Financial'}"  @click="com='Financial'">
                         <a href="javascript:;" >盈利</a>
                     </li>
 
-                    <li  @click="com=7"  :class="{on: com===7}">
+                    <li  @click="com='worker'"  :class="{on: com==='worker'}" >
                         <a href="javascript:;"> 员工管理</a></li>
                 </ul>
+
+
+
             </div>
             <div class="main-right">
 
@@ -82,16 +85,33 @@
 
 <script>
     import income from "../Income"
+    import  index from  "../Index"
+    import  orderMngDetail from "../OrderMngDetail"
+    import  worker from  "../Worker"
+    import  menuManagement from  "../MenuManagement"
+    import payment from "../Payment"
+    import  inCome from "../Income"
+    import   Financial from  "../Financial"
+
 
   export default {
     name: "UserPage",
     components: {
-      income
+      income,
+      index,
+      worker,
+      orderMngDetail,
+      menuManagement,
+      payment,
+      inCome,
+      Financial
     },
     data() {
       return {
         com: '',
         second:false,
+        secondColor:""
+
 
 
       }
@@ -99,7 +119,12 @@
     methods:{
       quit(){
         this.$router.replace("/login")
+      },  handleOpen(key, keyPath) {
+        console.log(key, keyPath);
       },
+      handleClose(key, keyPath) {
+        console.log(key, keyPath);
+      }
     }
   }
 </script>

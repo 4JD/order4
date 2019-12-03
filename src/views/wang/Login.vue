@@ -34,7 +34,7 @@
                             </div>
 
                             <div class="bottom">
-                                <input type="button" value="登录"  @click="login">
+                                <input type="button" value="登录"  @click="getLogin">
                             </div>
                             <p class="dibu">
                                 <a  href="/ForgetPass" >忘记密码</a>
@@ -72,7 +72,6 @@
       },
       methods:{
 
-
           getLogin(){
             if (this.username==1&&this.password==1){
               console.log("登录成功")
@@ -93,14 +92,14 @@
 
               this.axios.post("/login",{
                 //传递的参数
-                userName:this.username,
+                userTel:this.username,
                 userPassword: this.password
               }).
               then((res)=>{
-                console.log(res.data)
+                console.log(res.data);
 
-                if (res.data.state==1){
-                  var token = res.data.token;
+                if (res.data.code==200){
+                  var token = res.data.data;
                     sessionStorage.setItem("token", token);
                     sessionStorage.setItem("telNumber", this.username);
                     if (res.data.role==1){
@@ -111,7 +110,7 @@
                       this.$router.replace("/home3")
                     }
 
-                } else if (res.data.state==2){
+                } else if (res.data.code==1001||res.data.code==1002){
 
                   this.errText=true;
                   this.errCont="账号密码错误";
