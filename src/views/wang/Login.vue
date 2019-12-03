@@ -104,33 +104,42 @@
 
                   // var userId=res.data.
                     sessionStorage.setItem("token", token);
-                    sessionStorage.setItem("userName", this.username);
-                    sessionStorage.setItem("userId", this.userId);
-                  var url = this.$route.query.redirect;
-                    url = url ? url : "/";
-                    this.$router.replace(url)
-                    if (res.data.role==1){
-                      this.$router.replace("/home1")
-                    }
+
+
 
                 } else if (res.data.code==1001||res.data.code==1002){
-
                   this.errText=true;
                   this.errCont="账号密码错误";
                   setTimeout(()=>{
                     this.errText=false;
                   },2000)
                 }
-                // if (res.data.state){
-                //   var token = res.data.token;
-                //   sessionStorage.setItem("token", token);
-                //   var url = this.$route.query.redirect;
-                //   url = url ? url : "/";
-                //   this.$router.replace(url)
-                // }else {
-                //     console.log("登录失败")
+
+                return token
+
+              })
+                .then((token)=>{
+                  this.axios.get("/getMenu",{
+                    params:{
+                      token
+                    }
+                  })
+                }).then((res)=>{
+                  window.console.log(res)
+                // sessionStorage.setItem("userId", res.userId);
+                // sessionStorage.setItem("userName", res.username);
+
+
+
+                // var url = this.$route.query.redirect;
+                // url = url ? url : "/";
+                // this.$router.replace(url);
+                // if (res.data.role==1){
+                //   this.$router.replace("/home1")
                 // }
-              }).catch(err=>{
+
+              })
+                .catch(err=>{
                 console.log(err)
               });
 

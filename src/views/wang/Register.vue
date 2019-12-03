@@ -35,7 +35,7 @@
                                     <input type="text"   style="width: 60%" placeholder="请输入验证码" v-model="yanzheng" maxlength="4">
                                 </label>
 
-                                <button class="yz-btn" @click="yanzhengma">获取验证码</button>
+                                <button type="button" class="yz-btn" @click="yanzhengma">获取验证码</button>
                             </div>
 
                             <div class="icon1">
@@ -173,10 +173,10 @@
               this.errText=false;
             },2000)
           }else {
-            this.axios.post("/yanzheng",{
+            this.axios.post("/sendMessage",{
               userTel:this.usertel
-            }).then(()=>{
-
+            }).then((res)=>{
+              window.console.log(res.data)
             })
           }
         }

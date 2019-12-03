@@ -1,156 +1,213 @@
 <template>
-    <div class="box">
-        <fieldset class="layui-elem-field site-demo-button" style="margin-top: 30px;">
-            <legend>店铺收益</legend>
-
-        <el-table
-                :data="tableData"
-                border
-                style="width: 100%">
-            <el-table-column
-                    prop="date"
-                    label="日期"
-                    width="180">
-            </el-table-column>
-            <el-table-column
-                    prop="name"
-                    label="姓名"
-                    width="180">
-            </el-table-column>
-            <el-table-column
-                    prop="address"
-                    label="地址">
-            </el-table-column>
-        </el-table>
-
-            <el-pagination
-                    background
-                    layout="prev, pager, next"
-                    :total="1000">
-            </el-pagination>
-
-        </fieldset>
-
-        <fieldset class="layui-elem-field site-demo-button" style="margin-top: 30px;">
-            <legend>二维码收益</legend>
-
+    <div class="main">
+        <div class="box">
             <el-table
                     :data="tableData"
                     border
                     style="width: 100%">
                 <el-table-column
+                        fixed
                         prop="date"
                         label="日期"
-                        width="180">
+                        width="150">
                 </el-table-column>
                 <el-table-column
                         prop="name"
                         label="姓名"
-                        width="180">
+                        width="120">
+                </el-table-column>
+                <el-table-column
+                        prop="province"
+                        label="省份"
+                        width="120">
+                </el-table-column>
+                <el-table-column
+                        prop="city"
+                        label="市区"
+                        width="120">
                 </el-table-column>
                 <el-table-column
                         prop="address"
-                        label="地址">
+                        label="地址"
+                        width="300">
+                </el-table-column>
+                <el-table-column
+                        prop="zip"
+                        label="邮编"
+                        width="120">
+                </el-table-column>
+                <el-table-column
+                        fixed="right"
+                        label="操作"
+                        width="100">
+                    <template slot-scope="scope">
+                        <el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>
+                        <el-button type="text" size="small">编辑</el-button>
+                    </template>
                 </el-table-column>
             </el-table>
-
-
-            <el-pagination
-                    background
-                    layout="prev, pager, next"
-                    :total="1000">
-            </el-pagination>
-        </fieldset>
-
-
-        <fieldset class="layui-elem-field site-demo-button" style="margin-top: 30px;">
-            <legend>利润</legend>
-
-            <el-table
-                    :data="tableData"
-                    border
-                    style="width: 100%">
-                <el-table-column
-                        prop="date"
-                        label="日期"
-                        width="180">
-                </el-table-column>
-                <el-table-column
-                        prop="name"
-                        label="姓名"
-                        width="180">
-                </el-table-column>
-                <el-table-column
-                        prop="address"
-                        label="地址">
-                </el-table-column>
-            </el-table>
-
-            <el-pagination
-                    background
-                    layout="prev, pager, next"
-                    :total="1000">
-            </el-pagination>
-        </fieldset>
+        </div>
+<!--        <div class="box">-->
+<!--            <el-table-->
+<!--                    :data="tableData"-->
+<!--                    border-->
+<!--                    style="width: 100%">-->
+<!--                <el-table-column-->
+<!--                        fixed-->
+<!--                        prop="date"-->
+<!--                        label="日期"-->
+<!--                        width="150">-->
+<!--                </el-table-column>-->
+<!--                <el-table-column-->
+<!--                        prop="name"-->
+<!--                        label="姓名"-->
+<!--                        width="120">-->
+<!--                </el-table-column>-->
+<!--                <el-table-column-->
+<!--                        prop="province"-->
+<!--                        label="省份"-->
+<!--                        width="120">-->
+<!--                </el-table-column>-->
+<!--                <el-table-column-->
+<!--                        prop="city"-->
+<!--                        label="市区"-->
+<!--                        width="120">-->
+<!--                </el-table-column>-->
+<!--                <el-table-column-->
+<!--                        prop="address"-->
+<!--                        label="地址"-->
+<!--                        width="300">-->
+<!--                </el-table-column>-->
+<!--                <el-table-column-->
+<!--                        prop="zip"-->
+<!--                        label="邮编"-->
+<!--                        width="120">-->
+<!--                </el-table-column>-->
+<!--                <el-table-column-->
+<!--                        fixed="right"-->
+<!--                        label="操作"-->
+<!--                        width="100">-->
+<!--                    <template slot-scope="scope">-->
+<!--                        <el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>-->
+<!--                        <el-button type="text" size="small">编辑</el-button>-->
+<!--                    </template>-->
+<!--                </el-table-column>-->
+<!--            </el-table>-->
+<!--        </div>-->
+<!--        <div class="box">-->
+<!--            <el-table-->
+<!--                    :data="tableData"-->
+<!--                    border-->
+<!--                    style="width: 100%">-->
+<!--                <el-table-column-->
+<!--                        fixed-->
+<!--                        prop="date"-->
+<!--                        label="日期"-->
+<!--                        width="150">-->
+<!--                </el-table-column>-->
+<!--                <el-table-column-->
+<!--                        prop="name"-->
+<!--                        label="姓名"-->
+<!--                        width="120">-->
+<!--                </el-table-column>-->
+<!--                <el-table-column-->
+<!--                        prop="province"-->
+<!--                        label="省份"-->
+<!--                        width="120">-->
+<!--                </el-table-column>-->
+<!--                <el-table-column-->
+<!--                        prop="city"-->
+<!--                        label="市区"-->
+<!--                        width="120">-->
+<!--                </el-table-column>-->
+<!--                <el-table-column-->
+<!--                        prop="address"-->
+<!--                        label="地址"-->
+<!--                        width="300">-->
+<!--                </el-table-column>-->
+<!--                <el-table-column-->
+<!--                        prop="zip"-->
+<!--                        label="邮编"-->
+<!--                        width="120">-->
+<!--                </el-table-column>-->
+<!--                <el-table-column-->
+<!--                        fixed="right"-->
+<!--                        label="操作"-->
+<!--                        width="100">-->
+<!--                    <template slot-scope="scope">-->
+<!--                        <el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>-->
+<!--                        <el-button type="text" size="small">编辑</el-button>-->
+<!--                    </template>-->
+<!--                </el-table-column>-->
+<!--            </el-table>-->
+<!--        </div>-->
     </div>
+
+
+
+
 </template>
 
 
 <script>
-
-
-
   export default {
-    name: "Administrators",
-    components: {
-
-
+    methods: {
+      handleClick(row) {
+        console.log(row);
+      }
     },
+
     data() {
       return {
         tableData: [{
           date: '2016-05-02',
           name: '王小虎',
-          address: '上海市普陀区金沙江路 1518 弄'
+          province: '上海',
+          city: '普陀区',
+          address: '上海市普陀区金沙江路 1518 弄',
+          zip: 200333
         }, {
           date: '2016-05-04',
           name: '王小虎',
-          address: '上海市普陀区金沙江路 1517 弄'
+          province: '上海',
+          city: '普陀区',
+          address: '上海市普陀区金沙江路 1517 弄',
+          zip: 200333
         }, {
           date: '2016-05-01',
           name: '王小虎',
-          address: '上海市普陀区金沙江路 1519 弄'
+          province: '上海',
+          city: '普陀区',
+          address: '上海市普陀区金沙江路 1519 弄',
+          zip: 200333
         }, {
           date: '2016-05-03',
           name: '王小虎',
-          address: '上海市普陀区金沙江路 1516 弄'
+          province: '上海',
+          city: '普陀区',
+          address: '上海市普陀区金沙江路 1516 弄',
+          zip: 200333
         }]
-
       }
-    },
+    }
   }
 </script>
 
 
 <style scoped lang="less">
 
+    .main{
+        width: 1200px;
+        margin: 0 auto;
+    }
     .box{
-        width: 800px;
+        width: 1040px;
         margin-left: 10px;
-    }
-    legend{
-        font-size: 30px;
-        margin-left: 30px;
-    }
-    .el-table{
-        margin-bottom: 20px;
-
-    }
-
-    fieldset{
         margin-bottom: 30px;
-        padding: 30px;
+    }
 
+    .el-table-column{
+        width: 200px;
     }
 
 </style>
