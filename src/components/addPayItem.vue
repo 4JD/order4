@@ -30,7 +30,7 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="returnpay">取 消</el-button>
-        <el-button type="primary" @click="addPay">确 定</el-button>
+        <el-button type="primary" @click="addPay('ruleForm')">确 定</el-button>
       </div>
     </el-dialog>
   </div>
@@ -71,7 +71,7 @@ export default {
       this.ruleForm.price='',
       this.ruleForm.remark= ''
     },
-    addPay () {
+    addPay (formName) {
       this.dialogFormVisible = false;
         //   this.axios.post('/user/addPay',{
         //     payType: this.ruleForm.type,
@@ -87,13 +87,21 @@ export default {
         // .catch(err => {
         //   console.log(err);
         // })
-      this.$emit('add',{
-        payType: this.ruleForm.type,
-        payUser: this.ruleForm.name,
-        payPrice: this.ruleForm.price,
-        remark: this.ruleForm.remark,
-        date: formatDate(new Date(), 'yyyy-MM-dd hh:mm:ss')
-      });
+         this.$refs[formName].validate((valid) => {
+          if (valid) {
+               this.$emit('add',{
+                payType: this.ruleForm.type,
+                payUser: this.ruleForm.name,
+                payPrice: this.ruleForm.price,
+                remark: this.ruleForm.remark,
+                date: formatDate(new Date(), 'yyyy-MM-dd hh:mm:ss')
+              });
+          } else {
+            console.log('error submit!!');
+            return false;
+          }
+        });
+   
      
       this.ruleForm.type='工资',
       this.ruleForm.name='张三',

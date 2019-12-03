@@ -91,18 +91,16 @@ export default {
       pay: "今日",
       profit: "今日",
       income: "今日",
-      payPrice:'',
-      profitPrice:'',
-      incomePrice:''
+      payPrice: "",
+      profitPrice: "",
+      incomePrice: ""
     };
   },
-  created () {
+  created() {
     //   this.axios.get('/user/getProfit',{
-
     //   })
     // .then(res=> {
     //   console.log('获取支出信息：',res,data);
-     
     // })
     // .catch(err => {
     //   console.log(err);
@@ -110,45 +108,47 @@ export default {
   },
   methods: {
     getDate() {
-      this.pay = formatDate(this.value1, "yyyy-MM-dd");
-      this.profit = formatDate(this.value1, "yyyy-MM-dd");
-      this.income = formatDate(this.value1, "yyyy-MM-dd");
+      if (this.value1 != "") {
+        this.pay = formatDate(this.value1, "yyyy-MM-dd");
+        this.profit = formatDate(this.value1, "yyyy-MM-dd");
+        this.income = formatDate(this.value1, "yyyy-MM-dd");
+      }
     },
     open() {
-      
-        //   this.axios.get('/user/getProfit',{
-        //     checkPaytime1:formatDate(this.value2, "yyyy-MM-dd"),
-        // })
-        // .then(res=> {
-        //   console.log('获取支出信息：',res,data);
-        //  
-        // })
-        // .catch(err => {
-        //   console.log(err);
-        // })
-      this.$alert(
-        "这是一段内容",
-        formatDate(this.value2, "yyyy-MM") + "月的收益",
-        {
-          confirmButtonText: "确定",
-         
-          
-        }
-      );
+      if (this.value2 != "") {
+        var currentMon = formatDate(this.value2, "yyyy-MM");
+        this.$alert("这是一段内容", currentMon + "月的收益", {
+          confirmButtonText: "确定"
+        });
+      }
+
+      //   this.axios.get('/user/getProfit',{
+      //     checkPaytime1:formatDate(this.value2, "yyyy-MM-dd"),
+      // })
+      // .then(res=> {
+      //   console.log('获取支出信息：',res,data);
+      //
+      // })
+      // .catch(err => {
+      //   console.log(err);
+      // })
     },
     getMon() {
-      console.log(formatDate(this.value1, "yyyy-MM-dd"));
-      
-        //   this.axios.get('/user/getProfit',{
-        //     checkPaytime1:formatDate(this.value1, "yyyy-MM-dd"),
-        // })
-        // .then(res=> {
-        //   console.log('获取支出信息：',res,data);
-        //  
-        // })
-        // .catch(err => {
-        //   console.log(err);
-        // })
+      if (this.value1 != "") {
+        console.log(formatDate(this.value1, "yyyy-MM-dd hh:mm:ss"));
+        console.log(formatDate(this.value1, "yyyy-MM-dd 23:59:59"));
+      }
+
+      //   this.axios.get('/user/getProfit',{
+      //     checkPaytime1:formatDate(this.value1, "yyyy-MM-dd"),
+      // })
+      // .then(res=> {
+      //   console.log('获取支出信息：',res,data);
+      //
+      // })
+      // .catch(err => {
+      //   console.log(err);
+      // })
     }
   },
   mounted() {
@@ -160,19 +160,25 @@ export default {
     myChart.setOption({
       tooltip: {},
       xAxis: {
-        data: [(dateXAis-5)+'月', (dateXAis-4)+'月', (dateXAis-3)+'月', (dateXAis-2)+'月', (dateXAis-1)+'月', dateXAis+'月']
+        data: [
+          dateXAis - 5 + "月",
+          dateXAis - 4 + "月",
+          dateXAis - 3 + "月",
+          dateXAis - 2 + "月",
+          dateXAis - 1 + "月",
+          dateXAis + "月"
+        ]
       },
       yAxis: {},
       series: [
         {
-          name: "销量",
+          name: "利润",
           type: "bar",
-          data: [5, 20, 36, 10, 10, 20, 30]
+          data: [5, 20, 96, 10, 10, 20, 30]
         }
       ]
     });
   },
-
 
   filters: {
     formatDate(time) {
@@ -184,9 +190,14 @@ export default {
 </script>
 
 <style lang="less">
-@import '../assets/css/base.less';
+@import "../assets/css/base.less";
+@import "../assets/css/resize.css";
+
 .finacial-list {
-  text-align:center;
+  text-align: center;
+  h2 {
+    margin-top: 30px;
+  }
 }
 
 ul li {
@@ -228,12 +239,12 @@ ul li {
   width: 90%;
   margin: 2% auto;
 }
-.el-button{
-  background:  #ff9a00;
-  border-color:#ff9a00;
+.el-button {
+  background: #ff9a00;
+  border-color: #ff9a00;
 }
-.el-button:hover{
-  background:  #ec9005;
-  border-color:#ec9005;
+.el-button:hover {
+  background: #ec9005;
+  border-color: #ec9005;
 }
 </style>

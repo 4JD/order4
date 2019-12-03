@@ -52,7 +52,11 @@ export default {
 
 <style lang="less" >
 @import '../assets/css/base.less';
+@import '../assets/css/resize.css';
 
+h2 {
+  margin: 20px;
+}
 .centerStore {
   text-align:center;
 }
