@@ -9,6 +9,7 @@
           {{admin.bossUser}}
           <div class="adminedit">
             <a href="javascript:;" @click="editadminmsg">修改信息</a>
+            <a href="javascript:;" @click="editadminpassword">修改密码</a>
             <a href="javascript:;" @click="exitadmin">退出</a>
           </div>
         </div>
@@ -43,6 +44,7 @@
               :key="index"
               class="storebox"
               @delStoreC="delStore"
+              @residepassword="residepassword"
               @showStoreMsg="showStoreMsg"
             ></BossStore>
 
@@ -77,6 +79,7 @@
         </el-main>
       </el-container>
     </el-container>
+    <!--  -->
     <!-- 店铺详细信息 -->
     <div class="storedetailbox">
       <span class="closestoredetailbox" @click="closestoredetailbox">
@@ -90,22 +93,24 @@
         名 &nbsp;&nbsp; 称:
         <input type="text" v-model="showstoredetailmsg.storeName" />
         <br />账 &nbsp;&nbsp; 号:
-        <input type="text" v-model="showstoredetailmsg.storeUser" />
-        <br />密 &nbsp;&nbsp; 码:
-        <input type="password" v-model="showstoredetailmsg.storePassword" />
+        <input type="text" v-model="showstoredetailmsg.storeUser" disabled />
+        <br />联系方式:
+        <input type="text" v-model="showstoredetailmsg.storeLinkTel" />
       </div>
       <div class="elsemsg">
-        <br />负 责 人:
-        <input type="text" v-model="showstoredetailmsg.storeLinkPople" />
-        联系方式:
-        <input type="text" v-model="showstoredetailmsg.storeLinkTel" />
         <br />营 业 段:
         <input type="hour" v-model="showstoredetailmsg.storeHour" />
         主营食品:
         <input type="text" v-model="showstoredetailmsg.storeMainType" />
         <br />地 &nbsp;&nbsp; 址:
         <input type="address" v-model="showstoredetailmsg.storeAddress" />
-        <br />
+        <br />店铺简介:
+        <textarea
+          class="storeremark"
+          cols="30"
+          rows="10"
+          v-model="showstoredetailmsg.storeRemark"
+        ></textarea>
       </div>
       <div class="closeorenter">
         <button type="button" class="closestoredetail" @click="closestoredetailbox">取消</button>
@@ -120,12 +125,12 @@
       <h3>个人信息</h3>
       <div class="bossmsgbox">
         <span class="titlemsg">用户名：</span>
-        <input type="text" class="adminuser" v-model="admin.bossUser" />
+        <input type="text" class="adminuser" v-model="admin.bossUser" disabled />
       </div>
-      <div class="bossmsgbox">
+      <!-- <div class="bossmsgbox">
         <span class="titlemsg">密码：</span>
         <input type="password" class="adminpassword" v-model="admin.bossPassword" />
-      </div>
+      </div>-->
       <div class="bossmsgbox">
         <span class="titlemsg">姓名：</span>
         <input type="text" class="adminname" v-model="admin.bossName" />
@@ -158,6 +163,62 @@
         <button type="button" class="enterbossbox" @click="enterbossbox">确定</button>
       </div>
     </div>
+    <!-- 修改密码弹框 -->
+    <div class="editpasswordbox">
+      <h3>修改密码</h3>
+      <!-- 关闭按钮 -->
+      <span class="closeeditpasswordboxx" @click="closeeditpasswordbox">
+        <i class="el-icon-close"></i>
+      </span>
+      <div class="editmsgbox">
+        <span>当前密码：</span>
+        <input type="password" class="nowpassword" />
+      </div>
+      <div class="editmsgbox">
+        <span>新密码：</span>
+        <input type="password" class="newpassword" />
+      </div>
+      <div class="enterorcloseeditpasswordbox">
+        <button type="button" class="closeeditpasswordbox" @click="closeeditpasswordbox">取消</button>
+        <button type="button" class="entereditpasswordbox" @click="entereditpasswordbox">确认</button>
+      </div>
+    </div>
+    <!-- 新增店铺 -->
+    <div class="newstroeboxs">
+      <h3>新增店铺</h3>
+      <!-- 关闭按钮 -->
+      <span class="closenewstroeboxx" @click="closenewstroebox">
+        <i class="el-icon-close"></i>
+      </span>
+      <div class="newstroemsg">
+        <span>店铺名：</span>
+        <input type="text" placeholder="请输入店铺名..." class="newstorename" />
+      </div>
+      <div class="newstroemsg">
+        <span>手机号：</span>
+        <input type="text" placeholder="请输入负责人手机号.." class="newstoretel" />
+      </div>
+      <div class="newstroemsg">
+        <span>密码：</span>
+        <input type="password" class="newstorepassword1" />
+      </div>
+      <div class="newstroemsg">
+        <span>确认密码：</span>
+        <input type="password" class="newstorepassword2" />
+      </div>
+      <div class="newstroemsg">
+        <span>店铺地址：</span>
+        <input type="text" placeholder="请输入店铺地址..." class="newstoreaddress" />
+      </div>
+      <div class="newstroemsg">
+        <span>店铺简介：</span>
+        <textarea cols="30" rows="10" placeholder="请输入店铺简介..." class="newstoreremark"></textarea>
+      </div>
+      <div class="enterorclosenewstroebox">
+        <button type="button" class="closenewstroebox" @click="closenewstroebox">取消</button>
+        <button type="button" class="enternewstroebox" @click="enternewstroebox">确认</button>
+      </div>
+    </div>
     <!-- 遮罩 -->
     <div class="zhezhao" @click="closezhezhao"></div>
   </div>
@@ -182,6 +243,7 @@ var allstorelist = [
     storeLinkTel: "19191891881",
     storeHour: "9:00-23:00",
     storeMainType: "面食品",
+    codeName: 12,
     storeIncome: 999.0,
     storeExpend: -199.0,
     storeUser: "fairy-liyu",
@@ -197,6 +259,7 @@ var allstorelist = [
     storeLinkTel: "19191891881",
     storeHour: "9:00-23:00",
     storeMainType: "面食品",
+    codeName: 12,
     storeIncome: 999.0,
     storeExpend: -199.0,
     storeUser: "fairy-liyu",
@@ -212,6 +275,7 @@ var allstorelist = [
     storeLinkTel: "19191891881",
     storeHour: "9:00-23:00",
     storeMainType: "面食品",
+    codeName: 12,
     storeIncome: 999.0,
     storeExpend: -199.0,
     storeUser: "fairy-liyu",
@@ -227,6 +291,7 @@ var allstorelist = [
     storeLinkTel: "19191891881",
     storeHour: "9:00-23:00",
     storeMainType: "面食品",
+    codeName: 12,
     storeIncome: 999.0,
     storeExpend: -199.0,
     storeUser: "fairy-liyu",
@@ -242,6 +307,7 @@ var allstorelist = [
     storeLinkTel: "19191891881",
     storeHour: "9:00-23:00",
     storeMainType: "面食品",
+    codeName: 12,
     storeIncome: 999.0,
     storeExpend: -199.0,
     storeUser: "fairy-liyu",
@@ -257,6 +323,7 @@ var allstorelist = [
     storeLinkTel: "19191891881",
     storeHour: "9:00-23:00",
     storeMainType: "面食品",
+    codeName: 12,
     storeIncome: 999.0,
     storeExpend: -199.0,
     storeUser: "fairy-liyu",
@@ -272,6 +339,7 @@ var allstorelist = [
     storeLinkTel: "19191891881",
     storeHour: "9:00-23:00",
     storeMainType: "面食品",
+    codeName: 12,
     storeIncome: 999.0,
     storeExpend: -199.0,
     storeUser: "fairy-liyu",
@@ -346,6 +414,23 @@ export default {
       param: 新增店铺的点击事件
     */
     newStore() {
+      // 遮罩层的打开
+      document.getElementsByClassName("zhezhao")[0].classList.remove("none");
+      document.getElementsByClassName("zhezhao")[0].classList.add("show");
+      // 新增店铺弹框 的打开
+      document
+        .getElementsByClassName("newstroeboxs")[0]
+        .classList.remove("none");
+      document.getElementsByClassName("newstroeboxs")[0].classList.add("show");
+      // 滚动条禁止使用
+      document.getElementsByTagName("body")[0].setAttribute("style","overflow:hidden;")
+    },
+    // 新增店铺弹框关闭/取消 点击事件
+    closenewstroebox() {
+      this.closezhezhao();
+    },
+    // 新增店铺的确定按钮点击事件
+    enternewstroebox() {
       this.$confirm("确定新建一个店铺吗?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
@@ -383,6 +468,8 @@ export default {
       document
         .getElementsByClassName("storedetailbox")[0]
         .classList.add("show");
+        // 滚动条禁止使用
+      document.getElementsByTagName("body")[0].setAttribute("style","overflow:hidden;")
     },
     /* 删除相应的店铺 */
     delStore(delstoreid) {
@@ -449,9 +536,11 @@ export default {
       document.getElementsByClassName("zhezhao")[0].classList.remove("none");
       document.getElementsByClassName("zhezhao")[0].classList.add("show");
       // 修改个人中心弹窗的显示
-      // 遮罩层的关闭
+      // 遮罩层的显示
       document.getElementsByClassName("bossbox")[0].classList.remove("none");
       document.getElementsByClassName("bossbox")[0].classList.add("show");
+      // 滚动条禁止使用
+      document.getElementsByTagName("body")[0].setAttribute("style","overflow:hidden;")
     },
     // 关闭修改个人信息弹窗
     closebossbox() {
@@ -484,6 +573,75 @@ export default {
     },
     // 退出
     exitadmin() {},
+    // 修改密码 的点击事件
+    editadminpassword() {
+      // 修改密码弹框的 显示
+      document
+        .getElementsByClassName("editpasswordbox")[0]
+        .classList.remove("none");
+      document
+        .getElementsByClassName("editpasswordbox")[0]
+        .classList.add("show");
+      // 遮罩层的显示
+      document.getElementsByClassName("zhezhao")[0].classList.remove("none");
+      document.getElementsByClassName("zhezhao")[0].classList.add("show");
+      // 滚动条禁止使用
+      document.getElementsByTagName("body")[0].setAttribute("style","overflow:hidden;")
+    },
+    // 修改密码弹窗的 取消与关闭事件
+    closeeditpasswordbox() {
+      this.closezhezhao();
+    },
+    // 修改密码弹窗的 确定事件
+    entereditpasswordbox() {
+      this.$confirm("确定修改密码吗?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          this.$message({
+            type: "success",
+            message: "修改成功!"
+          });
+          // 点击确定过后要进行的操作
+
+          // 与点击遮罩层一样的作用
+          this.closezhezhao();
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消修改"
+          });
+        });
+    },
+    // 重置密码 点击事件，子组件调用
+    residepassword(storeId) {
+      // storeId为重置密码的 店铺id号
+      console.log(storeId);
+      this.$confirm("确定重置该店铺密码吗?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          this.$message({
+            type: "success",
+            message: "重置成功!"
+          });
+          // 点击确定过后要进行的操作
+
+          // 与点击遮罩层一样的作用
+          this.closezhezhao();
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消重置"
+          });
+        });
+    },
     /* 
     遮罩层的点击事件
     */
@@ -502,6 +660,21 @@ export default {
       // 老板信息弹窗的关闭
       document.getElementsByClassName("bossbox")[0].classList.remove("show");
       document.getElementsByClassName("bossbox")[0].classList.add("none");
+      // 修改密码弹框的 关闭
+      document
+        .getElementsByClassName("editpasswordbox")[0]
+        .classList.remove("show");
+      document
+        .getElementsByClassName("editpasswordbox")[0]
+        .classList.add("none");
+      // 新增店铺弹框 的关闭
+      document
+        .getElementsByClassName("newstroeboxs")[0]
+        .classList.remove("show");
+      document.getElementsByClassName("newstroeboxs")[0].classList.add("none");
+
+      // 滚动条
+      document.getElementsByTagName("body")[0].setAttribute("style","overflow:auto;")
     }
   }
 };
@@ -553,7 +726,7 @@ export default {
       }
     }
     &:hover .adminedit {
-      height: 60px;
+      height: 90px;
       opacity: 1;
     }
   }
@@ -657,7 +830,7 @@ export default {
 .storedetailbox {
   display: none;
   width: 600px;
-  height: 400px;
+  height: 450px;
   padding: 20px;
   box-sizing: border-box;
   box-shadow: 0 0 5px #000;
@@ -719,6 +892,16 @@ export default {
     input[type="address"] {
       width: 87%;
     }
+    // 店铺简介
+    .storeremark {
+      width: 100%;
+      height: 60px;
+      margin: 5px 0;
+      border: none;
+      box-shadow: 0 0 2px black;
+      text-indent: 10px;
+      resize: none;
+    }
   }
   // 取消和确定按钮
   .closeorenter {
@@ -747,7 +930,7 @@ export default {
 .bossbox {
   display: none;
   width: 400px;
-  height: 400px;
+  height: 350px;
   position: fixed;
   left: 0;
   top: 0;
@@ -820,6 +1003,162 @@ export default {
       margin-right: 10px;
     }
     .closebossbox {
+      background: gray;
+    }
+  }
+}
+
+// 修改密码弹框
+.editpasswordbox {
+  display: none;
+  width: 400px;
+  height: 200px;
+  position: fixed;
+  left: 0;
+  top: 0;
+  right: 0;
+  z-index: 999;
+  bottom: 0;
+  margin: auto;
+  background: white;
+  padding: 20px;
+  box-sizing: border-box;
+  box-shadow: 0 0 5px #000;
+  // 里面的标题
+  h3 {
+    text-align: center;
+  }
+  // 里面的关闭弹窗按钮
+  .closeeditpasswordboxx {
+    position: absolute;
+    top: 0;
+    right: 0;
+    font-size: 20px;
+    color: black;
+    padding: 10px;
+    cursor: pointer;
+  }
+  // 里面没条信息的样式
+  .editmsgbox {
+    span {
+      width: 30%;
+      text-align-last: justify;
+      text-align: justify;
+      text-justify: distribute-all-lines; // 这行必加，兼容ie浏览器
+      display: inline-block;
+    }
+    input[type="text"],
+    input[type="password"] {
+      width: 70%;
+      height: 30px;
+      margin: 20px 0 0 0;
+      border: none;
+      box-shadow: 0 0 2px black;
+    }
+  }
+  // 确认或者取消按钮
+  .enterorcloseeditpasswordbox {
+    padding: 10px;
+    width: 100%;
+    button {
+      width: 60px;
+      height: 30px;
+      border: none;
+      outline: none;
+      color: #fff;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .entereditpasswordbox {
+      float: right;
+      background: #ff9a00;
+      margin-right: 10px;
+    }
+    .closeeditpasswordbox {
+      background: gray;
+    }
+  }
+}
+
+// 新增店铺信息弹框
+.newstroeboxs {
+  display: none;
+  width: 400px;
+  height: 400px;
+  position: fixed;
+  left: 0;
+  top: 0;
+  right: 0;
+  z-index: 999;
+  bottom: 0;
+  margin: auto;
+  background: white;
+  padding: 20px;
+  box-sizing: border-box;
+  box-shadow: 0 0 5px #000;
+  // 里面的标题
+  h3 {
+    text-align: center;
+  }
+  // 里面的关闭弹窗按钮
+  .closenewstroeboxx {
+    position: absolute;
+    top: 0;
+    right: 0;
+    font-size: 20px;
+    color: black;
+    padding: 10px;
+    cursor: pointer;
+  }
+  // 里面没条信息的样式
+  .newstroemsg {
+    span {
+      width: 30%;
+      text-align-last: justify;
+      text-align: justify;
+      text-justify: distribute-all-lines; // 这行必加，兼容ie浏览器
+      display: inline-block;
+    }
+    input[type="text"],
+    input[type="password"] {
+      width: 70%;
+      height: 30px;
+      margin: 10px 0 0 0;
+      border: none;
+      box-shadow: 0 0 2px black;
+    }
+  }
+  // 简介
+  textarea {
+    width: 100%;
+    height: 60px;
+    margin: 5px 0;
+    border: none;
+    box-shadow: 0 0 2px black;
+    text-indent: 10px;
+    resize: none;
+  }
+  // 确认或者取消按钮
+  .enterorclosenewstroebox {
+    padding: 10px;
+    width: 100%;
+    button {
+      width: 60px;
+      height: 30px;
+      border: none;
+      outline: none;
+      color: #fff;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    // 确认按钮
+    .enternewstroebox {
+      float: right;
+      background: #ff9a00;
+      margin-right: 10px;
+    }
+    // 取消按钮
+    .closenewstroebox {
       background: gray;
     }
   }

@@ -17,9 +17,13 @@
           :value="item.foodTypeName"
         >{{item.foodTypeName}}</option>
       </select>
-      <input type="text" placeholder="请输入菜品备注..." class="isaddfoodRemark" />
-      <input type="number" name="isaddfoodpricex" class="isaddfoodpricex" placeholder="请输入菜品小份价格..." />
-      <input type="number" name="isaddfoodpriced" class="isaddfoodpriced" placeholder="请输入菜品大份价格..." />
+      <input type="text" placeholder="请输入菜品简介..." class="isaddfoodRemark" />
+      <input
+        type="number"
+        name="isaddfoodpricex"
+        class="isaddfoodpricex"
+        placeholder="请输入菜品价格..."
+      />
       <el-upload
         class="upload-demo"
         action="https://jsonplaceholder.typicode.com/posts/"
@@ -53,15 +57,34 @@
           :value="item.foodTypeName"
         >{{item.foodTypeName}}</option>
       </select>
-      <input type="number" name="editfoodpricex" class="editfoodpricex" :value="editFoodMsg.foodLargePrice" />
-      <input type="number" name="editfoodpriced" class="editfoodpriced" :value="editFoodMsg.foodLargePrice" />
-      <input type="text" name="editfoodremark" class="editfoodremark" :value="editFoodMsg.foodRemark" />
-      菜品图片:
-      <br />
-      <div class="editfoodimg">
+      <input
+        type="number"
+        name="editfoodpricex"
+        class="editfoodpricex"
+        :value="editFoodMsg.foodLargePrice"
+      />
+      <input
+        type="text"
+        name="editfoodremark"
+        class="editfoodremark"
+        :value="editFoodMsg.foodRemark"
+      />
+      <!-- 菜品图片: -->
+      <!-- <div class="editfoodimg">
         <img :src="editFoodMsg.foodPhoto" alt />
         <input type="file" name="editimg" class="editimg" />
-      </div>
+      </div>-->
+      <el-upload
+        class="upload-demo"
+        action="https://jsonplaceholder.typicode.com/posts/"
+        :on-preview="handlePreview"
+        :on-remove="handleRemove"
+        :file-list="fileList"
+        list-type="picture"
+      >
+        <el-button size="small" type="primary" class="uploadeditimg">点击上传</el-button>
+        <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+      </el-upload>
 
       <div class="enterorcloseedit">
         <button type="button" class="closeeditfood" @click="closeeditfoodbox">取消</button>
@@ -134,6 +157,11 @@
                 <h3>{{item.foodName}}</h3>
                 <p>{{item.foodRemark.substr(0,15)}}...</p>
                 <p class="price">￥{{item.foodLargePrice}}</p>
+                <select class="foodstate" :value="item.foodState">
+                  <option value="1">在售</option>
+                  <option value="2">已售完</option>
+                  <option value="3">下架</option>
+                </select>
               </div>
             </div>
             <!-- 底部提示已经到底了，商品 -->
@@ -219,7 +247,8 @@ var allFoodList = [
     foodLargePrice: 120,
     foodPhoto: require("../assets/images/store1.jpg"),
     foodRemark:
-      "这是一段菜品简介,辣的爽，辣的棒，辣的呱呱叫，快来尝，快来试，永生不能忘。"
+      "这是一段菜品简介,辣的爽，辣的棒，辣的呱呱叫，快来尝，快来试，永生不能忘。",
+      foodState: 1,
   },
   {
     foodId: "2",
@@ -228,7 +257,8 @@ var allFoodList = [
     foodLargePrice: 120,
     foodPhoto: require("../assets/images/store1.jpg"),
     foodRemark:
-      "这是一段菜品简介,辣的爽，辣的棒，辣的呱呱叫，快来尝，快来试，永生不能忘。"
+      "这是一段菜品简介,辣的爽，辣的棒，辣的呱呱叫，快来尝，快来试，永生不能忘。",
+      foodState: 2,
   },
   {
     foodId: "3",
@@ -236,7 +266,8 @@ var allFoodList = [
     foodType: "新品",
     foodLargePrice: 160,
     foodPhoto: require("../assets/images/store1.jpg"),
-    foodRemark: "这是一段菜品简介"
+    foodRemark: "这是一段菜品简介",
+    foodState: 3,
   },
   {
     foodId: "4",
@@ -245,7 +276,8 @@ var allFoodList = [
     foodLargePrice: 120,
     foodPhoto: require("../assets/images/store1.jpg"),
     foodRemark:
-      "这是一段菜品简介,辣的爽，辣的棒，辣的呱呱叫，快来尝，快来试，永生不能忘。"
+      "这是一段菜品简介,辣的爽，辣的棒，辣的呱呱叫，快来尝，快来试，永生不能忘。",
+      foodState: 1,
   },
   {
     foodId: "5",
@@ -254,7 +286,8 @@ var allFoodList = [
     foodLargePrice: 120,
     foodPhoto: require("../assets/images/store1.jpg"),
     foodRemark:
-      "这是一段菜品简介,辣的爽，辣的棒，辣的呱呱叫，快来尝，快来试，永生不能忘。"
+      "这是一段菜品简介,辣的爽，辣的棒，辣的呱呱叫，快来尝，快来试，永生不能忘。",
+      foodState: 1,
   },
   {
     foodId: "6",
@@ -262,7 +295,8 @@ var allFoodList = [
     foodType: "新品",
     foodLargePrice: 120,
     foodPhoto: require("../assets/images/store1.jpg"),
-    foodRemark: "这是一段菜品简介"
+    foodRemark: "这是一段菜品简介",
+    foodState: 2,
   },
   {
     foodId: "7",
@@ -271,7 +305,8 @@ var allFoodList = [
     foodLargePrice: 120,
     foodPhoto: require("../assets/images/store1.jpg"),
     foodRemark:
-      "这是一段菜品简介,辣的爽，辣的棒，辣的呱呱叫，快来尝，快来试，永生不能忘。"
+      "这是一段菜品简介,辣的爽，辣的棒，辣的呱呱叫，快来尝，快来试，永生不能忘。",
+      foodState: 1,
   },
   {
     foodId: "8",
@@ -279,7 +314,8 @@ var allFoodList = [
     foodType: "干锅",
     foodLargePrice: 120,
     foodPhoto: require("../assets/images/store1.jpg"),
-    foodRemark: "这是一段菜品简介"
+    foodRemark: "这是一段菜品简介",
+    foodState: 1,
   },
   {
     foodId: "9",
@@ -287,7 +323,8 @@ var allFoodList = [
     foodType: "干锅",
     foodLargePrice: 120,
     foodPhoto: require("../assets/images/store1.jpg"),
-    foodRemark: "这是一段菜品简介"
+    foodRemark: "这是一段菜品简介",
+    foodState: 1,
   },
   {
     foodId: "10",
@@ -295,7 +332,8 @@ var allFoodList = [
     foodType: "干锅",
     foodLargePrice: 120,
     foodPhoto: require("../assets/images/store1.jpg"),
-    foodRemark: "这是一段菜品简介"
+    foodRemark: "这是一段菜品简介",
+    foodState: 2,
   }
 ];
 
@@ -320,10 +358,12 @@ export default {
         }
       ],
       // 编辑的菜品信息
-      editFoodMsg: {},
+      editFoodMsg: {}
     };
   },
   methods: {
+    // 获取数据
+    getDate() {},
     // 删除菜品
     delFood(e) {
       this.$confirm("此操作将删除这条数据, 是否继续?", "提示", {
@@ -447,7 +487,6 @@ export default {
       document.getElementsByClassName("zhezhao")[0].classList.add("show");
       console.log(data);
       console.log($event);
-     
     },
     // 点击菜品类型，渲染相应的数据
     getTagFood(e) {
@@ -555,6 +594,37 @@ export default {
         .classList.remove("show");
       document.getElementsByClassName("editfoodbox")[0].classList.add("none");
     }
+  },
+  mounted() {},
+  created() {
+    // -------------------获取菜品标签的 AJAX 开始--------------------------------------
+    this.axios
+      .post("/getfoodtype", {
+        storeId: 1
+      })
+      .then(res => {
+        console.log(res.data);
+        if (res.data.state == "200") {
+          // var token = "njaksxbxkjasbkjcxasbjk" // 模拟后台返回的token
+          var token = res.data.token;
+          sessionStorage.setItem("token", token);
+
+          // 获取参数（未登录时想访问的路由）
+          var url = this.$route.query.redirect;
+          console.log(url);
+
+          url = url ? url : "/";
+          // 切换路由
+          this.$router.replace(url);
+        } else {
+          console.log("登陆失败");
+        }
+      })
+      .catch(err => {
+        console.log(err);
+      });
+
+    // ------------------------获取菜品标签的 AJAX 结束---------------------------------
   }
 };
 </script>
@@ -706,17 +776,29 @@ export default {
       height: 350px;
 
       .foodlist {
-        //   background: pink;
         margin: 10px 0;
         .foodlist-img {
           float: left;
-          width: 100px;
-          height: 100px;
+          width: 120px;
+          height: 120px;
           img {
             width: 100%;
             height: 100%;
             vertical-align: middle;
           }
+        }
+        // 菜品状态
+        .foodstate {
+          width: 150px;
+          border: none;
+          box-shadow: 0 0 2px gray;
+            padding: 3px 10px;
+            font-size: 16px;
+            color: #000;
+            letter-spacing: 2px;
+            display: block;
+            outline: none;
+            margin: 10px 0;
         }
         .foodlist-edit {
           padding: 10px 20px;
@@ -740,7 +822,7 @@ export default {
           }
         }
         .foodlist-msg {
-          margin-left: 120px;
+          margin-left: 140px;
           min-height: 100px;
           line-height: 30px;
           // 内容中的文字说明
@@ -787,7 +869,7 @@ export default {
   padding: 20px;
   box-sizing: border-box;
   width: 400px;
-  height: 450px;
+  height: 420px;
   box-shadow: 0 0 5px #000;
   position: fixed;
   left: 0;
@@ -859,7 +941,7 @@ export default {
   padding: 20px;
   box-sizing: border-box;
   width: 400px;
-  height: 450px;
+  height: 420px;
   box-shadow: 0 0 5px #000;
   position: fixed;
   left: 0;
@@ -869,6 +951,11 @@ export default {
   margin: auto;
   z-index: 999;
   background: white;
+  // 图片的上传按钮
+  .uploadeditimg {
+    padding: 0 10px;
+    height: 30px;
+  }
   // 标题
   h3 {
     text-align: center;
