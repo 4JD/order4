@@ -79,6 +79,8 @@
 </template>
 
 <script>
+import { formatDate } from "@/assets/js/formatDate.js";
+
 export default {
   name:'addworker',
   data() {
@@ -97,6 +99,37 @@ export default {
         salary:'',
         state:'',
         remark:''
+      },
+      pickerOptions: {
+        shortcuts: [
+          {
+            text: "最近一周",
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+              picker.$emit("pick", [start, end]);
+            }
+          },
+          {
+            text: "最近一个月",
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+              picker.$emit("pick", [start, end]);
+            }
+          },
+          {
+            text: "最近三个月",
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
+              picker.$emit("pick", [start, end]);
+            }
+          }
+        ]
       }
       
      
@@ -104,33 +137,44 @@ export default {
      
 
   },
+  filters: {
+    formatDate(time) {
+      var date = new Date(time);
+      return formatDate(date, "yyyy-MM-dd");
+    }
+  },
   methods: {
     //添加成功
     addsuccess() {
       
-      this.$message({
-        message: '添加成功',
-        type: 'success',        
-      });
+      
     },
     canceladd() {
        
       
     },
     addWorker() {
+     var newDate1= formatDate(this.addform.date, 'yyyy-MM-dd')
+     var newDate2= formatDate(this.addform.birthday, 'yyyy-MM-dd')
       this.$emit('add',{
         id:this.addform.id,
-        date:this.addform.date,
+        date:newDate1,
         name:this.addform.name,
         sex:this.addform.sex,
-        birthday:this.addform.birthday,
+        birthday:newDate2,
         address:this.addform.address,
         tel:this.addform.tel,
         position:this.addform.position,
         salary:this.addform.salary,
         state:this.addform.state,
         remark:this.addform.remark
-      })
+      }),
+      this.$message({
+        message: '添加成功',
+        type: 'success',        
+      });
+     
+      
     }
     
   }

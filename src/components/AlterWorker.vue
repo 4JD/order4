@@ -6,7 +6,7 @@
     <el-dialog title="编辑员工信息" :visible.sync="dialogFormVisible">
       <el-form >
         <el-form-item label="ID：" :label-width="formLabelWidth">
-          <el-input  autocomplete="off" v-model="info.id" clearable placeholder="请输入员工ID">{{info.id}}</el-input>
+          <el-input  autocomplete="off" v-model="info.id" clearable placeholder="请输入员工ID" disabled="true">{{info.id}}</el-input>
         </el-form-item>
 
         <el-form-item label="姓名：" :label-width="formLabelWidth">
@@ -85,6 +85,8 @@
 </template>
 
 <script>
+import { formatDate } from "@/assets/js/formatDate.js";
+
 export default {
   name:'alterworker',
   props:['info'],
@@ -92,7 +94,6 @@ export default {
     return {
       //添加员工弹出模态框
       dialogFormVisible: false,
-      
       formLabelWidth: '120px',
       //入职日期选择
       pickerOptions: {
@@ -119,15 +120,10 @@ export default {
             picker.$emit('pick', date);
           }
         }]
-      },
-      workdate: '',
-      birthdate:'',
-      //在职状态
-      valuestate:'true',
-      //员工备注信息
-      textarea: ''
+      }
     }
   },
+
   methods: {
     //修改成功
     addsuccess(){
@@ -135,10 +131,12 @@ export default {
         message: '修改成功',
         type: 'success'
       });
+      formatDate(this.info.date, 'yyyy-MM-dd');
+      formatDate(this.info.birthday, 'yyyy-MM-dd');
     },
     //取消编辑
-    canceladd(formName) {
-      this.$refs[formName].resetFields();
+    canceladd() {
+      
     }
   }
 }
