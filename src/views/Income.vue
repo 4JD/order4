@@ -227,6 +227,9 @@ export default {
 
 <style lang="less">
    @import '../assets/css/base.less';
+.income-list {
+  text-align: center;
+}
 
 h2 {
   float: left;

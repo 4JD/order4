@@ -36,49 +36,19 @@
           </div>
         </div>
       </div>
-      <div class="ordered-item">
-        <div class="item-top">
-          <div class="edx">
-            <p>2019-10-16 11:45:32</p>
-          </div>
-          <div class="edx">
-            <p>
-              订单号:
-              <span>1515165145</span>
-            </p>
-          </div>
-
-          <div class="del-btn">
-            <button class="BtnStyle" type="button">删除</button>
-          </div>
-        </div>
-
-        <div class="item-order">
-          <div>
-            <img alt="Vue logo" src="../assets/logo.png" />
-          </div>
-          <div>
-            <h3>超级至尊披萨</h3>
-            <p>
-              <span>12</span>号桌
-            </p>
-          </div>
-          <div>
-            <p>
-              <span>93</span> 元
-            </p>
-          </div>
-        </div>
-      </div>
     </div>
   </div>
 </template>
 
 <script>
 // import HelloWorld from '@/components/HelloWorld.vue'
+/* import { mapState, mapMutations } from "vuex"; */
 
 export default {
   name: "orderDetail",
+  data(){
+
+  },
   components: {
     // HelloWorld
   }

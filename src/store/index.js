@@ -110,15 +110,17 @@ const foodType = [
 
 
 /* 主页 &订单 */
-const moduleIndexFood = {
+export default new Vuex.Store({
   state: {
     foodItems: [],
     foodType: [],
+    shoppingCar: [],
+    orderMng: []
   },
   getters: {
     currentFoodItems: (state) => (s) => {
       return state.foodItems.filter(item => {
-        return item.foodName.indexOf(s) > -1
+        return item.typeId == s
       })
     },
     currentFoodType: (state) => (s) => {
@@ -133,6 +135,17 @@ const moduleIndexFood = {
     },
     getFoodType(state, n) {
       state.foodType = n
+    },
+    /* 添加购物车 */
+    addOrder(state,n){
+      state.shoppingCar.push(n)
+    },
+    delOrderN(state,n){
+      state.shoppingCar.slice(n,1)
+    },
+    /* 加入历史订单 */
+    addOrderMng(state,n){
+      state.orderMng.push(n)
     }
   },
   actions: {
@@ -146,12 +159,5 @@ const moduleIndexFood = {
         commit('getFoodType', foodType)
       },0)
     }
-  }
-}
-
-export default new Vuex.Store({
-  /* 主页 &订单 */
-  modules: {
-    moduleIndexFood
   }
 })
