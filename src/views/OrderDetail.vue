@@ -23,7 +23,7 @@
 
         <div class="item-order">
           <div>
-            <img alt="Vue logo" src="../assets/logo.png" />
+            <img alt="Vue logo" :src="item.photourl" />
           </div>
           <div class="lineH">
             <h3>{{item.foodName}}</h3>
@@ -110,7 +110,7 @@ export default {
     /* 付款 */
     payBtn(){
       this.addOrderMng(this.item)
-      console.log("加入",this.item)
+      console.log("加入",this.orderMng)
     }
   }
 };
