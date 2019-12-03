@@ -1,5 +1,6 @@
 <template>
   <div class="boss-store">
+    <button class="residepassword" :data-storeid="item.storeId" @click="residepassword">重置密码</button>
     <div class="storeNumber">{{number+1}}号店铺</div>
     <div class="storeimg">
       <!-- <img src="../assets/images/store1.jpg" alt="店铺图片" /> -->
@@ -28,7 +29,7 @@ export default {
   template: {},
   props: {
     item: Object,
-    number: Number,
+    number: Number
   },
   data() {
     return {};
@@ -44,7 +45,12 @@ export default {
     delStore() {
       // 参数为数据的id
       this.$emit("delStoreC", this.item.storeId);
-    }
+    },
+    // 重置密码
+    residepassword(e) {
+      var storeId = e.target.getAttribute("data-storeid");
+      this.$emit("residepassword", storeId);
+    },
   }
 };
 </script>
@@ -53,6 +59,25 @@ export default {
 .boss-store {
   position: relative;
   text-align: left;
+  &:hover .residepassword {
+    display: block;
+  }
+}
+// 重置密码
+.residepassword {
+  display: none;
+  position: absolute;
+  top: 0;
+  right: 0;
+  font-size: 14px;
+  padding: 0 10px;
+  height: 30px;
+  border: none;
+  outline: none;
+  color: #fff;
+  background: #ff9a00;
+  border-radius: 5px;
+  cursor: pointer;
 }
 .storebox {
   .storeimg img {
@@ -107,9 +132,8 @@ export default {
   // 删除
   .delstore {
     float: right;
-      background: #ff9a00;
-      margin-right: 20px;
+    background: #ff9a00;
+    margin-right: 20px;
   }
-
 }
 </style>
