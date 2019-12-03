@@ -67,7 +67,8 @@
             username:"",
             password:"",
             errText:false,
-            errCont:""
+            errCont:"",
+
           }
       },
       methods:{
@@ -100,14 +101,16 @@
 
                 if (res.data.code==200){
                   var token = res.data.data;
+
+                  // var userId=res.data.
                     sessionStorage.setItem("token", token);
-                    sessionStorage.setItem("telNumber", this.username);
+                    sessionStorage.setItem("userName", this.username);
+                    sessionStorage.setItem("userId", this.userId);
+                  var url = this.$route.query.redirect;
+                    url = url ? url : "/";
+                    this.$router.replace(url)
                     if (res.data.role==1){
                       this.$router.replace("/home1")
-                    }else if(res.data.role==1){
-                      this.$router.replace("/home2")
-                    }else  if(res.data.role==1){
-                      this.$router.replace("/home3")
                     }
 
                 } else if (res.data.code==1001||res.data.code==1002){

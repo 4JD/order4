@@ -81,13 +81,13 @@
       name: "Register",
       data(){
         return{
-          username:"",
-          password:"",
-          passwordAgain:"",
-          errText:false,
-          errCont:"",
-          yanzheng:"",
-          usertel:"",
+          username:"",//用户名
+          password:"",//密码
+          passwordAgain:"",//确认密码
+          errText:false,//提示信息显示或隐藏
+          errCont:"",//提示内容
+          yanzheng:"",//验证码
+          usertel:"",//用户手机号
           code:""
 
 
@@ -115,12 +115,6 @@
             setTimeout(()=>{
               this.errText=false;
             },2000)
-          }else if(this.yanzheng!=this.code){
-            this.errText=true;
-            this.errCont="验证码错误";
-            setTimeout(()=>{
-              this.errText=false;
-            },2000)
           }
           else if (this.password==""){
             this.errText=true;
@@ -140,16 +134,27 @@
             this.axios.post("./register",{
               username: this.username,
               userPassword: this.userPassword,
+              yanzheng:this.yanzheng,
+              address:"霞飞路",
+              sex:"男"
 
             }).then((res)=>{
-              if (res.data.state==1){
+              if(res.data.yanzheng==false){
+                this.errText=true;
+                this.errCont="验证码错误";
+                setTimeout(()=>{
+                  this.errText=false;
+                },2000)
+              }
+              else  if (res.data.state==1){
                 this.errText=true;
                 this.errCont="注册成功";
                 setTimeout(()=>{
                   this.errText=false;
                    this.$router.replace("/login")
                 },2000)
-              }else  if (res.data.state==2){
+              }
+              else  if (res.data.state==2){
                 this.errText=true;
                 this.errCont="账户已存在";
                 setTimeout(()=>{
@@ -170,9 +175,8 @@
           }else {
             this.axios.post("/yanzheng",{
               userTel:this.usertel
-            }).then((res)=>{
-               console.log(res)
-               this.code=res.data.code
+            }).then(()=>{
+
             })
           }
         }
