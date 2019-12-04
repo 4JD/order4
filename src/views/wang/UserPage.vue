@@ -46,7 +46,7 @@
 
                     <li  @click="second=!second">
                         <a href="javascript:;" >
-                            财务管理 <img  src="" alt="图标"></a>
+                            财务管理 <img  src="secondMenu" alt="图标"></a>
                     </li>
 
                     <li class="second" v-show="second" :class="{on: com==='payment'}"  @click="com='payment'">
@@ -110,7 +110,8 @@
       return {
         com: '',
         second:false,
-        secondColor:""
+        secondColor:"",
+        secondMenu:"../../../public/img/wang/down箭头.JPG"
 
 
 
@@ -124,6 +125,13 @@
       },
       handleClose(key, keyPath) {
         console.log(key, keyPath);
+      },
+      upAndDown(){
+        if (this.secondMenu=="../../../public/img/wang/down箭头.JPG"){
+          this.secondMenu=="../../../public/img/wang/up箭头.JPG"
+        } else {
+          this.secondMenu=="../../../public/img/wang/down箭头.JPG"
+        }
       }
     }
   }

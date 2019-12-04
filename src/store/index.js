@@ -10,7 +10,8 @@ const foodItems = [
     price: 91,
     count:2,
     photourl: require('../assets/logo.png'),
-    typeId:1
+    typeId:1,
+    foodState:1
   },
   {
     foodId:1,
@@ -18,7 +19,8 @@ const foodItems = [
     price: 92,
     count:1,
     photourl: require('../assets/logo.png'),
-    typeId:2
+    typeId:2,
+    foodState:1
   },
   {
     foodId:2,
@@ -26,7 +28,8 @@ const foodItems = [
     price: 93,
     count:1,
     photourl: require('../assets/logo.png'),
-    typeId:3
+    typeId:3,
+    foodState:1
   },
   {
     foodId:3,
@@ -34,7 +37,8 @@ const foodItems = [
     price: 94,
     count:1,
     photourl: require('../assets/logo.png'),
-    typeId:4
+    typeId:4,
+    foodState:1
   },
   {
     foodId:4,
@@ -42,7 +46,8 @@ const foodItems = [
     price: 95,
     count:1,
     photourl: require('../assets/logo.png'),
-    typeId:5
+    typeId:5,
+    foodState:1
   },
   {
     foodId:5,
@@ -50,7 +55,8 @@ const foodItems = [
     price: 96,
     count:1,
     photourl: require('../assets/logo.png'),
-    typeId:6
+    typeId:6,
+    foodState:1
   },
   {
     foodId:6,
@@ -58,7 +64,8 @@ const foodItems = [
     price: 97,
     count:1,
     photourl: require('../assets/logo.png'),
-    typeId:7
+    typeId:7,
+    foodState:1
   },
   {
     foodId:7,
@@ -66,7 +73,8 @@ const foodItems = [
     price: 98,
     count:1,
     photourl: require('../assets/logo.png'),
-    typeId:1
+    typeId:1,
+    foodState:1
   },
   {
     foodId:8,
@@ -74,7 +82,8 @@ const foodItems = [
     price: 99,
     count:1,
     photourl: require('../assets/logo.png'),
-    typeId:2
+    typeId:2,
+    foodState:2
   }
 ]
 const foodType = [
@@ -115,7 +124,8 @@ export default new Vuex.Store({
     foodItems: [],
     foodType: [],
     shoppingCar: [],
-    orderMng: []
+    orderMng: [],
+    foodList:[]
   },
   getters: {
     currentFoodItems: (state) => (s) => {
@@ -140,12 +150,25 @@ export default new Vuex.Store({
     addOrder(state,n){
       state.shoppingCar.push(n)
     },
+
+    /* 删除 */
     delOrderN(state,n){
-      state.shoppingCar.slice(n,1)
+      var p
+      state.shoppingCar.forEach((items,index) => {
+        if(items.foodId == n) {
+          p == index
+          return
+        }
+      })
+      state.shoppingCar.splice(p,1) 
     },
     /* 加入历史订单 */
     addOrderMng(state,n){
       state.orderMng.push(n)
+    },
+
+    save_foodList(state, data){
+      state.foodItems = data
     }
   },
   actions: {

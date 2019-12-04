@@ -4,12 +4,17 @@
     <!-- 左侧导航 -->
     <div class="index-nav">
       <ul>
-        <li class="typeList" :class="activeClass == index ? 'active':''" v-for="(item,index) in currentFoodType('')" :key="index" @click="chooseType(item.typeId); getItem(index)">{{item.typeName}}</li>
+        <li class="typeList" 
+        :class="activeClass == index ? 'active':'back'"
+        v-for="(item,index) in currentFoodType('')" 
+        :key="index" 
+        @click="chooseType(item.typeId); getItem(index)">
+        {{item.typeName}}</li>
       </ul>
 
       <div class="navBottom">
         <router-link to="/orderdetail">
-          <button type="button" class="BtnStyle"> 前往付款 >></button>
+          <button type="button" class="BtnStyle"> 前往付款 >> </button>
         </router-link>
       </div>
     </div>
@@ -68,7 +73,7 @@
 
 <script>
 /* import IndexItems from "@/components/IndexItems.vue"; */
-import { mapState, mapGetters, mapActions, mapMutations } from "vuex";
+import { mapState, mapGetters, mapActions, mapMutations } from "vuex"
 
 export default {
   name: "Index",
@@ -90,21 +95,45 @@ export default {
     ...mapGetters(["currentFoodItems", "currentFoodType"])
   },
   created() {
-    this.getFoodItemsSync(), this.getFoodTypeSync();
+    this.getFoodItemsSync(), this.getFoodTypeSync()
+    this.save_foodList({a : 2})
+
+    /* 获取数据 */
+    /* this.axios
+    .post("/foodType/foodTypeList", {
+      "storeId": "1"
+    })
+    .then(res => {
+      var myData = res.data.data
+      var foodItems = []
+      myData.forEach((items) => {
+        var newFood = {}
+        newFood.foodId = myData.foodId
+
+        foodItems.push(newFood)
+      })
+    
+      this.save_foodList(foodItems)
+
+      console.log(res)
+    })
+    .catch(err => {
+      console.log(err)
+    }) */
   },
   methods: {
-    ...mapActions(["getFoodItemsSync", "getFoodTypeSync"]),
-    ...mapMutations(["addOrder"]),
+    ...mapActions(["getFoodItemsSync", "getFoodTypeSync",]),
+    ...mapMutations(["addOrder","save_foodList"]),
     c1: function(item) {
-      this.drawer = true;
-      this.item1 = item;
+      this.drawer = true
+      this.item1 = item
       console.log(item)
     },
     add(){
       this.item1.count += 1
     },
     subs(){
-      if(this.item1.count > 0){
+      if(this.item1.count > 1){
         this.item1.count -= 1
       }
     },
@@ -117,14 +146,14 @@ export default {
         message:"成功添加",
         type:"success"
       })
-      this.drawer = false;
+      this.drawer = false
     },
     chooseType(e){
       this.newIndex = e
     },
     getItem(index){
-      this.activeClass = index;
-    }
+      this.activeClass = index
+    },
   }
 };
 </script>
@@ -139,6 +168,15 @@ ul li {
 .active{
   color: #fff;
   font-size: 18px;
+  background: @BtnColor;
+  transform: translateX(20px);
+  transition: .3s ease-in-out;
+}
+.back{
+  transform: translateX(0);
+  transition: .3s ease-in-out;
+  background: #23262e;
+  color: #fff;
 }
 
 .index{
@@ -154,7 +192,6 @@ ul li {
   margin-top: 40px;
 
   .typeList:hover{
-    background: #bb6a0e;
     cursor: pointer;
   }
 
@@ -167,11 +204,10 @@ ul li {
 
   li {
     width: 100px;
-    height: 60px;
-    background: @BtnColor;
-    line-height: 60px;
+    height: 50px;
+    line-height: 50px;
     text-align: center;
-    border: 1px solid #d18733;
+    border:1px solid #fff;
   }
 }
 

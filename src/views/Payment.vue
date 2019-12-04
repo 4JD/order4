@@ -11,16 +11,13 @@
       <el-row>
         <el-col :span="6">
           <el-form-item label="支出类型：">
-            <el-select placeholder="支出类型" v-model="payType" >
-              <el-option label="全部" value="allType" ></el-option>
-             
-              <el-option v-for="item in tableData" :key = "item" :label="item.addpayTypeName" :value="item.addpayTypeName" ></el-option>
-             
+            <el-select placeholder="支出类型" v-model="payType">
+              <el-option v-for="item in payTypes" :key="item" :label="item.addpayTypeName" :value="item.addpayTypeName" ></el-option>
+
+          
             </el-select>
           </el-form-item>
         </el-col>
-       
-      
       </el-row>
       <el-row>
         <el-col :span="8">
@@ -68,9 +65,10 @@
     <el-pagination
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
+      background
       :current-page.sync="currentPage3"
       :page-size="pageSize"
-      layout="prev, pager, next, jumper"
+      layout="prev, pager, next"
       :total="totalSize"
     ></el-pagination>
   </div>
@@ -79,32 +77,7 @@
 <script>
 import addPayItem from "@/components/addPayItem.vue";
 import { formatDate } from "@/assets/js/formatDate.js";
-var tableData = [
-  {
-    date: "2016-05-02 09:20:00",
-    id: "1",
-    payType: "工资",
-    payUser: "张三",
-    payPrice: "7",
-    remark: "无"
-  },
-  {
-    date: "2016-05-02 09:20:00",
-    id: "1",
-    payType: "房租",
-    payUser: "李四",
-    payPrice: "7",
-    remark: "2"
-  },
-  {
-    date: "2016-05-02 09:20:00",
-    id: "1",
-    payType: "原材料",
-    payUser: "王五",
-    payPrice: "7",
-    remark: "2"
-  }
-];
+
 
 export default {
   name: "payment",
@@ -114,10 +87,11 @@ export default {
   data() {
     return {
       value3: "",
-      currentPage3: 5,
+      currentPage3: 1,
       totalSize: 1000,
       pageSize: 20,
-      payType:'',
+      payType: "",
+      payTypes:[],
       pickerOptions: {
         shortcuts: [
           {
@@ -175,37 +149,61 @@ export default {
         console.log(formatDate(this.value3[1], "yyyy-MM-dd"));
       }
       console.log(this.payType);
-      //   this.axios.get('/user/searchPay',{
-      //     checkPaytime1:formatDate(this.value3[0], "yyyy-MM-dd"),
-      //     checkPaytime2:formatDate(this.value3[1], "yyyy-MM-dd")
-      // })
-      // .then(res=> {
-      //   console.log('获取支出信息：',res.data);
-      //   this.tableData = res.data.data;
-      // })
-      // .catch(err => {
-      //   console.log(err);
-      // })
+      if (this.payType == "全部") {
+        this.payType = "";
+      }
+   
+      // this.axios
+      //   .post("/user/searchPay", {
+      //     userName:'admin',
+      //     orderTimeStart: formatDate(this.value3[0], "yyyy-MM-dd"),
+      //     orderTimeEnd: formatDate(this.value3[1], "yyyy-MM-dd"),
+      //     page: this.currentPage3,
+      //     pageSize: this.pageSize,
+      //     foodTypeName:this.payType,
+
+      //   })
+      //   .then(res => {
+      //     console.log("获取支出信息：", res.data);
+      //     this.tableData = res.data.data;
+      //   })
+      //   .catch(err => {
+      //     console.log(err);
+      //   });
     }
   },
   created() {
-    this.tableData = tableData;
+    // this.tableData = tableData;
     this.axios
-      .get("/user/searchPay?userName=admin", {
+      .post("/user/searchPay", {
+        userName:'admin',
         page: this.currentPage3,
         pageSize: this.pageSize
       })
       .then(res => {
         console.log("获取支出信息：", res.data);
         this.tableData = res.data.data.list;
-        // this.filtersType = ({
-        //   text: res.data.data.list.addpayTypeName,
-        //   value: res.data.data.list.addpayTypeName
-        // })
+        // this.totalSize = res.data.data.list.total;
+     
       })
       .catch(err => {
         console.log(err);
       });
+
+    this.axios
+      .post("/addpay/findAllType")
+      .then(res => {
+        console.log("获取支付类型信息：", res.data);
+        // this.tableData = res.data.data.list;
+        this.payTypes = res.data.data;
+        console.log(res.data.data);
+      
+      })
+      .catch(err => {
+        console.log(err);
+      });
+
+      
   }
 };
 </script>

@@ -21,10 +21,10 @@
         placeholder="请输入你要搜索的员工信息"
         v-model="searchinput"
         clearable
-        class="searchinput">
+        class="searchinput"
+        >
       </el-input>
-      <el-button type="success" icon="el-icon-search" @click="searchworker()" class="searchworker">搜索员工</el-button>
-      <!-- <el-button type="info" icon="el-icon-view" @click="looksalary">薪资概况</el-button> -->
+      <el-button type="success" icon="el-icon-search" @click="searchworker()" id="searchvalue">搜索员工</el-button>
       
       <span>共有<span class="worker-number"> {{tableData.length}} </span>名员工</span>
     </div>
@@ -42,7 +42,6 @@
           <th>地址</th>
           <th>入职日期</th>
           <th>职位</th>
-          <!-- <th>工资</th> -->
           <th>在职状态</th>
           <th>操作</th>
         </tr>
@@ -56,8 +55,6 @@
           <td>{{item.workerDate}}</td>
           <td>{{item.positionName}}</td>
           <td>{{item.workerState}}</td>
-         
-          <!-- <td>{{item.salary}}</td> -->
           <td>
             <LookWorker :info='item'></LookWorker>
             <AlterWorker :info="item"></AlterWorker>
@@ -145,19 +142,19 @@ export default {
         type: 'warning'
       }).then(() => {
         console.log(i)
-        console.log(String(i+1))
-        // this.tableData.splice(i,1)
-        this.axios.post("/workerDelete",{
-          workerId:String(i+1)
-        })
-        .then(res => {
-          console.log("单个删除" ,res.data.data.list);
-          // this.tableData = res.data.data.list;
-          this.tableData.splice(i+1,1)
-        })
-        .catch(err => {
-          console.log(err);
-        });
+        // console.log(String(i+1))
+        this.tableData.splice(i,1)
+        // this.axios.post("/workerDelete",{
+        //   workerId:String(i+1)
+        // })
+        // .then(res => {
+        //   console.log("单个删除" ,res.data.data.list);
+        //   // this.tableData = res.data.data.list;
+        //   this.tableData.splice(i+1,1)
+        // })
+        // .catch(err => {
+        //   console.log(err);
+        // });
 
         this.$message({
           type: 'success',
@@ -181,23 +178,20 @@ export default {
         this.tableData[i].select = !_isSelect;
       }
     },
-    //跳转查看员工收入页面
-    looksalary() {
-      this.$router.replace("/workersalary");
-    },
     //筛选搜索员工
     searchworker() {
       /* this.tableData = this.tableData.filter((item)=> {
         return item.id = this.searchinput
       }) */
-      console.log(typeof(this.searchinput))
+      var searchvalue = document.getElementById("searchvalue").value;
+      console.log("搜索框的值",searchvalue);
       this.axios.post("/workerFindById",{
         workerId:this.searchinput
       })
       .then(res => {
-        console.log(res.data.data);
+        console.log("搜索结果：",res.data.data);
           this.tableData = this.tableData.filter((item)=> {
-          return item.workerId = this.searchinput
+          return item.workerId = searchvalue
         })
       })
       .catch(err => {
@@ -241,20 +235,6 @@ export default {
       console.log(err);
     });
 
-    /* this.axios
-    .post("/user/searchIncome",{
-      userId:1,
-      page:1,
-      pageSize:5
-    })
-    .then(res => {
-      console.log( res.data);
-      // this.tableData = res.data.data.list;
-      
-    })
-    .catch(err => {
-      console.log(err);
-    }); */
   }
   
   
@@ -325,7 +305,6 @@ export default {
   }
   .check-span.check-true{
     background: url("../assets/images/spring.png") no-repeat 0 -22px;
-    // display: block;
   }
 
   //员工数量

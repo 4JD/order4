@@ -1,207 +1,213 @@
 <template>
-    <div class="warp">
-
-        <div class="header">
-            <div  class="head-cont" >
-
-                <div class="head-left">
-                    <img  class="log" src="../../assets/images/wang/tick.png" alt="">
-                    XXXX管理系统
-
-                </div>
-
-                <div class="head-right">
-
-                    <img  class="icon " src="" alt="头像">
-
-                    <a href="javascript:;">姓名</a>
-
-                    <a href="javascript:;">注销</a>
-
-                </div>
-            </div>
+    <div class="main">
+        <div class="box">
+            <el-table
+                    :data="tableData"
+                    border
+                    style="width: 100%">
+                <el-table-column
+                        fixed
+                        prop="date"
+                        label="日期"
+                        width="150">
+                </el-table-column>
+                <el-table-column
+                        prop="name"
+                        label="姓名"
+                        width="120">
+                </el-table-column>
+                <el-table-column
+                        prop="province"
+                        label="省份"
+                        width="120">
+                </el-table-column>
+                <el-table-column
+                        prop="city"
+                        label="市区"
+                        width="120">
+                </el-table-column>
+                <el-table-column
+                        prop="address"
+                        label="地址"
+                        width="300">
+                </el-table-column>
+                <el-table-column
+                        prop="zip"
+                        label="邮编"
+                        width="120">
+                </el-table-column>
+                <el-table-column
+                        fixed="right"
+                        label="操作"
+                        width="100">
+                    <template slot-scope="scope">
+                        <el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>
+                        <el-button type="text" size="small">编辑</el-button>
+                    </template>
+                </el-table-column>
+            </el-table>
         </div>
-
-        <div class="main">
-            <div class="main-left">
-
-                <ul>
-                    <li>
-                        <a href="javascript:;" @click="com=''">用户信息</a>
-                    </li>
-
-                    <li>
-                        <a href="javascript:;" @click="com=''">
-                            收银情况
-                        </a>
-
-                    </li>
-
-
-                </ul>
-            </div>
-            <div class="main-right">
-
-                <keep-alive>
-                    <!-- is 等于哪个组件名，就在这渲染哪个组件 -->
-                    <component :is="com"></component>
-
-                </keep-alive>
-
-            </div>
-        </div>
+<!--        <div class="box">-->
+<!--            <el-table-->
+<!--                    :data="tableData"-->
+<!--                    border-->
+<!--                    style="width: 100%">-->
+<!--                <el-table-column-->
+<!--                        fixed-->
+<!--                        prop="date"-->
+<!--                        label="日期"-->
+<!--                        width="150">-->
+<!--                </el-table-column>-->
+<!--                <el-table-column-->
+<!--                        prop="name"-->
+<!--                        label="姓名"-->
+<!--                        width="120">-->
+<!--                </el-table-column>-->
+<!--                <el-table-column-->
+<!--                        prop="province"-->
+<!--                        label="省份"-->
+<!--                        width="120">-->
+<!--                </el-table-column>-->
+<!--                <el-table-column-->
+<!--                        prop="city"-->
+<!--                        label="市区"-->
+<!--                        width="120">-->
+<!--                </el-table-column>-->
+<!--                <el-table-column-->
+<!--                        prop="address"-->
+<!--                        label="地址"-->
+<!--                        width="300">-->
+<!--                </el-table-column>-->
+<!--                <el-table-column-->
+<!--                        prop="zip"-->
+<!--                        label="邮编"-->
+<!--                        width="120">-->
+<!--                </el-table-column>-->
+<!--                <el-table-column-->
+<!--                        fixed="right"-->
+<!--                        label="操作"-->
+<!--                        width="100">-->
+<!--                    <template slot-scope="scope">-->
+<!--                        <el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>-->
+<!--                        <el-button type="text" size="small">编辑</el-button>-->
+<!--                    </template>-->
+<!--                </el-table-column>-->
+<!--            </el-table>-->
+<!--        </div>-->
+<!--        <div class="box">-->
+<!--            <el-table-->
+<!--                    :data="tableData"-->
+<!--                    border-->
+<!--                    style="width: 100%">-->
+<!--                <el-table-column-->
+<!--                        fixed-->
+<!--                        prop="date"-->
+<!--                        label="日期"-->
+<!--                        width="150">-->
+<!--                </el-table-column>-->
+<!--                <el-table-column-->
+<!--                        prop="name"-->
+<!--                        label="姓名"-->
+<!--                        width="120">-->
+<!--                </el-table-column>-->
+<!--                <el-table-column-->
+<!--                        prop="province"-->
+<!--                        label="省份"-->
+<!--                        width="120">-->
+<!--                </el-table-column>-->
+<!--                <el-table-column-->
+<!--                        prop="city"-->
+<!--                        label="市区"-->
+<!--                        width="120">-->
+<!--                </el-table-column>-->
+<!--                <el-table-column-->
+<!--                        prop="address"-->
+<!--                        label="地址"-->
+<!--                        width="300">-->
+<!--                </el-table-column>-->
+<!--                <el-table-column-->
+<!--                        prop="zip"-->
+<!--                        label="邮编"-->
+<!--                        width="120">-->
+<!--                </el-table-column>-->
+<!--                <el-table-column-->
+<!--                        fixed="right"-->
+<!--                        label="操作"-->
+<!--                        width="100">-->
+<!--                    <template slot-scope="scope">-->
+<!--                        <el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>-->
+<!--                        <el-button type="text" size="small">编辑</el-button>-->
+<!--                    </template>-->
+<!--                </el-table-column>-->
+<!--            </el-table>-->
+<!--        </div>-->
     </div>
+
+
+
+
 </template>
 
 
 <script>
-
-
-
   export default {
-    name: "Administrators",
-    components: {
-
-
-    },
-    data() {
-      return {
-        com: 'users',
-        second:false
-
+    methods: {
+      handleClick(row) {
+        console.log(row);
       }
     },
+
+    data() {
+      return {
+        tableData: [{
+          date: '2016-05-02',
+          name: '王小虎',
+          province: '上海',
+          city: '普陀区',
+          address: '上海市普陀区金沙江路 1518 弄',
+          zip: 200333
+        }, {
+          date: '2016-05-04',
+          name: '王小虎',
+          province: '上海',
+          city: '普陀区',
+          address: '上海市普陀区金沙江路 1517 弄',
+          zip: 200333
+        }, {
+          date: '2016-05-01',
+          name: '王小虎',
+          province: '上海',
+          city: '普陀区',
+          address: '上海市普陀区金沙江路 1519 弄',
+          zip: 200333
+        }, {
+          date: '2016-05-03',
+          name: '王小虎',
+          province: '上海',
+          city: '普陀区',
+          address: '上海市普陀区金沙江路 1516 弄',
+          zip: 200333
+        }]
+      }
+    }
   }
 </script>
 
+
 <style scoped lang="less">
-    @import '../../assets/css/resize.css';
-
-    *{
-        color: white;
-    }
-    .warp{
-        overflow-y: hidden;
-        overflow-x: hidden;
-    }
-
-    .header{
-        background-color: #343335;
-        width: 100%;
-        height: 80px;
-        /*border: #04c9f9 1px solid;*/
-        line-height: 80px;
-    }
 
     .main{
-        width: 100%;
-        position: absolute;
-        top: 80px;
-        bottom: 0;
-        left: 0;
-        /*overflow: auto;*/
-        margin-bottom: 20px;
-
-    }
-    .main-left{
-        top: 0;
-        position: absolute;
-        bottom: 0;
-        /*background: #ee4540;*/
-        /*border: 1px #3be8b0  solid;*/
-        width: 200px;
-        overflow-y: auto;
-        overflow-x: hidden;
-        background-color: #272729;
-
-
-
-
-        li{
-            width: 200px;
-            height: 60px;
-            line-height: 60px;
-            /*border: 1px skyblue solid;*/
-            text-align: center;
-            font-size: 20px;
-
-            a{
-
-                color: white;
-
-
-            }
-            a:link{
-                color: white;
-            }
-            a:visited{
-                color: white;
-            }
-            a:hover{
-                opacity: 1;
-            }
-        }
-        li:hover{
-            background: #3D3D3E;
-        }
-
-    }
-    .main-right{
-        min-width: 600px;
-        left: 200px;
-        top:0;
-        right: 0;
-        position: absolute;
-        bottom: 0;
-
-        overflow-x: hidden;
-
-    }
-
-    .head-cont{
-        width: 95%;
+        width: 1200px;
         margin: 0 auto;
-        height:80px;
-        line-height: 80px;
-        /*border: 1px darkcyan dashed;*/
-
+    }
+    .box{
+        width: 1040px;
+        margin-left: 10px;
+        margin-bottom: 30px;
     }
 
-    .head-left,.header-right {
-        height: 60px;
-        /*border: 1px darkcyan dashed;*/
-        font-size:24px ;
-        display: inline-block;
+    .el-table-column{
+        width: 200px;
     }
 
-    .head-left{
-        width: 400px;
-        float: left;
-
-    }
-    .head-right{
-        /*border: 1px skyblue solid;*/
-        width: 240px;
-        margin-left: -400px;
-        float: right;
-        a{
-            padding:0 30px;
-        }
-    }
-    .icon{
-        margin-right: 20px;
-        width:50px ;
-        height: 50px;
-        border-radius: 50%;
-    }
-
-
-    .log{
-        width: 60px;
-        height: 60px;
-        vertical-align: middle;
-    }
-    .on{
-        background:#3D3D3E;
-    }
 </style>
