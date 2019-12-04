@@ -3,7 +3,7 @@
     <h1>支付</h1>
     <div class="timord">
       <div class="edx">
-        <p>2019-10-16 11:45:32</p>
+        <p>{{dateFormat(time)}}</p>
       </div>
       <div class="edx">
         <p>
@@ -23,7 +23,7 @@
 
         <div class="item-order">
           <div>
-            <img alt="Vue logo" :src="item.photourl" />
+            <img alt="food" :src="item.photourl" />
           </div>
           <div class="lineH">
             <h3>{{item.foodName}}</h3>
@@ -37,7 +37,7 @@
               <span>{{item.count}}</span>
             </p>
             <p>
-              <span>{{item.count * item.price}}</span> 元
+              <span>{{item.count * item.foodPrice}}</span> 元
             </p>
           </div>
         </div>
@@ -53,7 +53,7 @@
         </p>
       </div>
       <div>
-        <button class="BtnStyle" @click="payBtn()">确认付款</button>
+        <button class="BtnStyle" @click="payBtn()">生成订单</button>
       </div>
     </div>
   </div>
@@ -67,7 +67,8 @@ export default {
   name: "orderDetail",
   data() {
     return {
-      arr: [0]
+      arr: [0],
+      time: Date.parse(new Date())
     };
   },
   components: {
@@ -76,25 +77,25 @@ export default {
   computed: {
     ...mapState(["shoppingCar"]),
     countNum() {
-      var d = 0;
+      var d = 0
       this.shoppingCar.forEach(item => {
-        d += item.count * item.price;
+        d += item.count * item.foodPrice;
       });
       return d;
     }
   },
   methods: {
-    ...mapMutations(["delOrderN","addOrderMng"]),
+    ...mapMutations(["delOrderN", "addOrderMng"]),
     /* 删除 */
     delOrder(foodId) {
-      console.log(foodId)
+      console.log(foodId);
       this.$confirm("确认删除?", "提示", {
         confirmButtonText: "确认",
         cancelButtonText: "取消",
         type: "warning"
       })
         .then(() => {
-          this.delOrderN(foodId)
+          this.delOrderN(foodId);
           this.$message({
             type: "success",
             message: "删除成功"
@@ -108,10 +109,45 @@ export default {
         });
     },
     /* 付款 */
-    payBtn(){
-      this.addOrderMng(this.item)
-      console.log("加入",this.orderMng)
+    payBtn() {
+      this.addOrderMng(this.item);
+      console.log("加入", this.item);
+      
+      this.$message("支付成功")
+    },
+    dateFormat: function(time) {
+      var date = new Date(time);
+      var year = date.getFullYear();
+      var month = date.getMonth() + 1 < 10 ? "0" +
+       (date.getMonth() + 1) : date.getMonth() + 1;
+      var day = date.getDate() < 10 ? "0" + date.getDate() : date.getDate();
+      var hours =
+        date.getHours() < 10 ? "0" + date.getHours() : date.getHours();
+      var minutes =
+        date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes();
+      var seconds =
+        date.getSeconds() < 10 ? "0" + date.getSeconds() : date.getSeconds();
+      return (year + "-" + month + "-" + day + " " + hours + ":" + minutes + ":" + seconds);
     }
+  },
+  created(){
+    /* if(sessionStorage.getItem("store")){
+      this.$store.replaceState(Object.assign({}, this.$store.state,JSON.parse(sessionStorage, getItem("store"))))
+    }
+    window.addEventListener("beforeunload", () => {
+      sessionStorage.setItem("store",JSON.stringify(this.$store.state))
+    }) */
+    /* 获取订单号 */
+    /* this.axios
+    .post("/foodType/foodTypeList", {
+      "storeId": "1"
+    })
+    .then(res => {
+      console.log(res)
+    })
+    .catch(err => {
+      console.log(err)
+    }) */
   }
 };
 </script>
@@ -126,7 +162,7 @@ export default {
   }
 }
 
-.timord{
+.timord {
   display: flex;
   justify-content: space-around;
   align-items: center;
@@ -180,7 +216,7 @@ export default {
   height: 100px;
 }
 
-.lineH{
+.lineH {
   line-height: 30px;
 }
 
