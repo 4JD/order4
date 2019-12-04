@@ -355,18 +355,15 @@ export default {
       delFoodTypeId: -1,
       // 存储图片地址
       fileList: [
-        {
+        /* {
           name: "food.jpeg",
           url: require("../assets/images/store1.jpg")
-        }
+        } */
       ],
-      headers: {
-        "Content-Type": "multipart/form-data"
-      },
       // 编辑的菜品信息
       editFoodMsg: {},
       // 默认的菜品种类id
-      modifiedFoodTypeId: 1
+      modifiedFoodTypeId: 0
     };
   },
   methods: {
@@ -405,6 +402,23 @@ export default {
         });
 
       // -------------------------获取菜品的 AJAX 结束-------------------------------------
+    },
+    // 点击上传
+    upload() {
+      this.axios
+            .post("/file/upload", {
+              // 参数 菜品种类 id
+              foodTypeId: String(this.delFoodTypeId)
+            })
+            .then(res => {
+              console.log(res);
+              // 更新数据
+              this.getDate();
+              //
+            })
+            .catch(err => {
+              console.log(err);
+            });
     },
     // 删除菜品
     delFood(e) {
@@ -673,20 +687,24 @@ export default {
           // // 获取菜品图片名字
           // const addfoodImg = document.getElementsByClassName("upload-demo")[0]
           //   .value;
+
+          this.$refs.upload.submit();
           // 新的文件数组
           let addFoodFormDate = new FormData();
           addFoodFormDate.append("foodName", addfoodName);
-          addFoodFormDate.append("foodType", addfoodType);
+          addFoodFormDate.append("foodTypeId", addfoodType);
           addFoodFormDate.append("foodRemark", addfoodRemark);
           addFoodFormDate.append("foodPrice", addfoodPrice);
-          addFoodFormDate.append("file", this.fileList);
-          console.log(addFoodFormDate);
+          addFoodFormDate.append("saleId",1);
+          addFoodFormDate.append("foodPhoto", this.fileList[0]);
+          const foodPack=addFoodFormDate;
 
           /* -----------------------------------------------确定添加菜品的接口 开始-------------------------------------------- */
-          /* this.axios
-            .post("/food/addFood", {
-              // 参数 菜品种类 id
-              foodPack: addFoodFormDate
+          this.axios
+            .post("/food/addFood", foodPack,{
+              header: {
+                "Content-Type": "multipart/form-data"
+              }
             })
             .then(res => {
               console.log(res);
@@ -696,7 +714,7 @@ export default {
             })
             .catch(err => {
               console.log(err);
-            }); */
+            });
           /* -----------------------------------------------确定添加菜品的接口 结束-------------------------------------------- */
 
           // 与点击遮罩层一样的作用
@@ -757,13 +775,15 @@ export default {
       document.getElementsByClassName("editfoodbox")[0].classList.add("none");
     }
   },
-  mounted() {},
-  created() {
-    // 获取数据
-    this.getDate();
+  mounted() {
+    document.getElementsByClassName("taglist")[0].classList.add("istag");
     // 默认的菜品id
     this.modifiedFoodTypeId = this.foodTypeList[0].foodTypeId;
     console.log(this.modifiedFoodTypeId);
+  },
+  created() {
+    // 获取数据
+    this.getDate();
   }
 };
 </script>

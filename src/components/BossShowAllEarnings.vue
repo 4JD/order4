@@ -6,14 +6,14 @@
       </div>
       <div class="onstoreremark">
         <p>店铺名字: {{item.storeName}}</p>
-        <p>主营类型:{{item.storeMainType}}</p>
+        <p>主营类型:{{item.storeMain}}</p>
         <p>营业时间:{{item.storeHour}}</p>
         <p>门面地址:{{item.storeAddress}}</p>
       </div>
     </div>
 
     <!-- 图表内容 -->
-    <div id="echart"></div>
+    <div :id="'echart'+item.storeId" class="echart"></div>
   </div>
 </template>
 
@@ -22,7 +22,9 @@ import echarts from "echarts";
 export default {
   name: "bossshowallearnings",
   props: {
-    item: Object
+    item: Object,
+    number: Number,
+    allStoreIncome: Array
   },
   data() {
     return {};
@@ -31,7 +33,7 @@ export default {
     // 图表内容
     init() {
       this.$nextTick(() => {
-        var myChart = echarts.init(document.getElementById("echart"));
+        var myChart = echarts.init(document.getElementById("echart" + this.item.storeId));
         const option = {
           tooltip: {
             trigger: "axis",
@@ -71,7 +73,7 @@ export default {
                   position: "inside"
                 }
               },
-              data: [this.item.storeIncome]
+              data: [Number(this.allStoreIncome[this.number].storeIncome) - Number(this.allStoreIncome[this.number].storeExpend)]
             },
             {
               name: "收入",
@@ -82,7 +84,7 @@ export default {
                   show: true
                 }
               },
-              data: [this.item.storeIncome - this.item.storeExpend]
+              data: [Number(this.allStoreIncome[this.number].storeIncome)]
             },
             {
               name: "支出",
@@ -94,7 +96,7 @@ export default {
                   position: "left"
                 }
               },
-              data: [this.item.storeExpend]
+              data: [Number(this.allStoreIncome[this.number].storeExpend)]
             }
           ]
         };
@@ -125,6 +127,9 @@ export default {
 
 
 <style lang="less">
+.bossshowallearnings {
+  padding: 10px;
+}
 .earningsbox {
   text-align: left;
   width: 90%;
@@ -153,8 +158,12 @@ export default {
   }
 }
 // echart图
-#echart {
+.echart {
   width: 900px;
   height: 200px;
+  canvas {
+    width: 100%;
+    height: 100%;
+  }
 }
 </style>
