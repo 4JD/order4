@@ -154,6 +154,25 @@ export default {
       
     },
     addWorker() {
+      this.axios.post("/workerInsert",{
+        workerId:this.addform.id,
+        workerName:'偏偏',
+        workerSex:'男',
+        workerBirthday:formatDate(this.addform.birthday, 'yyyy-MM-dd'),
+        workerDate:formatDate(this.addform.date, 'yyyy-MM-dd'),
+        workerAddress:this.addform.address,
+        workerTel:this.addform.tel,
+        positionName:this.addform.position,
+        workerState:this.addform.state,
+        remark:this.addform.remark
+      })
+      .then(res => {
+        console.log("修改" ,res.data);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+
      var newDate1= formatDate(this.addform.date, 'yyyy-MM-dd')
      var newDate2= formatDate(this.addform.birthday, 'yyyy-MM-dd')
       this.$emit('add',{
