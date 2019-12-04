@@ -29,12 +29,12 @@ img{max-width:100%;}
 /*-- end reset --*/
 body {
     font-family: 'Muli', sans-serif;
-    background: url(../images/wang/bg2.jpg)no-repeat center 0;
+    background: url(../images/wang/bg2.jpg)  ;
     /*background:#3c4245;*/
-	-webkit-background-size:cover;
-	-moz-background-size:cover; 
-	background-size:cover;
-    background-attachment: fixed;
+	/*-webkit-background-size:cover;*/
+	/*-moz-background-size:cover; */
+	/*background-size:cover;*/
+    /*background-attachment: fixed;*/
 } 
 /*-- main --*/ 
 .agileinfo-row {
@@ -42,8 +42,12 @@ body {
     margin:0 auto;
 	text-align:center;
 }
+body{
+    overflow-y: hidden;
+}
 /*-- top-nav --*/
 .agileits-main {
+
 }
 .w3top-nav {
     padding: 2em 8em;
@@ -370,6 +374,7 @@ h3 a {
 @media(max-width:1280px){
 .w3top-nav {
     padding: 1em 8em;
+    text-align: center;
 }
 }
 @media(max-width:1080px){
@@ -487,8 +492,14 @@ h3 {
 .w3top-nav-left h1 {
     font-size: 2em;
 }
+.w3top-nav-left h2 {
+
+    font-size: 5px;
+    }
 .w3top-nav {
     padding: 1em 0;
+    text-align: center;
+
 }
 .w3top-nav-right ul li a {
     font-size: 0.8em;

@@ -7,12 +7,13 @@
         <div class="w3top-nav">
 
             <div class="w3top-nav-left">
-                <h1>dwaf</h1>
+<!--                <h1>dwaf</h1>-->
+
+
 
             </div>
             <div class="clear"></div>
         </div>
-
 
         <div class="header-main">
             <h2>登录</h2>
@@ -22,7 +23,7 @@
                         <div>
                             <div class="icon1">
                                 <label >
-                                    <input type="text" placeholder="手机号"  v-model="username">
+                                    <input maxlength="11" type="text" placeholder="手机号"  v-model="username"  onkeypress="return event.keyCode>=48&&event.keyCode<=57" >
                                 </label>
 
                             </div>
@@ -89,7 +90,14 @@
               setTimeout(()=>{
                 this.errText=false;
               },2000)
-            }else {
+            }else if (this.username.length!=11){
+              this.errText=true;
+              this.errCont="用户名长度不够";
+              setTimeout(()=>{
+                this.errText=false;
+              },2000)
+            }
+            else {
 
               this.axios.post("/login",{
                 //传递的参数
@@ -100,12 +108,30 @@
                 console.log(res.data);
 
                 if (res.data.code==200){
-                  var token = res.data.data;
+                  var token = res.data.data.token;
+                  var userId=res.data.data.userId;
 
-                  // var userId=res.data.
+                  sessionStorage.setItem("userId", userId);
+                  sessionStorage.setItem("userName", res.username);
+
+
+                  // var url = this.$route.query.redirect;
+                  // url = url ? url : "/";
+                  // this.$router.replace(url);
+                  // if (res.data.data.role==1){
+                  //   this.$router.replace("/home1")
+                  // }
+                  if (res.data.data.roleId==2) {
+                    window.location.href="/BossSystems"
+                  }else if (res.data.data.roleId==3){
+                    window.location.href="/userPage"
+                  }
+
+
+
+
+
                     sessionStorage.setItem("token", token);
-
-
 
                 } else if (res.data.code==1001||res.data.code==1002){
                   this.errText=true;
@@ -113,32 +139,13 @@
                   setTimeout(()=>{
                     this.errText=false;
                   },2000)
+                  throw 'throw error'
                 }
 
-                return token
+
 
               })
-                .then((token)=>{
-                  this.axios.get("/getMenu",{
-                    params:{
-                      token
-                    }
-                  })
-                }).then((res)=>{
-                  window.console.log(res)
-                // sessionStorage.setItem("userId", res.userId);
-                // sessionStorage.setItem("userName", res.username);
 
-
-
-                // var url = this.$route.query.redirect;
-                // url = url ? url : "/";
-                // this.$router.replace(url);
-                // if (res.data.role==1){
-                //   this.$router.replace("/home1")
-                // }
-
-              })
                 .catch(err=>{
                 console.log(err)
               });

@@ -59,7 +59,6 @@
 
           telNumber:"",
           password:"",
-
           passwordAgain:"",
 
           errText:false,
@@ -82,9 +81,9 @@
               this.errText=false;
             },2000)
           }else if (this.password==this.passwordAgain) {
-             this.axios.post("/resetpass",{
-               telNumber:sessionStorage.getItem("telNumber"),
-               password:this.password
+             this.axios.post("/updatePassword",{
+               userTel:sessionStorage.getItem("userTel"),
+               userPassword:this.password
              })
                .then((res)=>{
                  console.log(res)
