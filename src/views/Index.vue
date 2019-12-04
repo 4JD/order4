@@ -96,6 +96,7 @@ export default {
   },
   created() {
     this.getFoodItemsSync(), this.getFoodTypeSync()
+    this.save_foodList({a : 2})
 
     /* 获取数据 */
     /* this.axios
@@ -103,7 +104,17 @@ export default {
       "storeId": "1"
     })
     .then(res => {
-      this.$router.commit("save_foodList",res.data.data)
+      var myData = res.data.data
+      var foodItems = []
+      myData.forEach((items) => {
+        var newFood = {}
+        newFood.foodId = myData.foodId
+
+        foodItems.push(newFood)
+      })
+    
+      this.save_foodList(foodItems)
+
       console.log(res)
     })
     .catch(err => {
@@ -111,8 +122,8 @@ export default {
     }) */
   },
   methods: {
-    ...mapActions(["getFoodItemsSync", "getFoodTypeSync"]),
-    ...mapMutations(["addOrder"]),
+    ...mapActions(["getFoodItemsSync", "getFoodTypeSync",]),
+    ...mapMutations(["addOrder","save_foodList"]),
     c1: function(item) {
       this.drawer = true
       this.item1 = item

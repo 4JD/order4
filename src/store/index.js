@@ -153,7 +153,14 @@ export default new Vuex.Store({
 
     /* 删除 */
     delOrderN(state,n){
-      state.shoppingCar.slice(n,1)
+      var p
+      state.shoppingCar.forEach((items,index) => {
+        if(items.foodId == n) {
+          p == index
+          return
+        }
+      })
+      state.shoppingCar.splice(p,1) 
     },
     /* 加入历史订单 */
     addOrderMng(state,n){
@@ -161,7 +168,7 @@ export default new Vuex.Store({
     },
 
     save_foodList(state, data){
-      state.foodList = data
+      state.foodItems = data
     }
   },
   actions: {

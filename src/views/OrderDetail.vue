@@ -17,7 +17,7 @@
       <div class="ordered-item" v-for="(item,index) in shoppingCar" :key="index">
         <div class="item-top">
           <div class="del-btn">
-            <button class="BtnStyle" type="button" @click="delOrder()">删除</button>
+            <button class="BtnStyle" type="button" @click="delOrder(item.foodId)">删除</button>
           </div>
         </div>
 
@@ -86,15 +86,15 @@ export default {
   methods: {
     ...mapMutations(["delOrderN","addOrderMng"]),
     /* 删除 */
-    delOrder() {
+    delOrder(foodId) {
+      console.log(foodId)
       this.$confirm("确认删除?", "提示", {
         confirmButtonText: "确认",
         cancelButtonText: "取消",
         type: "warning"
       })
         .then(() => {
-          this.delOrderN(this.item)
-          console.log("删除", this.item)
+          this.delOrderN(foodId)
           this.$message({
             type: "success",
             message: "删除成功"
