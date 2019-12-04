@@ -18,12 +18,7 @@
         >{{item.foodTypeName}}</option>
       </select>
       <input type="text" placeholder="请输入菜品简介..." class="isaddfoodRemark" />
-      <input
-        type="number"
-        name="isaddfoodpricex"
-        class="isaddfoodpricex"
-        placeholder="请输入菜品价格..."
-      />
+      <input type="number" name="isaddfoodpricex" class="isaddfoodpricex" placeholder="请输入菜品价格..." />
       <el-upload
         class="upload-demo"
         action="https://jsonplaceholder.typicode.com/posts/"
@@ -157,7 +152,12 @@
                 <h3>{{item.foodName}}</h3>
                 <p>{{item.foodRemark.substr(0,15)}}...</p>
                 <p class="price">￥{{item.foodLargePrice}}</p>
-                <select class="foodstate" :value="item.foodState">
+                <select
+                  class="foodstate"
+                  :value="item.foodState"
+                  :data-foodid="item.foodId"
+                  @blur="modififoodstate"
+                >
                   <option value="1">在售</option>
                   <option value="2">已售完</option>
                   <option value="3">下架</option>
@@ -248,7 +248,7 @@ var allFoodList = [
     foodPhoto: require("../assets/images/store1.jpg"),
     foodRemark:
       "这是一段菜品简介,辣的爽，辣的棒，辣的呱呱叫，快来尝，快来试，永生不能忘。",
-      foodState: 1,
+    foodState: 1
   },
   {
     foodId: "2",
@@ -258,7 +258,7 @@ var allFoodList = [
     foodPhoto: require("../assets/images/store1.jpg"),
     foodRemark:
       "这是一段菜品简介,辣的爽，辣的棒，辣的呱呱叫，快来尝，快来试，永生不能忘。",
-      foodState: 2,
+    foodState: 2
   },
   {
     foodId: "3",
@@ -267,7 +267,7 @@ var allFoodList = [
     foodLargePrice: 160,
     foodPhoto: require("../assets/images/store1.jpg"),
     foodRemark: "这是一段菜品简介",
-    foodState: 3,
+    foodState: 3
   },
   {
     foodId: "4",
@@ -277,7 +277,7 @@ var allFoodList = [
     foodPhoto: require("../assets/images/store1.jpg"),
     foodRemark:
       "这是一段菜品简介,辣的爽，辣的棒，辣的呱呱叫，快来尝，快来试，永生不能忘。",
-      foodState: 1,
+    foodState: 1
   },
   {
     foodId: "5",
@@ -287,7 +287,7 @@ var allFoodList = [
     foodPhoto: require("../assets/images/store1.jpg"),
     foodRemark:
       "这是一段菜品简介,辣的爽，辣的棒，辣的呱呱叫，快来尝，快来试，永生不能忘。",
-      foodState: 1,
+    foodState: 1
   },
   {
     foodId: "6",
@@ -296,7 +296,7 @@ var allFoodList = [
     foodLargePrice: 120,
     foodPhoto: require("../assets/images/store1.jpg"),
     foodRemark: "这是一段菜品简介",
-    foodState: 2,
+    foodState: 2
   },
   {
     foodId: "7",
@@ -306,7 +306,7 @@ var allFoodList = [
     foodPhoto: require("../assets/images/store1.jpg"),
     foodRemark:
       "这是一段菜品简介,辣的爽，辣的棒，辣的呱呱叫，快来尝，快来试，永生不能忘。",
-      foodState: 1,
+    foodState: 1
   },
   {
     foodId: "8",
@@ -315,7 +315,7 @@ var allFoodList = [
     foodLargePrice: 120,
     foodPhoto: require("../assets/images/store1.jpg"),
     foodRemark: "这是一段菜品简介",
-    foodState: 1,
+    foodState: 1
   },
   {
     foodId: "9",
@@ -324,7 +324,7 @@ var allFoodList = [
     foodLargePrice: 120,
     foodPhoto: require("../assets/images/store1.jpg"),
     foodRemark: "这是一段菜品简介",
-    foodState: 1,
+    foodState: 1
   },
   {
     foodId: "10",
@@ -333,7 +333,7 @@ var allFoodList = [
     foodLargePrice: 120,
     foodPhoto: require("../assets/images/store1.jpg"),
     foodRemark: "这是一段菜品简介",
-    foodState: 2,
+    foodState: 2
   }
 ];
 
@@ -363,7 +363,40 @@ export default {
   },
   methods: {
     // 获取数据
-    getDate() {},
+    getDate() {
+      // -------------------获取菜品标签的 AJAX 开始--------------------------------------
+      this.axios
+        .post("/foodType/foodTypeList", {
+          // 参数 店铺id
+          storeId: "1"
+        })
+        .then(res => {
+          // console.log(res.data);
+          // console.log(res.data.data);
+          // 给数据菜品种类复制
+          this.foodTypeList = res.data.data;
+        })
+        .catch(err => {
+          console.log(err);
+        });
+
+      // ------------------------获取菜品标签的 AJAX 结束---------------------------------
+      // ------------------------获取菜品的 AJAX 开始--------------------------------------
+      this.axios
+        .post("/food/foodList", {
+          // 参数 菜品种类 id
+          foodTypeId: "1"
+        })
+        .then(res => {
+          console.log(res.data.data);
+          // 给菜品列表复制
+        })
+        .catch(err => {
+          console.log(err);
+        });
+
+      // -------------------------获取菜品的 AJAX 结束-------------------------------------
+    },
     // 删除菜品
     delFood(e) {
       this.$confirm("此操作将删除这条数据, 是否继续?", "提示", {
@@ -410,12 +443,28 @@ export default {
           this.delFoodTypeId = Number(e.target.getAttribute("data-id"));
           console.log(Number(e.target.getAttribute("data-id")));
           // 删除菜品种类数据
-          for (var i = 0; i < this.foodTypeList.length; i++) {
+          /* for (var i = 0; i < this.foodTypeList.length; i++) {
             if (this.foodTypeList[i].foodTypeId == this.delFoodTypeId) {
               this.foodTypeList.splice(i, 1);
               console.log("删除成功", this.foodList);
             }
-          }
+          } */
+          // 调用 删除菜品种类的 ajax ---------------
+          this.axios
+            .post("/foodType/deleteFoodType", {
+              // 参数 菜品种类 id
+              "foodTypeId": String(this.delFoodTypeId),
+            })
+            .then(res => {
+              console.log(res);
+              // 更新数据
+              this.getDate();
+              // 
+            })
+            .catch(err => {
+              console.log(err);
+            });
+          // 调用 删除菜品种类的AJAX结束---------------
         })
         .catch(() => {
           this.$message({
@@ -428,10 +477,7 @@ export default {
     addFoodType() {
       this.$prompt("请输入种类名", "提示", {
         confirmButtonText: "确定",
-        cancelButtonText:
-          "取消" /* 
-        inputPattern: /[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/,
-        inputErrorMessage: "邮箱格式不正确" */
+        cancelButtonText: "取消"
       })
         .then(({ value }) => {
           this.$message({
@@ -439,9 +485,28 @@ export default {
             message: "你新添加的种类是: " + value
           });
           // value 新添加的种类值
+          // 利用 AJAX 为表里添加分类------------
+          this.axios
+            .post("/foodType/addFoodType", {
+              // 参数 菜品种类 id
 
-          this.foodTypeList.push(value);
-          console.log(value, this.foodTypeList);
+              foodTypeName: value,
+              storeId: "1",
+              foodTypeRemark: "我是菜品备注"
+            })
+            .then(res => {
+              console.log(res);
+              // 更新数据
+              this.getDate();
+              // 给菜品列表复制
+            })
+            .catch(err => {
+              console.log(err);
+            });
+          // -----------------------------
+
+          // this.foodTypeList.push(value);
+          // console.log(value, this.foodTypeList);
         })
         .catch(() => {
           this.$message({
@@ -593,38 +658,14 @@ export default {
         .getElementsByClassName("editfoodbox")[0]
         .classList.remove("show");
       document.getElementsByClassName("editfoodbox")[0].classList.add("none");
-    }
+    },
+    // 更改菜品状态的失焦事件
+    modififoodstate() {}
   },
   mounted() {},
   created() {
-    // -------------------获取菜品标签的 AJAX 开始--------------------------------------
-    this.axios
-      .post("/getfoodtype", {
-        storeId: 1
-      })
-      .then(res => {
-        console.log(res.data);
-        if (res.data.state == "200") {
-          // var token = "njaksxbxkjasbkjcxasbjk" // 模拟后台返回的token
-          var token = res.data.token;
-          sessionStorage.setItem("token", token);
-
-          // 获取参数（未登录时想访问的路由）
-          var url = this.$route.query.redirect;
-          console.log(url);
-
-          url = url ? url : "/";
-          // 切换路由
-          this.$router.replace(url);
-        } else {
-          console.log("登陆失败");
-        }
-      })
-      .catch(err => {
-        console.log(err);
-      });
-
-    // ------------------------获取菜品标签的 AJAX 结束---------------------------------
+    // 获取数据
+    this.getDate();
   }
 };
 </script>
@@ -640,6 +681,7 @@ export default {
 }
 // 总体
 .app-MenuManagement {
+  color: #000;
   text-align: left;
   min-width: 620px;
 }
@@ -792,13 +834,13 @@ export default {
           width: 150px;
           border: none;
           box-shadow: 0 0 2px gray;
-            padding: 3px 10px;
-            font-size: 16px;
-            color: #000;
-            letter-spacing: 2px;
-            display: block;
-            outline: none;
-            margin: 10px 0;
+          padding: 3px 10px;
+          font-size: 16px;
+          color: #000;
+          letter-spacing: 2px;
+          display: block;
+          outline: none;
+          margin: 10px 0;
         }
         .foodlist-edit {
           padding: 10px 20px;

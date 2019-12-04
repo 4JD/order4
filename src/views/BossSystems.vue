@@ -373,8 +373,6 @@ export default {
     return {
       // tab 选项卡显示值
       showMean: 1,
-      //   老板名称
-      bossName: "master boss",
       storelist: allstorelist,
       // 显示店铺详情弹框的信息
       showstoredetailmsg: {
@@ -397,6 +395,25 @@ export default {
     };
   },
   methods: {
+    // 获取数据
+    getDate() {
+      // 当前登录老板名下 获取店铺信息-----------开始------------------
+      /* this.axios
+        .post("/store/findStore", {
+          // 参数 菜品种类 id
+          foodTypeId: String(this.delFoodTypeId)
+        })
+        .then(res => {
+          console.log(res);
+          // 更新数据
+          this.getDate();
+          //
+        })
+        .catch(err => {
+          console.log(err);
+        }); */
+        // 当前登录老板名下 获取店铺信息--- 结束 --------------------------
+    },
     // 右击左边的tab选项卡事件
     checkMean(e) {
       /*  
@@ -423,7 +440,9 @@ export default {
         .classList.remove("none");
       document.getElementsByClassName("newstroeboxs")[0].classList.add("show");
       // 滚动条禁止使用
-      document.getElementsByTagName("body")[0].setAttribute("style","overflow:hidden;")
+      document
+        .getElementsByTagName("body")[0]
+        .setAttribute("style", "overflow:hidden;");
     },
     // 新增店铺弹框关闭/取消 点击事件
     closenewstroebox() {
@@ -468,8 +487,10 @@ export default {
       document
         .getElementsByClassName("storedetailbox")[0]
         .classList.add("show");
-        // 滚动条禁止使用
-      document.getElementsByTagName("body")[0].setAttribute("style","overflow:hidden;")
+      // 滚动条禁止使用
+      document
+        .getElementsByTagName("body")[0]
+        .setAttribute("style", "overflow:hidden;");
     },
     /* 删除相应的店铺 */
     delStore(delstoreid) {
@@ -540,7 +561,9 @@ export default {
       document.getElementsByClassName("bossbox")[0].classList.remove("none");
       document.getElementsByClassName("bossbox")[0].classList.add("show");
       // 滚动条禁止使用
-      document.getElementsByTagName("body")[0].setAttribute("style","overflow:hidden;")
+      document
+        .getElementsByTagName("body")[0]
+        .setAttribute("style", "overflow:hidden;");
     },
     // 关闭修改个人信息弹窗
     closebossbox() {
@@ -586,7 +609,9 @@ export default {
       document.getElementsByClassName("zhezhao")[0].classList.remove("none");
       document.getElementsByClassName("zhezhao")[0].classList.add("show");
       // 滚动条禁止使用
-      document.getElementsByTagName("body")[0].setAttribute("style","overflow:hidden;")
+      document
+        .getElementsByTagName("body")[0]
+        .setAttribute("style", "overflow:hidden;");
     },
     // 修改密码弹窗的 取消与关闭事件
     closeeditpasswordbox() {
@@ -674,8 +699,14 @@ export default {
       document.getElementsByClassName("newstroeboxs")[0].classList.add("none");
 
       // 滚动条
-      document.getElementsByTagName("body")[0].setAttribute("style","overflow:auto;")
+      document
+        .getElementsByTagName("body")[0]
+        .setAttribute("style", "overflow:auto;");
     }
+  },
+  // created()
+  created() {
+    this.getDate();
   }
 };
 </script>
