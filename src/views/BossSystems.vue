@@ -211,6 +211,15 @@
         <input type="text" placeholder="请输入店铺地址..." class="newstoreaddress" />
       </div>
       <div class="newstroemsg">
+        <span>联系方式：</span>
+        <input type="text" placeholder="请输入联系方式..." class="newstoretelA" />
+      </div>
+      <div class="newstroemsg">
+        <span>营业时段：</span>
+        <input type="time" placeholder="请输入时间..." class="newstoreHourA" /> —
+        <input type="time" placeholder="请输入时间..." class="newstoreHourB" />
+      </div>
+      <div class="newstroemsg">
         <span>店铺简介：</span>
         <textarea cols="30" rows="10" placeholder="请输入店铺简介..." class="newstoreremark"></textarea>
       </div>
@@ -400,19 +409,16 @@ export default {
       // 当前登录老板名下 获取店铺信息-----------开始------------------
       /* this.axios
         .post("/store/findStore", {
-          // 参数 菜品种类 id
-          foodTypeId: String(this.delFoodTypeId)
+          // 参数 老板id
+          storeId: 1
         })
         .then(res => {
           console.log(res);
-          // 更新数据
-          this.getDate();
-          //
         })
         .catch(err => {
           console.log(err);
         }); */
-        // 当前登录老板名下 获取店铺信息--- 结束 --------------------------
+      // 当前登录老板名下 获取店铺信息--- 结束 --------------------------
     },
     // 右击左边的tab选项卡事件
     checkMean(e) {
@@ -461,7 +467,74 @@ export default {
             message: "新建成功!"
           });
           // 点击确定过后要进行的操作
+          // 获取店铺号码
+          const newstoreNumber = document.getElementsByClassName(
+            "newstoretel"
+          )[0].value;
+          // 获取店铺名
+          const newStoreName = document.getElementsByClassName(
+            "newstorename"
+          )[0].value;
+          // 获取店铺密码
+          const newStorePassword2 = document.getElementsByClassName(
+            "newstorepassword2"
+          )[0].value;
+          // 获取店铺地址
+          const newStoreAddress = document.getElementsByClassName(
+            "newstoreaddress"
+          )[0].value;
+          // 获取店铺简介
+          const newStoreRemark = document.getElementsByClassName(
+            "newstoreremark"
+          )[0].value;
+          // 获取店铺联系方式
+          const newStoreTelA = document.getElementsByClassName(
+            "newstoretelA"
+          )[0].value;
+          // 获取时间段
 
+          const newStoreHourA = document.getElementsByClassName(
+            "newstoreHourA"
+          )[0].value;
+          const newStoreHourB = document.getElementsByClassName(
+            "newstoreHourB"
+          )[0].value;
+          const newStoreHour = newStoreHourA + "-" + newStoreHourB;
+          console.log(
+            newstoreNumber,
+            newStoreName,
+            newStorePassword2,
+            newStoreAddress,
+            newStoreRemark,
+            newStoreTelA,
+            newStoreHour
+          );
+          // 获取
+          /* -------------------------新增店铺接口开始-------------------------- */
+          this.axios
+            .post("/store/addStore", {
+              // 参数 菜品种类 id
+              foodPack: {
+                userId: 1,
+                storeName: newStoreName,
+                storeAddress: newStoreAddress,
+                storeRemark: newStoreRemark,
+                userTel: newstoreNumber,
+                password: newStorePassword2,
+                storeTel: newStoreTelA,
+                storeHour: newStoreHour
+              }
+            })
+            .then(res => {
+              console.log(res);
+              // 更新数据
+              this.getDate();
+              //
+            })
+            .catch(err => {
+              console.log(err);
+            });
+          /* -------------------------新增店铺接口结束------------------------- */
           // 与点击遮罩层一样的作用
           this.closezhezhao();
         })
@@ -507,6 +580,22 @@ export default {
             message: "删除成功!"
           });
           // 点击确定过后要进行的操作
+          /* ------------------------------------删除店铺接口开始--------------------------------------- */
+          /* this.axios
+            .post("/store/deleteStore", {
+              // 参数为 店铺id
+              storeId: String(delstoreid)
+            })
+            .then(res => {
+              console.log(res);
+              // 更新数据
+              this.getDate();
+              //
+            })
+            .catch(err => {
+              console.log(err);
+            }); */
+          /* ------------------------------------------删除店铺接口结束----------------------------- */
 
           // 与点击遮罩层一样的作用
           this.closezhezhao();
@@ -529,7 +618,23 @@ export default {
     店铺详情的弹窗的确认按钮
     */
     enterstoredetailbox() {
-      this.$confirm("确定更改该店铺信息吗?", "提示", {
+      /* ---------------------------修改店铺详情AJAX 开始------------------------ */
+      /* this.axios
+        .post("/food/addFood", {
+          // 参数 菜品种类 id
+          foodPack: addFoodFormDate
+        })
+        .then(res => {
+          console.log(res);
+          // 更新数据
+          this.getDate();
+          //
+        })
+        .catch(err => {
+          console.log(err);
+        }); */
+      /* ----------------------------修改店铺详情AJAX 结束------------------------ */
+      /* this.$confirm("确定更改该店铺信息吗?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning"
@@ -549,7 +654,7 @@ export default {
             type: "info",
             message: "已取消修改"
           });
-        });
+        }); */
     },
     // 打开修改个人中心弹窗
     editadminmsg() {
@@ -572,7 +677,23 @@ export default {
     },
     // 确认修改个人信息弹窗
     enterbossbox() {
-      this.$confirm("确定修改信息吗?", "提示", {
+      /* ------------------------修改老板信息 AJAX开始---------------------- */
+      /* this.axios
+        .post("/food/addFood", {
+          // 参数 菜品种类 id
+          foodPack: addFoodFormDate
+        })
+        .then(res => {
+          console.log(res);
+          // 更新数据
+          this.getDate();
+          //
+        })
+        .catch(err => {
+          console.log(err);
+        }); */
+      /* --------------------------修改老板信息 AJAX 结束--------------------------- */
+      /* this.$confirm("确定修改信息吗?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning"
@@ -592,7 +713,7 @@ export default {
             type: "info",
             message: "已取消修改"
           });
-        });
+        }); */
     },
     // 退出
     exitadmin() {},
@@ -619,7 +740,23 @@ export default {
     },
     // 修改密码弹窗的 确定事件
     entereditpasswordbox() {
-      this.$confirm("确定修改密码吗?", "提示", {
+      /* ----------------------修改密码的AJAX 开始--------------------- */
+      /* this.axios
+        .post("/food/addFood", {
+          // 修改的老板  id
+          bossId: 1
+        })
+        .then(res => {
+          console.log(res);
+          // 更新数据
+          this.getDate();
+          //
+        })
+        .catch(err => {
+          console.log(err);
+        }); */
+      /* --------------------修改密码的AJAX 结束----------------------- */
+      /* this.$confirm("确定修改密码吗?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning"
@@ -639,33 +776,28 @@ export default {
             type: "info",
             message: "已取消修改"
           });
-        });
+        }); */
     },
     // 重置密码 点击事件，子组件调用
     residepassword(storeId) {
       // storeId为重置密码的 店铺id号
       console.log(storeId);
-      this.$confirm("确定重置该店铺密码吗?", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
-      })
-        .then(() => {
-          this.$message({
-            type: "success",
-            message: "重置成功!"
-          });
-          // 点击确定过后要进行的操作
-
-          // 与点击遮罩层一样的作用
-          this.closezhezhao();
+      /* -----------------------重置密码的ajax开始--------------------- */
+      /* this.axios
+        .post("/food/addFood", {
+          // 参数 店铺 id
+          storeId: storeid
         })
-        .catch(() => {
-          this.$message({
-            type: "info",
-            message: "已取消重置"
-          });
-        });
+        .then(res => {
+          console.log(res);
+          // 更新数据
+          this.getDate();
+          //
+        })
+        .catch(err => {
+          console.log(err);
+        }); */
+      /* -----------------------重置密码的ajax结束------------------------- */
     },
     /* 
     遮罩层的点击事件
@@ -1114,8 +1246,8 @@ export default {
 // 新增店铺信息弹框
 .newstroeboxs {
   display: none;
-  width: 400px;
-  height: 400px;
+  width: 450px;
+  height: 470px;
   position: fixed;
   left: 0;
   top: 0;
@@ -1153,6 +1285,13 @@ export default {
     input[type="text"],
     input[type="password"] {
       width: 70%;
+      height: 30px;
+      margin: 10px 0 0 0;
+      border: none;
+      box-shadow: 0 0 2px black;
+    }
+    input[type="time"] {
+      width: 30%;
       height: 30px;
       margin: 10px 0 0 0;
       border: none;
