@@ -91,20 +91,30 @@ export default {
       pay: "今日",
       profit: "今日",
       income: "今日",
-      payPrice: "",
-      profitPrice: "",
-      incomePrice: ""
+      payPrice: "0",
+      profitPrice: "0",
+      incomePrice: "0",
+      dateHalf: []
     };
   },
   created() {
-    //   this.axios.get('/user/getProfit',{
-    //   })
-    // .then(res=> {
-    //   console.log('获取支出信息：',res,data);
-    // })
-    // .catch(err => {
-    //   console.log(err);
-    // })
+
+    this.axios
+      .post("/user/findAllPrice", {
+        userId: 1,
+        date: formatDate(new Date(), "yyyy-MM-dd")
+      })
+      .then(res => {
+        console.log("获取一天信息：", res.data);
+        // console.log("获取利润信息：", res.data.data.profitsPrice);
+
+        this.payPrice = res.data.data.payPrice;
+        this.profitPrice = res.data.data.profitsPrice;
+        this.incomePrice = res.data.data.incomePrice;
+      })
+      .catch(err => {
+        console.log(err);
+      });
   },
   methods: {
     getDate() {
@@ -117,38 +127,47 @@ export default {
     open() {
       if (this.value2 != "") {
         var currentMon = formatDate(this.value2, "yyyy-MM");
-        this.$alert("这是一段内容", currentMon + "月的收益", {
-          confirmButtonText: "确定"
-        });
+        this.axios
+          .post("/user/findByMonth", {
+            userId: 1,
+            date: formatDate(this.value2, "yyyy-MM-dd")
+          })
+          .then(res => {
+            console.log("获取某月利润信息：", res.data);
+            this.$alert(
+              "这个月收益：" + res.data.data + "元",
+              currentMon + "月的收益",
+              {
+                confirmButtonText: "确定"
+              }
+            );
+          })
+          .catch(err => {
+            console.log(err);
+          });
       }
-
-      //   this.axios.get('/user/getProfit',{
-      //     checkPaytime1:formatDate(this.value2, "yyyy-MM-dd"),
-      // })
-      // .then(res=> {
-      //   console.log('获取支出信息：',res,data);
-      //
-      // })
-      // .catch(err => {
-      //   console.log(err);
-      // })
     },
     getMon() {
       if (this.value1 != "") {
-        console.log(formatDate(this.value1, "yyyy-MM-dd hh:mm:ss"));
-        console.log(formatDate(this.value1, "yyyy-MM-dd 23:59:59"));
+        console.log(formatDate(this.value1, "yyyy-MM-dd"));
       }
 
-      //   this.axios.get('/user/getProfit',{
-      //     checkPaytime1:formatDate(this.value1, "yyyy-MM-dd"),
-      // })
-      // .then(res=> {
-      //   console.log('获取支出信息：',res,data);
-      //
-      // })
-      // .catch(err => {
-      //   console.log(err);
-      // })
+      this.axios
+        .post("/user/findAllPrice", {
+          userId: 1,
+          date: formatDate(this.value1, "yyyy-MM-dd")
+        })
+        .then(res => {
+          console.log("获取某天信息：", res.data);
+          console.log("获取利润信息：", res.data.data.profitsPrice);
+
+          this.payPrice = res.data.data.payPrice;
+          this.profitPrice = res.data.data.profitsPrice;
+          this.incomePrice = res.data.data.incomePrice;
+        })
+        .catch(err => {
+          console.log(err);
+        });
     }
   },
   mounted() {
@@ -156,7 +175,50 @@ export default {
     var dateNow = formatDate(new Date(), "yyyy-MM-dd");
     var arr = dateNow.split("-");
     var dateXAis = arr[1];
-    console.log(dateXAis);
+    // var dateHalfItem = this.dateHalf[0];
+    // console.log("获取到没"+dateHalfItem);
+    this.axios
+      .post("/profits/findHalfYear", {
+        userId: 1
+      })
+      .then(res => {
+        console.log("获取半年利润信息：", res.data);
+        this.dateHalf = res.data.data;
+        console.log(this.dateHalf);
+        console.log(this.dateHalf[0]);
+        myChart.setOption({
+          tooltip: {},
+          xAxis: {
+            data: [
+              dateXAis - 5 + "月",
+              dateXAis - 4 + "月",
+              dateXAis - 3 + "月",
+              dateXAis - 2 + "月",
+              dateXAis - 1 + "月",
+              dateXAis + "月"
+            ]
+          },
+          yAxis: {},
+          series: [
+            {
+              name: "利润",
+              type: "bar",
+              data: [
+                this.dateHalf[0],
+                this.dateHalf[1],
+                this.dateHalf[2],
+                this.dateHalf[3],
+                this.dateHalf[4],
+                this.dateHalf[5]
+              ]
+            }
+          ]
+        });
+      })
+      .catch(err => {
+        console.log(err);
+      });
+    console.log(this.dateHalf);
     myChart.setOption({
       tooltip: {},
       xAxis: {
@@ -174,7 +236,14 @@ export default {
         {
           name: "利润",
           type: "bar",
-          data: [5, 20, 96, 10, 10, 20, 30]
+          data: [
+            this.dateHalf[0],
+            this.dateHalf[1],
+            this.dateHalf[2],
+            this.dateHalf[3],
+            this.dateHalf[4],
+            this.dateHalf[5]
+          ]
         }
       ]
     });
