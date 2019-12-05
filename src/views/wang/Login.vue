@@ -105,11 +105,12 @@
                 console.log(res.data);
 
                 if (res.data.code==200){
+                  console.log(res.data)
                   var token = res.data.data.token;
                   var userId=res.data.data.userId;
 
                   sessionStorage.setItem("userId", userId);
-                  // sessionStorage.setItem("userName", res.data.username);
+                  sessionStorage.setItem("userName", res.data.data.userName);
                   sessionStorage.setItem("token", token);
 
                   // var url = this.$route.query.redirect;

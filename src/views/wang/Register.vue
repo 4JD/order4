@@ -202,6 +202,18 @@
                           this.errText=false;
                           location.href="/login"
                         },2000)
+                    }else if (res.data.code==1001){
+                      this.errText=true;
+                      this.errCont="账号存在";
+                      setTimeout(()=>{
+                        this.errText=false;
+                      },2000)
+                    } else if(res.data.code==1002){
+                      this.errText=true;
+                      this.errCont="注册失败";
+                      setTimeout(()=>{
+                        this.errText=false;
+                      },2000)
                     }
                     // if (res.data.code) {
                     //   this.$router.replace("/login")
@@ -223,24 +235,6 @@
               })
 
 
-
-            // //   .then((res)=>{
-            // //   if (res.data.state==1){
-            // //     this.errText=true;
-            // //     this.errCont="注册成功";
-            // //     setTimeout(()=>{
-            // //       this.errText=false;
-            // //        this.$router.replace("/login")
-            // //     },2000)
-            // //   }
-            // //   else  if (res.data.state==2){
-            // //     this.errText=true;
-            // //     this.errCont="账户已存在";
-            // //     setTimeout(()=>{
-            // //       this.errText=false;
-            // //     },2000)
-            // //   }
-            // // })
           }
 
         },
