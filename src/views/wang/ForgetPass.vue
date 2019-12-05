@@ -148,7 +148,7 @@
               userTel:this.telNumber
             }).then((res)=>{
 
-              console.log(res)
+              console.log(res);
                if(res.data.code==200){
                 this.yanzhengTitle="一分钟后可再次发送";
                 this.upAndDown=true;
@@ -171,7 +171,7 @@
                 setTimeout(()=>{
                   this.errText=false;
                 },2000)
-                throw '手机号已注册'
+                throw '手机号不存在'
               }
               else if(res.data.code==1003) {
                 this.errText=true;
