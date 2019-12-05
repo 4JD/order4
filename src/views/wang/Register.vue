@@ -194,7 +194,15 @@
                   userTel :this.usertel
                 })
                   .then((res)=>{
-                    console.log("res",res)
+                    // console.log("res",res)
+                    if(res.data.code==200){
+                      this.errText=true;
+                        this.errCont="注册成功";
+                        setTimeout(()=>{
+                          this.errText=false;
+                          location.href="/login"
+                        },2000)
+                    }
                     // if (res.data.code) {
                     //   this.$router.replace("/login")
                     // }else if (res.data.code) {

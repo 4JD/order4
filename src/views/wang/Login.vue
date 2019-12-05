@@ -109,7 +109,7 @@
                   var userId=res.data.data.userId;
 
                   sessionStorage.setItem("userId", userId);
-                  sessionStorage.setItem("userName", res.username);
+                  // sessionStorage.setItem("userName", res.data.username);
                   sessionStorage.setItem("token", token);
 
                   // var url = this.$route.query.redirect;
