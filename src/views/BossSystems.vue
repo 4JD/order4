@@ -110,12 +110,7 @@
         <br />地 &nbsp;&nbsp; 址:
         <input type="address" v-model="showstoredetailmsg.storeAddress" />
         <br />店铺简介:
-        <textarea
-          class="storeremark"
-          cols="30"
-          rows="10"
-          v-model="showstoredetailmsg.remark"
-        ></textarea>
+        <textarea class="storeremark" cols="30" rows="10" v-model="showstoredetailmsg.remark"></textarea>
       </div>
       <div class="closeorenter">
         <button type="button" class="closestoredetail" @click="closestoredetailbox">取消</button>
@@ -547,7 +542,15 @@ export default {
     },
     // 新增店铺的确定按钮点击事件
     enternewstroebox() {
-      this.$confirm("确定新建一个店铺吗?", "提示", {
+
+      const patTel = /^(13[0-9]|14[5|7]|15[0|1|2|3|5|6|7|8|9]|18[0|1|2|3|5|6|7|8|9])\d{8}$/;
+      if(document.getElementsByClassName("newstorepassword1")[0].value != document.getElementsByClassName("newstorepassword2")[0].value) {
+        this.$message("两次密码不一致！");
+      } else if(!patTel.test(document.getElementsByClassName("newstoretel")[0].value && !patTel.test(document.getElementsByClassName("newstoretelA")[0].value))) {
+        this.$message("电话号码格式不正确！");
+      } else {
+          
+          this.$confirm("确定新建一个店铺吗?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning"
@@ -624,6 +627,8 @@ export default {
             message: "已取消新建"
           });
         });
+      }
+      
     },
 
     /*  
