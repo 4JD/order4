@@ -5,7 +5,7 @@
       <div class="ordered-item">
         <div v-for="(item,index) in hOrderList" :key="index" class="item-top">
           <div class="edx">
-            <p>{{dateFormat(item.orderTime)}}</p>
+            <p>{{dateFormat(item.time)}}</p>
           </div>
           <div class="edx">
             <p>
@@ -48,7 +48,7 @@ export default {
   name: "orderMngDetail",
   data() {
     return {
-      list:{}
+      list: []
     };
   },
   components: {
@@ -107,29 +107,19 @@ export default {
         seconds
       );
     },
-  },
-  created() {
-    console.log("shoppingCar",this.shoppingCar)
-    this.list = this.shoppingCar
-    console.log("shoppingCar2",this.list[0])
-    console.log("ITEMS",this.list[0].foodName)
-    var foodId = String(this.list[0].foodId)
-    var foodNum = String(this.list[0].foodNum)
-    var storeId = String(this.list[0].storeId)
-    console.log("食品id",foodId)
 
+    axio: function(){
+      console.log("shoppingCar", this.shoppingCar);
+    /*     var z = this.shoppingCar.deskNum; */ 
+    var list = JSON.parse(JSON.stringify(this.shoppingCar));
+    console.log("LIST", list);
     /* 店铺Id */
     this.axios
       .post("/user/placeOrder2", {
-        deskNum: String(this.list[0].deskNum),
-        foodOrders: [
-          {
-            foodId: foodId,
-            foodNum: foodNum
-          }
-        ],
+        deskNum: "1",
+        foodOrders: list,
         orderRemark: "123",
-        storeId: storeId
+        storeId: "61"
       })
       .then(res => {
         var myOrderData = res.data.data;
@@ -153,6 +143,10 @@ export default {
       .catch(err => {
         console.log(err);
       });
+    }
+  },
+  created() {
+    this.axio()
   }
 };
 </script>
