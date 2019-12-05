@@ -37,10 +37,6 @@
           <el-input  autocomplete="off"  :disabled="true" v-model="info.positionName">{{info.positionName}}</el-input>
         </el-form-item>
 
-        <!-- <el-form-item label="工资：" :label-width="formLabelWidth">
-          <el-input  autocomplete="off"  :disabled="true" v-model="info.salary">{{info.salary}}</el-input>
-        </el-form-item> -->
-
         <el-form-item label="在职状态：" :label-width="formLabelWidth">
           <el-input  autocomplete="off"  :disabled="true" v-model="info.workerState">{{info.workerState}}</el-input>
         </el-form-item>

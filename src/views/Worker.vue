@@ -1,10 +1,5 @@
 <template>
   <div id="worker">
-    <el-breadcrumb separator-class="el-icon-arrow-right">
-      <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-      <el-breadcrumb-item>员工管理</el-breadcrumb-item>
-    </el-breadcrumb>
-
     <!-- 员工管理图标 -->
     <div class="worker-icon">
       <i class="el-icon-menu"></i>
@@ -13,28 +8,29 @@
 
     <!-- 添加与搜索 -->
     <div class="operate">
-      <el-button type="danger" icon="el-icon-delete" @click="delAll()"  >批量删除</el-button>
+      <el-button type="danger" icon="el-icon-delete" @click="delAll()">批量删除</el-button>
 
       <AddWorker @add="addworkerinfo"></AddWorker>
 
       <el-input
-        placeholder="请输入你要搜索的员工信息"
+        placeholder="请输入你要搜索的员工ID"
         v-model="searchinput"
         clearable
-        class="searchinput"
+        id="searchvalue"
         >
       </el-input>
-      <el-button type="success" icon="el-icon-search" @click="searchworker()" id="searchvalue">搜索员工</el-button>
+      <el-button type="success" icon="el-icon-search" @click="searchworker()" >搜索员工</el-button>
       
       <span>共有<span class="worker-number"> {{tableData.length}} </span>名员工</span>
+      <br>
+      <!-- <span>代表在职</span><span>1 </span><span>代表离职，</span><span>0 </span> -->
     </div>
 
     <!-- 表格 -->
     <div class="worker-table">
-      
       <table>
         <tr>
-          <th><span class="check-span " :class="{'check-true':isSelectAll}" @click="selectAll(isSelectAll)"></span>全选</th>
+          <th class="choosespan"><span class="check-span " :class="{'check-true':isSelectAll}" @click="selectAll(isSelectAll)"></span>全选</th>
           <th>ID</th>
           <th>姓名</th>
           <th>性别</th>
@@ -45,7 +41,7 @@
           <th>在职状态</th>
           <th>操作</th>
         </tr>
-        <tr v-for="(item,index) in tableData" :key="index">
+        <tr v-for="(item,index) in tableData" :key="index" :oneworkerid="index">
           <td><span class="check-span" @click="item.select=!item.select" :class="{'check-true':item.select}"></span></td>
           <td>{{item.workerId}}</td>
           <td>{{item.workerName}}</td>
@@ -57,12 +53,11 @@
           <td>{{item.workerState}}</td>
           <td>
             <LookWorker :info='item'></LookWorker>
-            <AlterWorker :info="item"></AlterWorker>
-            <el-button type="text" size="small" @click="del(index)" icon="el-icon-delete" class="del-btn">删除</el-button>
+            <AlterWorker :info="item"  @edit="edit"></AlterWorker>
+            <el-button type="text" size="small" @click="del" icon="el-icon-delete" class="del-btn">删除</el-button>
           </td>
         </tr>
       </table>
-
 
       <el-pagination
         background
@@ -122,49 +117,30 @@ export default {
             }
           }
         ]
-      }
+      },
+      oneworkerid:''
 
     }
   },
   computed: {
     //检测是否全选
     isSelectAll:function() {
-      
       return this.tableData.every(function (val) { return val.select});
     }
   },
   methods: {
     //单个删除员工
-    del(i) {
-      this.$confirm('是否删除?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        console.log(i)
-        // console.log(String(i+1))
-        this.tableData.splice(i,1)
-        // this.axios.post("/workerDelete",{
-        //   workerId:String(i+1)
-        // })
-        // .then(res => {
-        //   console.log("单个删除" ,res.data.data.list);
-        //   // this.tableData = res.data.data.list;
-        //   this.tableData.splice(i+1,1)
-        // })
-        // .catch(err => {
-        //   console.log(err);
-        // });
-
-        this.$message({
-          type: 'success',
-          message: '删除成功!'
-        });
-      }).catch(() => {
-        this.$message({
-          type: 'info',
-          message: '已取消删除'
-        });          
+    del() {
+      console.log("单个删除命令",this.oneworkerid)
+      this.axios.post("/workerDelete",{
+        workerId:String(this.tableData[this.oneworkerid].workerId)
+      })
+      .then(res => {
+        console.log("单个删除" ,res.data);
+        this.getWorker();
+      })
+      .catch(err => {
+        console.log(err);
       });
     },
     //批量删除员工
@@ -178,29 +154,102 @@ export default {
         this.tableData[i].select = !_isSelect;
       }
     },
-    //筛选搜索员工
+    //筛选搜索员工  searchinput
     searchworker() {
-      /* this.tableData = this.tableData.filter((item)=> {
-        return item.id = this.searchinput
-      }) */
-      var searchvalue = document.getElementById("searchvalue").value;
-      console.log("搜索框的值",searchvalue);
-      this.axios.post("/workerFindById",{
-        workerId:this.searchinput
+      this.getWorker();
+    },
+    //添加员工
+    addworkerinfo(data){
+       this.axios.post("/workerInsert",{
+        workerId:data.workerId,
+        workerName:data.workerName,
+        workerSex:data.workerSex,
+        workerBirthday:data.workerBirthday,
+        workerDate:data.workerDate,
+        workerAddress:data.workerAddress,
+        workerTel:data.workerTel,
+        positionName:data.positionName,
+        workerState:data.workerState,
+        remark:data.remark
       })
       .then(res => {
-        console.log("搜索结果：",res.data.data);
-          this.tableData = this.tableData.filter((item)=> {
-          return item.workerId = searchvalue
+        console.log("添加" ,res.data);
+        this.axios
+        .post("/workerFindAll"
+        ,{
+          page:1,
+          limit:20
+        }
+        )
+        .then(res => {
+          console.log("获取员工信息：", res.data.data.list);
+          this.tableData = res.data.data.list;
         })
+        .catch(err => {
+          console.log(err);
+        });
+      })
+      .catch(err => {
+        console.log(err);
+      });
+
+
+      // this.tableData.push(data)
+    },
+    //获取员工信息
+    getWorker(){
+      this.axios
+      .post("/workerFindAll"
+      ,{
+        page:1,
+        limit:20,
+        workerId:String(this.searchinput)
+      }
+      )
+      .then(res => {
+        console.log("获取员工信息：", res.data.data.list);
+        this.tableData = res.data.data.list;
       })
       .catch(err => {
         console.log(err);
       });
     },
-    //添加员工
-    addworkerinfo(data){
-      this.tableData.push(data)
+
+    //修改
+    edit(data) {
+      console.log(data.workerBirthday)
+      this.axios.post("/workerUpdate",{
+        workerId:data.workerId,
+        workerName:data.workerName,
+        workerSex:data.workerSex,
+        workerBirthday:data.workerBirthday,
+        workerDate:data.workerDate,
+        workerAddress:data.workerAddress,
+        workerTel:data.workerTel,
+        positionName:data.positionName,
+        workerState:data.workerState,
+        remark:data.remark
+      })
+      .then(res => {
+        console.log("修改" ,res.data);
+        this.axios
+        .post("/workerFindAll"
+        ,{
+          page:1,
+          limit:20
+        }
+        )
+        .then(res => {
+          console.log("获取员工信息：", res.data.data.list);
+          this.tableData = res.data.data.list;
+        })
+        .catch(err => {
+          console.log(err);
+        });
+      })
+      .catch(err => {
+        console.log(err);
+      });
     }
   },
   mounted: function(){
@@ -210,31 +259,7 @@ export default {
     });
   },
   created() {
-    this.axios
-    .post("/workerFindAll"
-    ,{
-      page:1,
-      limit:8,
-      // workerId:'1',
-      // workerName:'偏偏',
-      // workerSex:'男',
-      // workerBirthday:'2019-12-03',
-      // workerAddress:'国信安',
-      // workerTel:'13344445678',
-      // positionId:'1',
-      // workerState:'1',
-      // remark:'aaaaaaaa'
-
-    }
-    )
-    .then(res => {
-      console.log("获取员工信息：", res.data.data);
-      this.tableData = res.data.data.list;
-    })
-    .catch(err => {
-      console.log(err);
-    });
-
+    this.getWorker();
   }
   
   
@@ -289,7 +314,7 @@ export default {
 
 
   table {
-    width: 100%;
+    width: 90%;
     margin: 0 auto;
     border-collapse: collapse;
     text-align: center;
@@ -306,6 +331,7 @@ export default {
   .check-span.check-true{
     background: url("../assets/images/spring.png") no-repeat 0 -22px;
   }
+  
 
   //员工数量
   .worker-number{

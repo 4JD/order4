@@ -55,10 +55,6 @@
           <el-input  autocomplete="off" v-model="info.positionName" clearable placeholder="请选择员工职位">{{info.positionName}}</el-input>
         </el-form-item>
 
-        <!-- <el-form-item label="薪资：" :label-width="formLabelWidth">
-          <el-input  autocomplete="off" v-model="info.salary" clearable placeholder="请输入员工薪资">{{info.salary}}</el-input>
-        </el-form-item> -->
-
         <el-form-item label="在职状态：" :label-width="formLabelWidth">
           <el-input  autocomplete="off" v-model="info.workerState" clearable placeholder="请选择员工在职状态">{{info.workerState}}</el-input>
         </el-form-item>
@@ -73,8 +69,6 @@
         </el-input>
         </el-form-item>
       </el-form>
-
-
 
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false;canceladd()">取 消</el-button>
@@ -123,35 +117,36 @@ export default {
       }
     }
   },
-
+  filters: {
+    formatDate(time) {
+      var date = new Date(time);
+      return formatDate(date, "yyyy-MM-dd");
+    }
+  },
   methods: {
     //修改成功
     addsuccess(){
-      this.axios.post("/workerUpdate",{
-        workerId:'10',
-        workerName:'偏偏',
-        workerSex:'男',
-        workerBirthday:'2019-12-03',
-        workerDate:'2019-12-03',
-        workerAddress:'国信安',
-        workerTel:'13344445678',
-        positionName:'1',
-        workerState:'1',
-        remark:'aaaaaaaa'
+      this.$emit('edit',{
+        workerId:this.info.workerId,
+        workerName:this.info.workerName,
+        workerSex:this.info.workerSex,
+        workerBirthday:formatDate(this.info.workerBirthday, 'yyyy-MM-dd'),
+        workerDate:formatDate(this.info.workerDate, 'yyyy-MM-dd'),
+        workerAddress:this.info.workerAddress,
+        workerTel:this.info.workerTel,
+        positionName:this.info.positionName,
+        workerState:this.info.workerState,
+        remark:this.info.remark
       })
-      .then(res => {
-        console.log("修改" ,res.data);
-      })
-      .catch(err => {
-        console.log(err);
-      });
 
       this.$message({
         message: '修改成功',
         type: 'success'
       });
-      formatDate(this.info.date, 'yyyy-MM-dd');
-      formatDate(this.info.birthday, 'yyyy-MM-dd');
+      
+      
+      
+      
     },
     //取消编辑
     canceladd() {
