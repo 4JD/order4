@@ -7,8 +7,7 @@
       </div>
       <div class="edx">
         <p>
-          订单号:
-          <span>1515165145</span>
+          等待付款
         </p>
       </div>
     </div>
@@ -53,7 +52,9 @@
         </p>
       </div>
       <div>
-        <button class="BtnStyle" @click="payBtn()">生成订单</button>
+        <router-link to="/OrderMngDetail">
+          <button class="BtnStyle" @click="payBtn()">生成订单</button>
+        </router-link>
       </div>
     </div>
   </div>
@@ -113,7 +114,7 @@ export default {
       this.addOrderMng(this.item);
       console.log("加入", this.item);
       
-      this.$message("支付成功")
+      this.$message("生成订单")
     },
     dateFormat: function(time) {
       var date = new Date(time);

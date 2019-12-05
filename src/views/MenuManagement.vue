@@ -22,21 +22,23 @@
       <el-upload
         class="upload-demo"
         action="abcdefg"
+        ref="upload"
         :on-preview="handlePreview"
         :on-remove="handleRemove"
+        name="uploadimages"
         :limit="1"
         :file-list="fileList"
         :http-request="enteraddfoodList"
         list-type="picture"
         :auto-upload="false"
       >
-        <el-button class="clickupload" size="small" type="primary">点击上传</el-button>
+        <el-button class="clickupload" size="small" type="primary" @click="clickUpload">点击上传</el-button>
         <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb；如：</div>
       </el-upload>
 
       <div class="enterorclose">
         <button type="button" class="closeaddfood" @click="closeaddfoodbox">取消</button>
-        <button type="button" class="enteraddfood" @click="enteraddfoodList">确定</button>
+        <button type="button" class="enteraddfood" @click="uploadImages">确定</button>
       </div>
     </div>
     <!-- 编辑菜品的弹框 -->
@@ -82,12 +84,15 @@
         <input type="file" name="editimg" class="editimg" />
       </div>-->
       <el-upload
+      ref="uploadedit"
         class="upload-demo"
-        action="https://jsonplaceholder.typicode.com/posts/"
+        action="abcdk"
         :on-preview="handlePreview"
         :on-remove="handleRemove"
+        :http-request="editfoodimg"
         :file-list="fileList"
         list-type="picture"
+        :auto-upload="false"
       >
         <el-button size="small" type="primary" class="uploadeditimg">点击上传</el-button>
         <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
@@ -141,7 +146,7 @@
             class="taglist"
             :data-tagvalue="item.foodTypeName"
             @click="getTagFood"
-            :data-index="index"
+            :data-index="item.foodTypeId"
           >{{item.foodTypeName}}</div>
         </div>
         <!-- 菜品内容 -->
@@ -363,7 +368,9 @@ export default {
       // 编辑的菜品信息
       editFoodMsg: {},
       // 默认的菜品种类id
-      modifiedFoodTypeId: 0
+      modifiedFoodTypeId: 0,
+      // 上传的图片内容
+      myfile: ""
     };
   },
   methods: {
@@ -380,6 +387,8 @@ export default {
           // console.log(res.data.data);
           // 给数据菜品种类复制
           this.foodTypeList = res.data.data;
+          // 给第一个复制
+          this.modifiedFoodTypeId = res.data.data[0].foodTypeId;
         })
         .catch(err => {
           console.log(err);
@@ -393,9 +402,28 @@ export default {
           foodTypeId: String(this.modifiedFoodTypeId)
         })
         .then(res => {
-          console.log(res.data.data);
+          console.log("菜品列表url",res.data.data.url);
+          console.log("菜品列表s",res.data.data.foods);
+          const newFoodList = [];
+          for(var i=0;i<res.data.data.foods.length;i++) {
+            var a = {
+              foodId: res.data.data.foods[i].foodId,
+              foodName: res.data.data.foods[i].foodName,
+              foodPhoto: res.data.data.url + res.data.data.foods[i].foodPhoto,
+              foodPrice: res.data.data.foods[i].foodPrice,
+              foodRemark: res.data.data.foods[i].foodRemark,
+              foodState: res.data.data.foods[i].foodState,
+              foodTypeId: res.data.data.foods[i].foodTypeId,
+              foodTypeName: res.data.data.foods[i].foodTypeName,
+              saleId: res.data.data.foods[i].saleId,
+              saleState: res.data.data.foods[i].saleState,
+              tasteId: res.data.data.foods[i].tasteId
+            }
+            newFoodList.push(a);
+          }
           // 给菜品列表复制
-          this.foodList = res.data.data;
+          this.foodList = newFoodList;
+          console.log(this.foodList)
         })
         .catch(err => {
           console.log(err);
@@ -404,21 +432,26 @@ export default {
       // -------------------------获取菜品的 AJAX 结束-------------------------------------
     },
     // 点击上传
-    upload() {
-      this.axios
+    clickUpload() {
+      // 获取图片的name
+      const myname = document
+        .getElementsByClassName("upload-demo")[0]
+        .getAttribute("name");
+      console.log(myname);
+      /* this.axios
             .post("/file/upload", {
-              // 参数 菜品种类 id
-              foodTypeId: String(this.delFoodTypeId)
+              // 参数 myfile
+              myfile: myname
             })
             .then(res => {
-              console.log(res);
+              console.log("传图片的内容name",res);
               // 更新数据
               this.getDate();
               //
             })
             .catch(err => {
               console.log(err);
-            });
+            }); */
     },
     // 删除菜品
     delFood(e) {
@@ -475,12 +508,6 @@ export default {
           this.delFoodTypeId = Number(e.target.getAttribute("data-id"));
           console.log(Number(e.target.getAttribute("data-id")));
           // 删除菜品种类数据
-          /* for (var i = 0; i < this.foodTypeList.length; i++) {
-            if (this.foodTypeList[i].foodTypeId == this.delFoodTypeId) {
-              this.foodTypeList.splice(i, 1);
-              console.log("删除成功", this.foodList);
-            }
-          } */
           // 调用 删除菜品种类的 ajax ---------------
           this.axios
             .post("/foodType/deleteFoodType", {
@@ -622,6 +649,14 @@ export default {
             }); */
       /* -------------------------------编辑菜品信息的AJAX 结束--------------------------------- */
     },
+    // 编辑菜品上传图片
+    editfoodimg(editfile) {
+      console.log(editfile.file)
+    },
+    // 点击 确认 编辑按钮点击
+    entereditfood() {
+      this.$refs.uploadedit.submit();
+    },
     // 点击菜品类型，渲染相应的数据
     getTagFood(e) {
       // 将所有的菜品种类标签去掉 样式class
@@ -651,18 +686,10 @@ export default {
       console.log(file);
     },
     // 传输照片结束
-    // 点击确认添加菜品按钮时
-    enteraddfoodList() {
-      this.$confirm("确定新添加这条菜品, 是否继续?", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
-      })
-        .then(() => {
-          this.$message({
-            type: "success",
-            message: "添加成功!"
-          });
+    // 上传图片
+    enteraddfoodList(uploadimg) {
+      console.log(uploadimg.file);
+      this.myfile = uploadimg.file;
           // 点击确定过后要进行的操作
           // 获取菜品名称
           const addfoodName = document.getElementsByClassName(
@@ -688,29 +715,26 @@ export default {
           // const addfoodImg = document.getElementsByClassName("upload-demo")[0]
           //   .value;
 
-          this.$refs.upload.submit();
           // 新的文件数组
           let addFoodFormDate = new FormData();
           addFoodFormDate.append("foodName", addfoodName);
           addFoodFormDate.append("foodTypeId", addfoodType);
           addFoodFormDate.append("foodRemark", addfoodRemark);
           addFoodFormDate.append("foodPrice", addfoodPrice);
-          addFoodFormDate.append("saleId",1);
-          addFoodFormDate.append("foodPhoto", this.fileList[0]);
-          const foodPack=addFoodFormDate;
+          addFoodFormDate.append("myFile", this.myfile);
 
           /* -----------------------------------------------确定添加菜品的接口 开始-------------------------------------------- */
           this.axios
-            .post("/food/addFood", foodPack,{
+            .post("/food/addFood", addFoodFormDate, {
               header: {
                 "Content-Type": "multipart/form-data"
               }
             })
             .then(res => {
-              console.log(res);
+              console.log("添加菜品的数据",res);
+              this.$message(res.data.msg);
               // 更新数据
               this.getDate();
-              //
             })
             .catch(err => {
               console.log(err);
@@ -719,13 +743,11 @@ export default {
 
           // 与点击遮罩层一样的作用
           this.closezhezhao();
-        })
-        .catch(() => {
-          this.$message({
-            type: "info",
-            message: "已取消添加"
-          });
-        });
+       
+    },
+    // 上传图片
+    uploadImages() {
+      this.$refs.upload.submit();
     },
     // 点击取消添加菜品按钮时
     closeaddfoodbox() {
@@ -736,30 +758,7 @@ export default {
     closeeditfoodbox() {
       this.closezhezhao();
     },
-    // 点击 确认 编辑按钮点击
-    entereditfood() {
-      this.$confirm("确定更改这条菜品信息吗?", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
-      })
-        .then(() => {
-          this.$message({
-            type: "success",
-            message: "修改成功!"
-          });
-          // 点击确定过后要进行的操作
-
-          // 与点击遮罩层一样的作用
-          this.closezhezhao();
-        })
-        .catch(() => {
-          this.$message({
-            type: "info",
-            message: "已取消修改"
-          });
-        });
-    },
+    
     // 点击遮罩层时
     closezhezhao() {
       // 添加产品的弹窗关闭

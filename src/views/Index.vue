@@ -28,7 +28,7 @@
       >
         <div class="foodItems">
           <div class="index-items-img">
-            <img alt="Vue logo" :src="item.photourl" />
+            <img alt="Vue logo" :src="item.foodPhoto" />
           </div>
           <div class="underImg">
             <h3>{{item.foodName}}</h3>
@@ -116,6 +116,7 @@ export default {
         newFood.foodTypeId = items.foodTypeId
         newFood.count = 1
         newFood.foodState = items.foodState
+        newFood.deskNum = 12
 
         foodItems.push( newFood )
       })
@@ -169,7 +170,7 @@ export default {
       }
     },
     addFoodBtn() {
-      console.log("aaaa", this.item1)
+      console.log("加入", this.item1)
       this.addOrder(this.item1)
 
       this.$message({
