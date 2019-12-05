@@ -75,6 +75,11 @@
 </template>
 
 <script>
+// 获取当前登录人员id
+const userId = sessionStorage.getItem("userId");
+console.log("当前登录人员id",userId);
+
+
 /* import IndexItems from "@/components/IndexItems.vue"; */
 import { mapState, mapGetters, mapActions, mapMutations } from "vuex";
 
@@ -90,7 +95,11 @@ export default {
       drawer: false,
       item1: {},
       newIndex: 5,
-      activeClass: 0
+      activeClass: 0,
+       // 当前登录人员id
+      userId,
+      // 当前登录店铺信息
+      storeMsg: {},
     };
   },
   computed: {
@@ -98,6 +107,22 @@ export default {
     ...mapGetters(["currentFoodItems", "currentFoodType"])
   },
   created() {
+    /* ----------------------------------查找店铺信息的AJAX开始------------------------------ */
+      this.axios
+        .post("/store/findStore", {
+          // 参数 店铺id
+          storeId: String(this.userId)
+        })
+        .then(res => {
+          console.log("查找当前登录的店铺信息：",res);
+          // 给当前登录店铺信息赋值
+          this.storeMsg = res.data.data;
+          console.log("当前店铺信息",this.storeMsg)
+        })
+        .catch(err => {
+          console.log(err);
+        });
+      /* ----------------------------------查找店铺信息的AJAX结束------------------------------ */
     /* this.getFoodItemsSync(), this.getFoodTypeSync()  */
     /* this.save_foodList({ a : 2 }) */
 
@@ -139,6 +164,8 @@ export default {
           newFood.count = 1;
           newFood.foodState = items.foodState;
           newFood.deskNum = 1;
+          newFood.foodNum = 1;
+          newFood.storeId = 61
 
           foodItems.push(newFood);
         });
@@ -153,7 +180,7 @@ export default {
     /*  获取菜类数据 */
     this.axios
       .post("/foodType/foodTypeList", {
-        storeId: "1"
+        storeId: String(this.userId)
       })
       .then(res => {
         /* 数据传入vuex */

@@ -53,12 +53,7 @@
       </el-row>
     </el-form>
 
-    <el-table
-      stripe
-      style="width: 90%; "
-      border
-      :data="tableData"
-    >
+    <el-table stripe style="width: 90%; " border :data="tableData">
       <el-table-column prop="addpayId" label="支出id" align="center"></el-table-column>
 
       <el-table-column prop="addpayTypeName" label="支出类型" align="center"></el-table-column>
@@ -96,7 +91,7 @@ export default {
     return {
       value3: "",
       currentPage3: 1,
-      totalSize: 100,
+      totalSize: 0,
       pageSize: 10,
       payType: "",
       payTypes: [],
@@ -148,7 +143,7 @@ export default {
       console.log(`当前页: ${val}`);
       this.axios
         .post("/pay/searchPay", {
-          userName: sessionStorage.getItem('userName'),
+          userName: sessionStorage.getItem("userName"),
           page: this.currentPage3,
           pageSize: this.pageSize
         })
@@ -160,10 +155,10 @@ export default {
     pushItem(data) {
       // this.tableData.push(data);
       console.log("父组件接收", data);
-  // console.log( data.addpayTypeName);
+      // console.log( data.addpayTypeName);
       this.axios
         .post("/pay/addPay", {
-          userName: sessionStorage.getItem('userName'),
+          userName: sessionStorage.getItem("userName"),
           addpayTypeId: data.addpayTypeName,
           addpayPrice: data.addpayPrice,
           addpayName: "随便用",
@@ -172,21 +167,20 @@ export default {
         })
         .then(res => {
           console.log("获取添加信息：", res.data);
-         this.axios
-      .post("/pay/searchPay", {
-        userName: sessionStorage.getItem('userName'),
-        page: this.currentPage3,
-        pageSize: this.pageSize
-      })
-      .then(res => {
-        console.log("获取支出信息：", res.data);
-        this.tableData = res.data.data.list;
-        this.totalSize = res.data.data.total;
-      })
-      .catch(err => {
-        console.log(err);
-      });
-
+          this.axios
+            .post("/pay/searchPay", {
+              userName: sessionStorage.getItem("userName"),
+              page: this.currentPage3,
+              pageSize: this.pageSize
+            })
+            .then(res => {
+              console.log("获取支出信息：", res.data);
+              this.tableData = res.data.data.list;
+              this.totalSize = res.data.data.total;
+            })
+            .catch(err => {
+              console.log(err);
+            });
         })
         .catch(err => {
           console.log(err);
@@ -203,7 +197,7 @@ export default {
 
       this.axios
         .post("/pay/searchPay", {
-          userName: sessionStorage.getItem('userName'),
+          userName: sessionStorage.getItem("userName"),
           addpayDateStart: formatDate(this.value3[0], "yyyy-MM-dd hh:mm:ss"),
           addpayDateEnd: formatDate(this.value3[1], "yyyy-MM-dd hh:mm:ss"),
           page: this.currentPage3,
@@ -224,7 +218,7 @@ export default {
     // this.tableData = tableData;
     this.axios
       .post("/pay/searchPay", {
-        userName: sessionStorage.getItem('userName'),
+        userName: sessionStorage.getItem("userName"),
         page: this.currentPage3,
         pageSize: this.pageSize
       })
@@ -232,7 +226,6 @@ export default {
         console.log("获取支出信息：", res.data);
         this.tableData = res.data.data.list;
         this.totalSize = res.data.data.total;
-       
       })
       .catch(err => {
         console.log(err);
