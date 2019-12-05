@@ -407,7 +407,7 @@ export default {
           this.foodTypeList = res.data.data;
           // 给第一个复制
           this.modifiedFoodTypeId = String(res.data.data[0].foodTypeId);
-          console.log(this.modifiedFoodTypeId);
+          console.log("当前第一个商品种类ID",this.modifiedFoodTypeId);
         })
         .catch(err => {
           console.log(err);
@@ -421,8 +421,8 @@ export default {
           foodTypeId: String(this.modifiedFoodTypeId)
         })
         .then(res => {
-          console.log("菜品列表url", res.data.data.url);
-          console.log("菜品列表s", res.data.data.foods);
+          // console.log("菜品列表url", res.data.data.url);
+          // console.log("菜品列表s", res.data.data.foods);
           const newFoodList = [];
           for (var i = 0; i < res.data.data.foods.length; i++) {
             var a = {
@@ -442,7 +442,7 @@ export default {
           }
           // 给菜品列表复制
           this.foodList = newFoodList;
-          console.log(this.foodList);
+          console.log("当前的渲染的菜品数据信息:",this.foodList);
         })
         .catch(err => {
           console.log(err);
@@ -653,18 +653,20 @@ export default {
       // 判断当搜索框里面的内容不为空时进行的操作
       if (searchTxt != "") {
         // 输出搜索框里的内容
-        console.log(searchTxt);
+        console.log("搜索框中的内容:",searchTxt);
         // 执行的AJAX操作 将搜索出来的data 赋值给 foodList
         //
         /* -----------------------搜索菜品的AJAX 开始----------------------------- */
         this.axios
           .post("/food/findFood", {
+            // 店铺id
+            storeId: String(this.storeMsg.storeId),
             // 搜索的菜品名
             foodName: searchTxt
           })
           .then(res => {
-            console.log("菜品列表url", res.data.data.url);
-            console.log("菜品列表s", res.data.data.foods);
+            // console.log("菜品列表url", res.data.data.url);
+            // console.log("菜品列表s", res.data.data.foods);
             const newFoodList = [];
             for (var i = 0; i < res.data.data.foods.length; i++) {
               var a = {
@@ -709,23 +711,8 @@ export default {
       // 遮罩层的显示
       document.getElementsByClassName("zhezhao")[0].classList.remove("none");
       document.getElementsByClassName("zhezhao")[0].classList.add("show");
-      console.log(this.editFoodMsg);
-      console.log($event);
-      /* ------------------------------编辑菜品信息的AJAX 开始------------------------------- */
-      /* this.axios
-            .post("/food/editFood", {
-              // 参数 删除的foodid
-              foodId: String(this.delFoodId)
-            })
-            .then(res => {
-              console.log(res);
-              // 跟新数据
-              this.getDate();
-            })
-            .catch(err => {
-              console.log(err);
-            }); */
-      /* -------------------------------编辑菜品信息的AJAX 结束--------------------------------- */
+      console.log("当前编辑的菜品信息:",this.editFoodMsg);
+      console.log("当前编辑菜品的标签",$event);
     },
     // 编辑菜品上传图片
     editfoodimg(editfile) {
@@ -819,8 +806,8 @@ export default {
     // 给第一个菜品种类列表添加样式
     document.getElementsByClassName("taglist")[0].classList.add("istag");
     // 默认的菜品id
-    // this.modifiedFoodTypeId = this.foodTypeList[0].foodTypeId;
-    // console.log(this.modifiedFoodTypeId);
+    /* this.modifiedFoodTypeId = this.foodTypeList[0].foodTypeId;
+    console.log(this.modifiedFoodTypeId); */
   },
   created() {
     // 获取数据
@@ -946,7 +933,7 @@ export default {
     //   左侧菜品导航
     .menutaglist {
       cursor: pointer;
-      min-height: 350px;
+      min-height: 450px;
       background: rgba(0, 0, 0, 0.8);
       color: #fff;
       text-align: center;
@@ -974,7 +961,7 @@ export default {
         overflow: auto;
       }
       margin-left: 120px;
-      height: 350px;
+      height: 450px;
 
       .foodlist {
         margin: 10px 0;

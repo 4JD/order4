@@ -4,7 +4,7 @@
     <el-container>
       <!-- 头部 -->
       <el-header class="header" style="height: 50px;">
-        <h1>* {{admin.ownerName}} * 的后台管理系统</h1>
+        <h1> 「 {{admin.ownerName}}  」的后台管理系统</h1>
         <div class="adminmsgbox">
           {{admin.ownerName}}
           <div class="adminedit">
@@ -689,8 +689,8 @@ export default {
     },
     // 退出
     exitadmin() {
-      sessionStorage.removeItem("userId")
-      location.href("/login");
+      sessionStorage.removeItem("userId");
+      location.pathname = "/login";
     },
     // 修改密码 的点击事件
     editadminpassword() {
