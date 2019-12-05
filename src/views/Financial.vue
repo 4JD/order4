@@ -112,9 +112,9 @@ export default {
         this.profitPrice = res.data.data.profitsPrice;
         this.incomePrice = res.data.data.incomePrice;
       })
-      .catch(err => {
-        // console.log(err);
-      });
+      // .catch(err => {
+      //   // console.log(err);
+      // });
   },
   methods: {
     getDate() {
@@ -142,9 +142,9 @@ export default {
               }
             );
           })
-          .catch(err => {
-            // console.log(err);
-          });
+          // .catch(err => {
+          //   // console.log(err);
+          // });
       }
     },
     getMon() {
@@ -165,9 +165,9 @@ export default {
           this.profitPrice = res.data.data.profitsPrice;
           this.incomePrice = res.data.data.incomePrice;
         })
-        .catch(err => {
-          // console.log(err);
-        });
+        // .catch(err => {
+        //   // console.log(err);
+        // });
     }
   },
   mounted() {
@@ -215,9 +215,9 @@ export default {
           ]
         });
       })
-      .catch(err => {
-        // console.log(err);
-      });
+      // .catch(err => {
+      //   // console.log(err);
+      // });
     // console.log(this.dateHalf);
     myChart.setOption({
       tooltip: {},

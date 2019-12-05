@@ -176,13 +176,13 @@ export default {
               this.tableData = res.data.data.list;
               this.totalSize = res.data.data.total;
             })
-            .catch(err => {
-              // console.log(err);
-            });
+            // .catch(err => {
+            //   // console.log(err);
+            // });
         })
-        .catch(err => {
-          // console.log(err);
-        });
+        // .catch(err => {
+        //   // console.log(err);
+        // });
     },
     searchBtn() {
       // console.log(formatDate(this.value3[0], "yyyy-MM-dd"));
@@ -207,9 +207,9 @@ export default {
           this.totalSize = res.data.data.total;
           this.tableData = res.data.data.list;
         })
-        .catch(err => {
-          // console.log(err);
-        });
+        // .catch(err => {
+        //   // console.log(err);
+        // });
     }
   },
   created() {
@@ -225,9 +225,9 @@ export default {
         this.tableData = res.data.data.list;
         this.totalSize = res.data.data.total;
       })
-      .catch(err => {
-        // console.log(err);
-      });
+      // .catch(err => {
+      //   // console.log(err);
+      // });
 
     this.axios
       .post("/payType/findAllType")
@@ -237,9 +237,9 @@ export default {
         this.payTypes = res.data.data;
         // console.log(res.data.data);
       })
-      .catch(err => {
-        // console.log(err);
-      });
+      // .catch(err => {
+      //   // console.log(err);
+      // });
   }
 };
 </script>

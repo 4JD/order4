@@ -65,9 +65,9 @@ export default {
         // console.log("获取店铺信息：", res.data.data);
         this.storeMsg = res.data.data;
       })
-      .catch(err => {
-        // console.log(err);
-      });
+      // .catch(err => {
+      //   // console.log(err);
+      // });
 
      
 

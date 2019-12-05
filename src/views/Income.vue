@@ -180,9 +180,9 @@ export default {
             this.tableData = res.data.data.list;
             this.totalSize = res.data.data.total;
           })
-          .catch(err => {
-            // console.log(err);
-          });
+          // .catch(err => {
+          //   // console.log(err);
+          // });
       }
     },
     filterTag(value, row) {
@@ -207,9 +207,9 @@ export default {
           this.tableData = res.data.data.list;
           this.totalSize = res.data.data.total;
         })
-        .catch(err => {
-          // console.log(err);
-        });
+        // .catch(err => {
+        //   // console.log(err);
+        // });
     }
   },
   created() {
@@ -224,9 +224,9 @@ export default {
         // this.currentPage3
         // this.currentPage3 = res.data.data.list.page;
       })
-      .catch(err => {
-        // console.log(err);
-      });
+      // .catch(err => {
+      //   // console.log(err);
+      // });
 
     this.axios
       .post("/foodType/findTypeByUserId", {
@@ -238,9 +238,9 @@ export default {
         // console.log(res.data.data);
     
       })
-      .catch(err => {
-        // console.log(err);
-      });
+      // .catch(err => {
+      //   // console.log(err);
+      // });
   }
 };
 </script>

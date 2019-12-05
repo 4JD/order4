@@ -72,9 +72,9 @@ export default {
         this.payTypes = res.data.data;
         // console.log(res.data.data);
       })
-      .catch(err => {
-        // console.log(err);
-      });
+      // .catch(err => {
+      //   // console.log(err);
+      // });
   },
   methods: {
     returnpay() {
