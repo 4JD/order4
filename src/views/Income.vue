@@ -64,7 +64,7 @@
       </el-row>
     </el-form>
 
-    <el-table stripe style="width: 90%; " border :data="tableData.slice((currentPage3-1)*pageSize,currentPage3*pageSize)">
+    <el-table stripe style="width: 90%; " border :data="tableData">
       <el-table-column prop="incomeId" label="收入id" align="center"></el-table-column>
 
       <el-table-column prop="orderFoodPacks[0].foodName" label="商品名" align="center"></el-table-column>
@@ -198,11 +198,25 @@ export default {
     },
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`);
-     
+     this.axios
+      .post("/income/allIncome", {
+        userId:sessionStorage.getItem("userId"),
+        page: this.currentPage3,
+        pageSize: this.pageSize
+      })
+      .then(res => {
+        console.log("获取当前收入信息：", res.data.data.list);
+        this.tableData = res.data.data.list;
+        this.totalSize = res.data.data.total;
+   
+      })
+      .catch(err => {
+        console.log(err);
+      });
     }
   },
   created() {
-    // this.tableData = tableData;
+   
     this.axios
       .post("/income/allIncome", {
         userId:sessionStorage.getItem("userId"),
