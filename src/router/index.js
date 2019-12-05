@@ -6,7 +6,7 @@ Vue.use(VueRouter);
 
 const routes = [
   {
-    path: '/',
+    path: '/home',
     name: 'home',
     component: Home
   },
@@ -80,6 +80,11 @@ const routes = [
   // 王小明路由
   {
     path: '/login',
+    name: 'login',
+    component: () => import('../views/wang/Login.vue')
+  },
+  {
+    path: '/',
     name: 'login',
     component: () => import('../views/wang/Login.vue')
   },

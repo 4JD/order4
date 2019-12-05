@@ -252,7 +252,7 @@
               userTel:this.usertel
             })
               .then((res)=>{
-                console.log(res);
+                console.log(res.data);
                 if (res.data.code==200){
                   this.yanzhengTitle="一分钟后可再次发送";
                   this.upAndDown=true;
