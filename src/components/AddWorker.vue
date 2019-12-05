@@ -140,12 +140,12 @@ export default {
   },
   methods: {
     //添加成功
-    addsuccess() {
+    // addsuccess() {
           
-    },
-    canceladd() {
+    // },
+    // canceladd() {
       
-    },
+    // },
     addWorker() {
       console.log("添加的人",this.addform)
       this.$emit('add',{

@@ -20,17 +20,22 @@
         >
       </el-input>
       <el-button type="success" icon="el-icon-search" @click="searchworker()" >搜索员工</el-button>
-      
-      <span>共有<span class="worker-number"> {{tableData.length}} </span>名员工</span>
-      <br>
-      <!-- <span>代表在职</span><span>1 </span><span>代表离职，</span><span>0 </span> -->
+
+      <div class="nownumber">
+        <span>当前共有<span class="worker-number"> {{tableData.length}} </span>名员工</span>
+      </div>
+
+      <!-- <div class="totalnumber">
+        <span>总共有{{totalnumber}}名员工</span>
+      </div> -->
+
     </div>
 
     <!-- 表格 -->
     <div class="worker-table">
       <table>
         <tr>
-          <th class="choosespan"><span class="check-span " :class="{'check-true':isSelectAll}" @click="selectAll(isSelectAll)"></span>全选</th>
+          <th class="choosespan"><span class="check-span " :class="{'check-true':isSelectAll}" @click="selectAll(isSelectAll)"></span><span>全选</span></th>
           <th>ID</th>
           <th>姓名</th>
           <th>性别</th>
@@ -41,7 +46,7 @@
           <th>在职状态</th>
           <th>操作</th>
         </tr>
-        <tr v-for="(item,index) in tableData" :key="index" :oneworkerid="index">
+        <tr v-for="(item,index) in tableData" :key="index">
           <td><span class="check-span" @click="item.select=!item.select" :class="{'check-true':item.select}"></span></td>
           <td>{{item.workerId}}</td>
           <td>{{item.workerName}}</td>
@@ -54,15 +59,19 @@
           <td>
             <LookWorker :info='item'></LookWorker>
             <AlterWorker :info="item"  @edit="edit"></AlterWorker>
-            <el-button type="text" size="small" @click="del" icon="el-icon-delete" class="del-btn">删除</el-button>
+            <el-button type="text" size="small" @click="del(item.workerId)" icon="el-icon-delete" class="del-btn">删除</el-button>
           </td>
         </tr>
       </table>
 
       <el-pagination
         background
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page.sync="currentPage1"
         layout="prev, pager, next"
-        :total="100">
+        :page-size="pageSize"
+        :total="totalSize">
       </el-pagination>
 
     </div>
@@ -87,6 +96,7 @@ export default {
       tableData: [],
       //搜索输入框
       searchinput:'',
+      //日期选择
       pickerOptions: {
         shortcuts: [
           {
@@ -118,8 +128,12 @@ export default {
           }
         ]
       },
-      oneworkerid:''
-
+      //分页
+      currentPage1: 1,
+      pageSize:'5',
+      totalSize:'100',
+      //总人数
+      totalnumber:''
     }
   },
   computed: {
@@ -130,10 +144,10 @@ export default {
   },
   methods: {
     //单个删除员工
-    del() {
-      console.log("单个删除命令",this.oneworkerid)
+    del(i) {
+      console.log("单个删除命令",i)
       this.axios.post("/workerDelete",{
-        workerId:String(this.tableData[this.oneworkerid].workerId)
+        workerId:String(i)
       })
       .then(res => {
         console.log("单个删除" ,res.data);
@@ -174,20 +188,7 @@ export default {
       })
       .then(res => {
         console.log("添加" ,res.data);
-        this.axios
-        .post("/workerFindAll"
-        ,{
-          page:1,
-          limit:20
-        }
-        )
-        .then(res => {
-          console.log("获取员工信息：", res.data.data.list);
-          this.tableData = res.data.data.list;
-        })
-        .catch(err => {
-          console.log(err);
-        });
+        this.getWorker();
       })
       .catch(err => {
         console.log(err);
@@ -201,14 +202,16 @@ export default {
       this.axios
       .post("/workerFindAll"
       ,{
-        page:1,
-        limit:20,
+        page:this.currentPage1,
+        limit:this.pageSize,
         workerId:String(this.searchinput)
       }
       )
       .then(res => {
-        console.log("获取员工信息：", res.data.data.list);
+        console.log("获取员工信息：", res.data.data);
         this.tableData = res.data.data.list;
+        this.totalSize = res.data.data.total;
+        this.totalnumber = res.data.data.total;
       })
       .catch(err => {
         console.log(err);
@@ -232,24 +235,21 @@ export default {
       })
       .then(res => {
         console.log("修改" ,res.data);
-        this.axios
-        .post("/workerFindAll"
-        ,{
-          page:1,
-          limit:20
-        }
-        )
-        .then(res => {
-          console.log("获取员工信息：", res.data.data.list);
-          this.tableData = res.data.data.list;
-        })
-        .catch(err => {
-          console.log(err);
-        });
+        this.getWorker();
       })
       .catch(err => {
         console.log(err);
       });
+    },
+
+
+    handleSizeChange(val) {
+      console.log(`每页 ${val} 条`);
+      
+    },
+    handleCurrentChange(val) {
+      console.log(`当前页: ${val}`);
+      this.getWorker();
     }
   },
   mounted: function(){
@@ -274,6 +274,7 @@ export default {
     text-align: left;
     height: 60px;
     line-height: 60px;
+    font-weight: 600;
   }
 
   // 增加和搜索
@@ -285,8 +286,11 @@ export default {
     float: left;
     margin-top: 5px;
   }
-  .operate > span {
-    float: right;
+  
+  .nownumber{
+    float: right ;
+    margin-left: 5%;
+    margin-right: 5%;
   }
   .operate .el-input{
     width: 20%;
@@ -313,14 +317,19 @@ export default {
   }
 
 
+  .worker-table{
+    margin: 0 auto;
+  }
   table {
     width: 90%;
-    margin: 0 auto;
     border-collapse: collapse;
     text-align: center;
   }
   table,tr,th,td {
-    border: 1px solid rgb(175, 154, 154);
+    border: 1px solid rgb(75, 68, 68);
+    color: #626466;
+    font-weight: 500;
+    font-size: 14px;
   }
   .check-span{
     background: url("../assets/images/spring.png") no-repeat 0 0;

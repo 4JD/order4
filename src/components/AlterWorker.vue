@@ -44,7 +44,7 @@
         </el-form-item>
 
         <el-form-item label="手机：" :label-width="formLabelWidth">
-          <el-input  autocomplete="off" v-model="info.workerTel" clearable placeholder="请输入员工电话号码">{{info.workerTel}}</el-input>
+          <el-input  autocomplete="off" v-model="info.workerTel" clearable placeholder="请输入员工电话号码" maxlength="11">{{info.workerTel}}</el-input>
         </el-form-item>
 
         <el-form-item label="地址：" :label-width="formLabelWidth">
