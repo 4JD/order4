@@ -85,7 +85,7 @@
                userTel:sessionStorage.getItem("userTel"),
                userPassword:this.password
              })
-               .then((res)=>{
+               .then(()=>{
                  //console.log(res)
                  this.errText=true;
                  this.errCont="修改成功";

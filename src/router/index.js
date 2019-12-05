@@ -103,10 +103,6 @@ const routes = [
     path: '/resetPass',
     name: 'resetPass',
     component: () => import('../views/wang/ResetPass.vue')
-  },{
-    path: '/admin',
-    name: 'admin',
-    component: () => import('../views/wang/Administrators.vue')
   },
   {
     path: '/userPage',

@@ -116,11 +116,6 @@
     methods:{
       quit(){
         this.$router.replace("/login")
-      },  handleOpen(key, keyPath) {
-        //console.log(key, keyPath);
-      },
-      handleClose(key, keyPath) {
-        //console.log(key, keyPath);
       },
       secondMenu(){
         this.second=!this.second;
@@ -198,9 +193,9 @@
                 opacity: 1;
             }
         }
-        li:hover{
-            /*background: #3D3D3E;*/
-        }
+        /* li:hover{
+            background: #3D3D3E;
+        } */
 
         li:first-child{
             border-top: 2px solid #ff9a00;

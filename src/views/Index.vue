@@ -79,7 +79,6 @@
 const userId = sessionStorage.getItem("userId");
 /* console.log("当前登录人员id",userId); */
 
-
 /* import IndexItems from "@/components/IndexItems.vue"; */
 import { mapState, mapGetters, mapActions, mapMutations } from "vuex";
 
@@ -96,10 +95,10 @@ export default {
       item1: {},
       newIndex: 5,
       activeClass: 0,
-       // 当前登录人员id
+      // 当前登录人员id
       userId,
       // 当前登录店铺信息
-      storeMsg: {},
+      storeMsg: {}
     };
   },
   computed: {
@@ -108,21 +107,21 @@ export default {
   },
   created() {
     /* ----------------------------------查找店铺信息的AJAX开始------------------------------ */
-      this.axios
-        .post("/store/findStore", {
-          // 参数 店铺id
-          storeId: String(this.userId)
-        })
-        .then(res => {
-          /* console.log("查找当前登录的店铺信息：",res); */
-          // 给当前登录店铺信息赋值
-          this.storeMsg = res.data.data;
-          /* console.log("当前店铺信息",this.storeMsg) */
-        })
-        .catch(err => {
-          /* console.log(err); */
-        });
-      /* ----------------------------------查找店铺信息的AJAX结束------------------------------ */
+    this.axios
+      .post("/store/findStore", {
+        // 参数 店铺id
+        storeId: String(this.userId)
+      })
+      .then(res => {
+        /* console.log("查找当前登录的店铺信息：",res); */
+        // 给当前登录店铺信息赋值
+        this.storeMsg = res.data.data;
+        /* console.log("当前店铺信息",this.storeMsg) */
+      });
+    /* .catch(err => {
+          console.log(err);
+        }); */
+    /* ----------------------------------查找店铺信息的AJAX结束------------------------------ */
     /* this.getFoodItemsSync(), this.getFoodTypeSync()  */
     /* this.save_foodList({ a : 2 }) */
 
@@ -165,17 +164,17 @@ export default {
           newFood.foodState = items.foodState;
           newFood.deskNum = 1;
           newFood.foodNum = 1;
-          newFood.storeId = 61
+          newFood.storeId = 61;
 
           foodItems.push(newFood);
         });
         /* console.log("foodItems", foodItems); */
         this.save_foodList(foodItems);
         /* console.log(res); */
-      })
-      .catch(err => {
-        /* console.log(err); */
       });
+    /* .catch(err => {
+        console.log(err);
+      }); */
 
     /*  获取菜类数据 */
     this.axios
@@ -197,10 +196,10 @@ export default {
         /* console.log("foodType", foodType); */
         this.save_foodType(foodType);
         /* console.log(res); */
-      })
-      .catch(err => {
-        /* console.log(err); */
       });
+    /* .catch(err => {
+        console.log(err);
+      }); */
   },
   methods: {
     ...mapActions(["getFoodItemsSync", "getFoodTypeSync"]),
@@ -254,7 +253,7 @@ export default {
             };
             newFoodList.push(a);
           }
-          console.log(newFoodList);
+          /* console.log(newFoodList); */
 
           /* 数据传入vuex */
           var myData = newFoodList;
@@ -272,13 +271,13 @@ export default {
 
             foodItems.push(newFood);
           });
-          console.log("foodItems", foodItems);
+          /* console.log("foodItems", foodItems); */
           this.save_foodList(foodItems);
-          console.log(res);
-        })
-        .catch(err => {
-          console.log(err);
+          /* console.log(res); */
         });
+      /* .catch(err => {
+          console.log(err);
+        }); */
     },
     getItem(index) {
       this.activeClass = index;
