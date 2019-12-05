@@ -105,7 +105,7 @@ export default {
         date: formatDate(new Date(), "yyyy-MM-dd")
       })
       .then(res => {
-        console.log("获取一天信息：", res.data);
+        // console.log("获取一天信息：", res.data);
         // console.log("获取利润信息：", res.data.data.profitsPrice);
 
         this.payPrice = res.data.data.payPrice;
@@ -113,7 +113,7 @@ export default {
         this.incomePrice = res.data.data.incomePrice;
       })
       .catch(err => {
-        console.log(err);
+        // console.log(err);
       });
   },
   methods: {
@@ -133,7 +133,7 @@ export default {
             date: formatDate(this.value2, "yyyy-MM-dd")
           })
           .then(res => {
-            console.log("获取某月利润信息：", res.data);
+            // console.log("获取某月利润信息：", res.data);
             this.$alert(
               "这个月收益：" + res.data.data + "元",
               currentMon + "月的收益",
@@ -143,13 +143,13 @@ export default {
             );
           })
           .catch(err => {
-            console.log(err);
+            // console.log(err);
           });
       }
     },
     getMon() {
       if (this.value1 != "") {
-        console.log(formatDate(this.value1, "yyyy-MM-dd"));
+        // console.log(formatDate(this.value1, "yyyy-MM-dd"));
       }
 
       this.axios
@@ -158,15 +158,15 @@ export default {
           date: formatDate(this.value1, "yyyy-MM-dd")
         })
         .then(res => {
-          console.log("获取某天信息：", res.data);
-          console.log("获取利润信息：", res.data.data.profitsPrice);
+          // console.log("获取某天信息：", res.data);
+          // console.log("获取利润信息：", res.data.data.profitsPrice);
 
           this.payPrice = res.data.data.payPrice;
           this.profitPrice = res.data.data.profitsPrice;
           this.incomePrice = res.data.data.incomePrice;
         })
         .catch(err => {
-          console.log(err);
+          // console.log(err);
         });
     }
   },
@@ -182,10 +182,10 @@ export default {
         userId: sessionStorage.getItem("userId")
       })
       .then(res => {
-        console.log("获取半年利润信息：", res.data);
+        // console.log("获取半年利润信息：", res.data);
         this.dateHalf = res.data.data;
-        console.log(this.dateHalf);
-        console.log(this.dateHalf[0]);
+        // console.log(this.dateHalf);
+        // console.log(this.dateHalf[0]);
         myChart.setOption({
           tooltip: {},
           xAxis: {
@@ -216,9 +216,9 @@ export default {
         });
       })
       .catch(err => {
-        console.log(err);
+        // console.log(err);
       });
-    console.log(this.dateHalf);
+    // console.log(this.dateHalf);
     myChart.setOption({
       tooltip: {},
       xAxis: {

@@ -137,10 +137,10 @@ export default {
   },
   methods: {
     handleSizeChange(val) {
-      console.log(`每页 ${val} 条`);
+      // console.log(`每页 ${val} 条`);
     },
     handleCurrentChange(val) {
-      console.log(`当前页: ${val}`);
+      // console.log(`当前页: ${val}`);
       this.axios
         .post("/pay/searchPay", {
           userName: sessionStorage.getItem("userName"),
@@ -148,14 +148,12 @@ export default {
           pageSize: this.pageSize
         })
         .then(res => {
-          console.log("获取当前支出信息：", res.data);
+          // console.log("获取当前支出信息：", res.data);
           this.tableData = res.data.data.list;
         });
     },
-    pushItem(data) {
-      // this.tableData.push(data);
-      console.log("父组件接收", data);
-      // console.log( data.addpayTypeName);
+    pushItem(data) {    
+      // console.log("父组件接收", data);
       this.axios
         .post("/pay/addPay", {
           userName: sessionStorage.getItem("userName"),
@@ -166,7 +164,7 @@ export default {
           addpayRemark: data.addpayRemark
         })
         .then(res => {
-          console.log("获取添加信息：", res.data);
+          // console.log("获取添加信息：", res.data);
           this.axios
             .post("/pay/searchPay", {
               userName: sessionStorage.getItem("userName"),
@@ -174,23 +172,23 @@ export default {
               pageSize: this.pageSize
             })
             .then(res => {
-              console.log("获取支出信息：", res.data);
+              // console.log("获取支出信息：", res.data);
               this.tableData = res.data.data.list;
               this.totalSize = res.data.data.total;
             })
             .catch(err => {
-              console.log(err);
+              // console.log(err);
             });
         })
         .catch(err => {
-          console.log(err);
+          // console.log(err);
         });
     },
     searchBtn() {
-      console.log(formatDate(this.value3[0], "yyyy-MM-dd"));
-      console.log(formatDate(this.value3[1], "yyyy-MM-dd"));
+      // console.log(formatDate(this.value3[0], "yyyy-MM-dd"));
+      // console.log(formatDate(this.value3[1], "yyyy-MM-dd"));
 
-      console.log(this.payType);
+      // console.log(this.payType);
       if (this.payType == "全部") {
         this.payType = "";
       }
@@ -205,12 +203,12 @@ export default {
           addpayTypeId: this.payType
         })
         .then(res => {
-          console.log("获取支出搜索信息：", res.data);
+          // console.log("获取支出搜索信息：", res.data);
           this.totalSize = res.data.data.total;
           this.tableData = res.data.data.list;
         })
         .catch(err => {
-          console.log(err);
+          // console.log(err);
         });
     }
   },
@@ -223,24 +221,24 @@ export default {
         pageSize: this.pageSize
       })
       .then(res => {
-        console.log("获取支出信息：", res.data);
+        // console.log("获取支出信息：", res.data);
         this.tableData = res.data.data.list;
         this.totalSize = res.data.data.total;
       })
       .catch(err => {
-        console.log(err);
+        // console.log(err);
       });
 
     this.axios
       .post("/payType/findAllType")
       .then(res => {
-        console.log("获取支付类型信息：", res.data);
+        // console.log("获取支付类型信息：", res.data);
         // this.tableData = res.data.data.list;
         this.payTypes = res.data.data;
-        console.log(res.data.data);
+        // console.log(res.data.data);
       })
       .catch(err => {
-        console.log(err);
+        // console.log(err);
       });
   }
 };

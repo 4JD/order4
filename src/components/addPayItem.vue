@@ -67,13 +67,13 @@ export default {
     this.axios
       .post("/payType/findAllType")
       .then(res => {
-        console.log("获取支付类型信息：", res.data);
+        // console.log("获取支付类型信息：", res.data);
         // this.tableData = res.data.data.list;
         this.payTypes = res.data.data;
-        console.log(res.data.data);
+        // console.log(res.data.data);
       })
       .catch(err => {
-        console.log(err);
+        // console.log(err);
       });
   },
   methods: {
@@ -82,7 +82,7 @@ export default {
       (this.form.price = ""), (this.form.remark = "");
     },
     addPay() {
-      console.log(this.form.payType);
+      // console.log(this.form.payType);
       if (this.form.price == "") {
         this.errText = true;
         this.errCont = "金额不能为空";

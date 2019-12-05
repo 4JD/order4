@@ -152,12 +152,12 @@ export default {
   },
   methods: {
     searchBtn() {
-      console.log(this.value2);
+      // console.log(this.value2);
       var orderTimeStart = formatDate(this.value2[0], "yyyy-MM-dd hh:mm:ss");
       var orderTimeEnd = formatDate(this.value2[1], "yyyy-MM-dd hh:mm:ss");
 
-      console.log(orderTimeStart);
-      console.log(orderTimeEnd);
+      // console.log(orderTimeStart);
+      // console.log(orderTimeEnd);
       if (this.value2 == "") {
         orderTimeStart = "";
         orderTimeStart = "";
@@ -176,12 +176,12 @@ export default {
             foodTypeName: this.goodsType
           })
           .then(res => {
-            console.log("获取筛选信息：", res.data);
+            // console.log("获取筛选信息：", res.data);
             this.tableData = res.data.data.list;
             this.totalSize = res.data.data.total;
           })
           .catch(err => {
-            console.log(err);
+            // console.log(err);
           });
       }
     },
@@ -192,10 +192,10 @@ export default {
       return row.goodsType === value;
     },
     handleSizeChange(val) {
-      console.log(`每页 ${val} 条`);
+      // console.log(`每页 ${val} 条`);
     },
     handleCurrentChange(val) {
-      console.log(`当前页: ${val}`);
+      // console.log(`当前页: ${val}`);
       this.axios
         .post("/income/pageIncome", {
           userId: sessionStorage.getItem("userId"),
@@ -203,12 +203,12 @@ export default {
           pageSize: this.pageSize
         })
         .then(res => {
-          console.log("获取当前收入信息：", res.data.data.list);
+          // console.log("获取当前收入信息：", res.data.data.list);
           this.tableData = res.data.data.list;
           this.totalSize = res.data.data.total;
         })
         .catch(err => {
-          console.log(err);
+          // console.log(err);
         });
     }
   },
@@ -218,14 +218,14 @@ export default {
         userId: sessionStorage.getItem("userId")
       })
       .then(res => {
-        console.log("获取收入信息：", res.data.data.list);
+        // console.log("获取收入信息：", res.data.data.list);
         this.tableData = res.data.data.list;
         this.totalSize = res.data.data.total;
         // this.currentPage3
         // this.currentPage3 = res.data.data.list.page;
       })
       .catch(err => {
-        console.log(err);
+        // console.log(err);
       });
 
     this.axios
@@ -233,15 +233,13 @@ export default {
         userId: sessionStorage.getItem("userId")
       })
       .then(res => {
-        console.log("获取商品类型信息：", res.data);
+        // console.log("获取商品类型信息：", res.data);
         this.payTypes = res.data.data;
-        console.log(res.data.data);
-        // this.tableData = res.data.data.list;
-        // this.totalSize = res.data.data.list.total;
-        // this.currentPage3 = res.data.data.list.page;
+        // console.log(res.data.data);
+    
       })
       .catch(err => {
-        console.log(err);
+        // console.log(err);
       });
   }
 };
