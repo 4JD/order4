@@ -655,6 +655,7 @@ export default {
         // 输出搜索框里的内容
         console.log(searchTxt);
         // 执行的AJAX操作 将搜索出来的data 赋值给 foodList
+        //
         /* -----------------------搜索菜品的AJAX 开始----------------------------- */
         this.axios
           .post("/food/findFood", {
