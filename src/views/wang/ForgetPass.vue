@@ -144,7 +144,7 @@
               this.errText=false;
             },2000)
           }else {
-            this.axios.post("/sendMessage",{
+            this.axios.post("/forgetPassword",{
               userTel:this.telNumber
             }).then((res)=>{
 
@@ -167,7 +167,7 @@
               }
               else if(res.data.code==1001) {
                 this.errText=true;
-                this.errCont="手机号已注册";
+                this.errCont="手机号不存在";
                 setTimeout(()=>{
                   this.errText=false;
                 },2000)

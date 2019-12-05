@@ -108,6 +108,11 @@ const routes = [
     name: 'userPage',
     component: () => import('../views/wang/UserPage.vue')
   },
+  {
+    path: "*", // * 匹配所有路由
+    name: "NotFound",
+    component: () => import('../views/NotFound.vue')
+  }
 ];
 
 const router = new VueRouter({
