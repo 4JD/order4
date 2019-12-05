@@ -173,9 +173,7 @@ export default {
             orderTimeEnd: orderTimeEnd,
             foodName: this.keyword,
             paymentName: this.payType,
-            foodTypeName: this.goodsType,
-            page: this.currentPage3,
-            pageSize: this.pageSize
+            foodTypeName: this.goodsType
           })
           .then(res => {
             console.log("获取筛选信息：", res.data);
@@ -199,7 +197,7 @@ export default {
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`);
      this.axios
-      .post("/income/allIncome", {
+      .post("/income/pageIncome", {
         userId:sessionStorage.getItem("userId"),
         page: this.currentPage3,
         pageSize: this.pageSize
@@ -219,9 +217,8 @@ export default {
    
     this.axios
       .post("/income/allIncome", {
-        userId:sessionStorage.getItem("userId"),
-        page: this.currentPage3,
-        pageSize: this.pageSize
+        userId:sessionStorage.getItem("userId")
+      
       })
       .then(res => {
         console.log("获取收入信息：", res.data.data.list);
