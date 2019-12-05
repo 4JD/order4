@@ -100,7 +100,7 @@ export default {
   created() {
 
     this.axios
-      .post("/user/findAllPrice", {
+      .post("/profits/findAllPrice", {
         userId: 1,
         date: formatDate(new Date(), "yyyy-MM-dd")
       })
@@ -128,7 +128,7 @@ export default {
       if (this.value2 != "") {
         var currentMon = formatDate(this.value2, "yyyy-MM");
         this.axios
-          .post("/user/findByMonth", {
+          .post("/profits/findByMonth", {
             userId: 1,
             date: formatDate(this.value2, "yyyy-MM-dd")
           })
@@ -153,7 +153,7 @@ export default {
       }
 
       this.axios
-        .post("/user/findAllPrice", {
+        .post("/profits/findAllPrice", {
           userId: 1,
           date: formatDate(this.value1, "yyyy-MM-dd")
         })

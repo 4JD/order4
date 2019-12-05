@@ -6,7 +6,7 @@
       </el-col>
       <el-col :span="24">
         <el-carousel :interval="4000" type="card" height="200px">
-          <el-carousel-item v-for="item in urls" :key="item">
+          <el-carousel-item v-for="(item,index) in urls" :key="index">
             <el-image  :src="item" ></el-image>
           </el-carousel-item>
         </el-carousel>
