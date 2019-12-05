@@ -3,14 +3,14 @@ import Vuex from 'vuex'
 
 Vue.use(Vuex)
 
-const foodItems = [
+/* const foodItems = [
   {
     foodId:0,
     foodName: "超级至尊披萨1",
     price: 91,
     count:2,
     photourl: require('../assets/logo.png'),
-    typeId:1,
+    foodTypeId:1,
     foodState:1
   },
   {
@@ -19,7 +19,7 @@ const foodItems = [
     price: 92,
     count:1,
     photourl: require('../assets/logo.png'),
-    typeId:2,
+    foodTypeId:2,
     foodState:1
   },
   {
@@ -28,7 +28,7 @@ const foodItems = [
     price: 93,
     count:1,
     photourl: require('../assets/logo.png'),
-    typeId:3,
+    foodTypeId:3,
     foodState:1
   },
   {
@@ -37,7 +37,7 @@ const foodItems = [
     price: 94,
     count:1,
     photourl: require('../assets/logo.png'),
-    typeId:4,
+    foodTypeId:4,
     foodState:1
   },
   {
@@ -46,7 +46,7 @@ const foodItems = [
     price: 95,
     count:1,
     photourl: require('../assets/logo.png'),
-    typeId:5,
+    foodTypeId:5,
     foodState:1
   },
   {
@@ -55,7 +55,7 @@ const foodItems = [
     price: 96,
     count:1,
     photourl: require('../assets/logo.png'),
-    typeId:6,
+    foodTypeId:6,
     foodState:1
   },
   {
@@ -64,7 +64,7 @@ const foodItems = [
     price: 97,
     count:1,
     photourl: require('../assets/logo.png'),
-    typeId:7,
+    foodTypeId:7,
     foodState:1
   },
   {
@@ -73,7 +73,7 @@ const foodItems = [
     price: 98,
     count:1,
     photourl: require('../assets/logo.png'),
-    typeId:1,
+    foodTypeId:1,
     foodState:1
   },
   {
@@ -82,40 +82,40 @@ const foodItems = [
     price: 99,
     count:1,
     photourl: require('../assets/logo.png'),
-    typeId:2,
+    foodTypeId:2,
     foodState:2
   }
-]
-const foodType = [
+] */
+/* const foodType = [
   {
     typeName: "菜品1",
-    typeId:1
+    foodTypeId: 1
   },
   {
     typeName: "菜品2",
-    typeId:2
+    foodTypeId: 2
   },
   {
     typeName: "菜品3",
-    typeId:3
+    foodTypeId: 3
   },
   {
     typeName: "菜品4",
-    typeId:4
+    foodTypeId: 4
   },
   {
     typeName: "菜品5",
-    typeId:5
+    foodTypeId: 5
   },
   {
     typeName: "菜品6",
-    typeId:6
+    foodTypeId: 6
   },
   {
     typeName: "菜品7",
-    typeId:7
+    foodTypeId: 7
   },
-]
+] */
 
 
 /* 主页 &订单 */
@@ -125,17 +125,17 @@ export default new Vuex.Store({
     foodType: [],
     shoppingCar: [],
     orderMng: [],
-    foodList:[]
+    foodList: []
   },
   getters: {
     currentFoodItems: (state) => (s) => {
       return state.foodItems.filter(item => {
-        return item.typeId == s
+        return item.foodTypeId == s
       })
     },
     currentFoodType: (state) => (s) => {
       return state.foodType.filter(item => {
-        return item.typeName.indexOf(s) > -1
+        return item.foodTypeName.indexOf(s) > -1
       })
     }
   },
@@ -147,40 +147,56 @@ export default new Vuex.Store({
       state.foodType = n
     },
     /* 添加购物车 */
-    addOrder(state,n){
+    addOrder(state, n) {
       state.shoppingCar.push(n)
     },
 
-    /* 删除 */
-    delOrderN(state,n){
+    /* 确认付款 删除 */
+    delOrderN(state, n) {
       var p
-      state.shoppingCar.forEach((items,index) => {
-        if(items.foodId == n) {
+      state.shoppingCar.forEach((items, index) => {
+        if (items.foodId == n) {
           p == index
           return
         }
       })
-      state.shoppingCar.splice(p,1) 
+      state.shoppingCar.splice(p, 1)
     },
     /* 加入历史订单 */
-    addOrderMng(state,n){
+    addOrderMng(state, n) {
       state.orderMng.push(n)
     },
-
-    save_foodList(state, data){
+    /* 历史订单删除 */
+    delThisOrder(state, n) {
+      var ever
+      state.orderMng.forEach((items, index) => {
+        if (items.foodId == n) {
+          ever == index
+          return
+        }
+      })
+      state.orderMng.splice(ever, 1)
+    },
+    /* 传入菜品 */
+    save_foodList(state, data) {
       state.foodItems = data
+    },
+    /* 传入菜类 */
+    save_foodType(state, data) {
+      state.foodType = data
     }
   },
   actions: {
-    getFoodItemsSync({ commit }) {
+    /* 模拟数据赋值 */
+    /* getFoodItemsSync({ commit }) {
       setTimeout(function () {
         commit('getFoodItems', foodItems)
       },0)
-    },
-    getFoodTypeSync({ commit }) {
+    }, */
+    /* getFoodTypeSync({ commit }) {
       setTimeout(function () {
         commit('getFoodType', foodType)
-      },0)
-    }
+      }, 0)
+    } */
   }
 })

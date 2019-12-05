@@ -1,139 +1,176 @@
 <template>
   <div>
     <el-button type="primary" @click="dialogFormVisible = true" id="addPay">
-      <i class="el-icon-upload el-icon--right" ></i>添加支出
+      <i class="el-icon-upload el-icon--right"></i>添加支出
     </el-button>
 
     <el-dialog title="请在下方添加支出" :visible.sync="dialogFormVisible">
-      <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-     
-        <el-form-item label="支出类型" :label-width="formLabelWidth">
-          <el-select v-model="ruleForm.type" placeholder="请选择支出类型"> 
-            <el-option label="工资" value="工资"></el-option>
-            <el-option label="原材料" value="原材料"></el-option>
-            <el-option label="房租" value="房租"></el-option>
+      <el-form :model="form" ref="Form" label-width="100px" class="demo-ruleForm">
+        <el-form-item label="支出类型" >
+          <el-select v-model="form.payType" placeholder="请选择支出类型">
+            <el-option
+              v-for="(item,index) in payTypes"
+              :key="index"
+              :label="item.addpayTypeName"
+              :value="item.addpayTypeId"
+            ></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="操作者" :label-width="formLabelWidth">
-          <el-select v-model="ruleForm.name" placeholder="请选择操作者">
-            <el-option label="张三" value="张三"></el-option>
-            <el-option label="李四" value="李四"></el-option>
-            <el-option label="王五" value="王五"></el-option>
-          </el-select>
+        <el-form-item label="具体用途" >
+          <el-input type="text" v-model="form.payUse"></el-input>
         </el-form-item>
-        <el-form-item label="支出金额" :label-width="formLabelWidth" prop="price">
-          <el-input v-model="ruleForm.price" autocomplete="off"></el-input>
+        <el-form-item label="支出金额" >
+          <el-input
+            v-model="form.price"
+            autocomplete="off"
+            type="number"
+            onkeypress="return event.keyCode>=48&&event.keyCode<=57"
+          ></el-input>
         </el-form-item>
-          <el-form-item label="支出备注" :label-width="formLabelWidth">
-        <el-input type="textarea" v-model="ruleForm.remark"></el-input>
-      </el-form-item>
+        <el-form-item label="支出备注" >
+          <el-input type="textarea" v-model="form.remark"></el-input>
+        </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="returnpay">取 消</el-button>
-        <el-button type="primary" @click="addPay('ruleForm')">确 定</el-button>
+        <el-button type="primary" @click="addPay">确 定</el-button>
       </div>
     </el-dialog>
+    <el-alert :title="errCont" type="error" v-show="errText"></el-alert>
   </div>
 </template>
 
 <script>
-import { formatDate } from '@/assets/js/formatDate.js'
+import { formatDate } from "@/assets/js/formatDate.js";
 export default {
-  data () {
+  data() {
     return {
-        dialogFormVisible: false,
-        ruleForm: {
-          type: '工资',
-          name: '张三',
-          price: '',
-          remark: ''
-        },
-        formLabelWidth: '120px',
-        rules: {
-          price: [
-            { required: true, message: '请输入金额', trigger: 'blur' },
-            { type:'number', message: '请输入数字', trigger: 'blur' }
-          ]
-        }
-    } 
+      dialogFormVisible: false,
+      payTypes: [],
+       errText: false,
+        errCont: "",
+      form: {
+        price: "",
+        payType: "",
+        remark: "",
+        payUse: "",
+       
+      }
+    };
   },
-   filters: {
+  filters: {
     formatDate(time) {
-    var date = new Date(time);
-    return formatDate(date, 'yyyy-MM-dd');
-   }
+      var date = new Date(time);
+      return formatDate(date, "yyyy-MM-dd");
+    }
+  },
+  created() {
+    this.axios
+      .post("/payType/findAllType")
+      .then(res => {
+        console.log("获取支付类型信息：", res.data);
+        // this.tableData = res.data.data.list;
+        this.payTypes = res.data.data;
+        console.log(res.data.data);
+      })
+      .catch(err => {
+        console.log(err);
+      });
   },
   methods: {
-    returnpay () {
+    returnpay() {
       this.dialogFormVisible = false;
-      this.ruleForm.type='工资',
-      this.ruleForm.name='张三',
-      this.ruleForm.price='',
-      this.ruleForm.remark= ''
+      (this.form.price = ""), (this.form.remark = "");
     },
-    addPay (formName) {
-      this.dialogFormVisible = false;
-        //   this.axios.post('/user/addPay',{
-        //     payType: this.ruleForm.type,
-        //     payUser: this.ruleForm.name,
-        //     payPrice: this.ruleForm.price,
-        //     remark: this.ruleForm.remark,
-        //     date: formatDate(new Date(), 'yyyy-MM-dd hh:mm:ss')
-        // })
-        // .then(res=> {
-        //   console.log('获取支出信息：',res,data);
-        //   this.tableData = res.data.data;
-        // })
-        // .catch(err => {
-        //   console.log(err);
-        // })
-         this.$refs[formName].validate((valid) => {
-          if (valid) {
-               this.$emit('add',{
-                payType: this.ruleForm.type,
-                payUser: this.ruleForm.name,
-                payPrice: this.ruleForm.price,
-                remark: this.ruleForm.remark,
-                date: formatDate(new Date(), 'yyyy-MM-dd hh:mm:ss')
+    addPay() {
+      console.log(this.form.payType);
+      if (this.form.price == "") {
+        this.errText = true;
+        this.errCont = "金额不能为空";
+        setTimeout(() => {
+          this.errText = false;
+        }, 2000);
+      } else {
+        this.dialogFormVisible = false;
+        var price = Number(this.form.price);
+        console.log(typeof price);
+        console.log(typeof this.form.payType);
+        console.log(typeof this.form.payUse);
+        // console.log(typeof price);
+        this.axios
+          .post("/pay/addPay", {
+            userName: "admin",
+            addpayTypeId: this.form.payType,
+            addpayPrice: price,
+            addpayName: "随便用",
+            addpayUse: this.form.payUse,
+            addpayRemark:this.form.remark
+          })
+          .then(res => {
+            console.log("获取添加信息：", res.data);
+            this.axios
+              .post("/pay/searchPay", {
+                userName: "admin",
+                page: this.currentPage3,
+                pageSize: this.pageSize
+              })
+              .then(res => {
+                console.log("获取支出信息：", res.data);
+                // this.tableData = res.data.data.list;
+                // this.totalSize = res.data.data.list.total;
+              })
+              .catch(err => {
+                console.log(err);
               });
-          } else {
-            console.log('error submit!!');
-            return false;
-          }
-        });
-   
-     
-      this.ruleForm.type='工资',
-      this.ruleForm.name='张三',
-      this.ruleForm.price='',
-      this.ruleForm.remark= ''
+          })
+          .catch(err => {
+            console.log(err);
+          });
+      }
+
+      // this.$refs[formName].validate(valid => {
+      //   if (valid) {
+      //     this.$emit("add", {
+      //       payUser: this.ruleForm.name,
+
+      //       remark: this.ruleForm.remark,
+      //       date: formatDate(new Date(), "yyyy-MM-dd hh:mm:ss")
+      //     });
+      //   } else {
+      //     console.log("error submit!!");
+      //     return false;
+      //   }
+      // });
+
+      this.form.payType = "工资";
+    
+        this.form.price = "";
+        this.form.remark = "";
     }
   }
 };
 </script>
 
 <style scoped>
-
-  .el-dialog__header .el-dialog__title {
-    font-size: 24px;
-  }
-  .el-select {
-    width: 80%;
-  }
-  .el-textarea {
-    width: 80%;
-    text-align: center;
-  }
-  #addPay {
-    float: left;
-   
-  }
-.el-button{
-  background:  #ff9a00;
-  border-color:#ff9a00;
+.el-dialog__header .el-dialog__title {
+  font-size: 24px;
 }
-.el-button:hover{
-  background:  #ec9005;
-  border-color:#ec9005;
+.el-select {
+  width: 80%;
+}
+.el-textarea {
+  width: 80%;
+  text-align: center;
+}
+#addPay {
+  float: left;
+}
+.el-button {
+  background: #ff9a00;
+  border-color: #ff9a00;
+}
+.el-button:hover {
+  background: #ec9005;
+  border-color: #ec9005;
 }
 </style>

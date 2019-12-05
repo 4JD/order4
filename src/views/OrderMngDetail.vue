@@ -15,23 +15,23 @@
           </div>
 
           <div class="del-btn">
-            <button class="BtnStyle" type="button">删除</button>
+            <button class="BtnStyle" type="button" @click="delBtn">删除</button>
           </div>
         </div>
 
-        <div class="item-order">
+        <div class="item-order" v-for="(item,index) in shoppingCar" :key="index">
           <div>
             <img alt="Vue logo" src="../assets/logo.png" />
           </div>
           <div>
-            <h3>超级至尊披萨</h3>
+            <h3>{{item.foodName}}</h3>
             <p>
               <span>12</span>号桌
             </p>
           </div>
           <div>
             <p>
-              <span>93</span> 元
+              <span>{{item.foodPrice}}</span> 元
             </p>
           </div>
         </div>
@@ -42,15 +42,42 @@
 
 <script>
 // import HelloWorld from '@/components/HelloWorld.vue'
-/* import { mapState, mapMutations } from "vuex"; */
+import { mapState, mapMutations } from "vuex";
 
 export default {
-  name: "orderDetail",
-  data(){
-
+  name: "orderMngDetail",
+  data() {
+    return {
+      
+    };
   },
   components: {
     // HelloWorld
+  },
+  computed: {
+    ...mapState(["shoppingCar"])
+  },
+  methods:{
+    ...mapMutations(["delThisOrder"]),
+    delBtn(){
+
+    }
+  },
+  created() {
+    /* 店铺Id */
+    /* this.axios
+    .post("/user/placeOrder2", {
+      "storeId": "1",
+      "deskNum":"12",
+      "foodId":"",
+      "foodNum":"",
+    })
+    .then(res => {
+      console.log(res)
+    })
+    .catch(err => {
+      console.log(err)
+    }) */
   }
 };
 </script>
@@ -58,8 +85,8 @@ export default {
 <style lang="less" scoped>
 @import "../assets/css/base.less";
 
-.orderMng{
-  h1{
+.orderMng {
+  h1 {
     margin-left: 10%;
   }
 }

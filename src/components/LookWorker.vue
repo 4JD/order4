@@ -6,43 +6,43 @@
     <el-dialog title="查看员工信息" :visible.sync="dialogFormVisible">
       <el-form>
         <el-form-item label="ID：" :label-width="formLabelWidth">
-          <el-input  autocomplete="off" :disabled="true" v-model="info.id">{{info.id}}</el-input>
+          <el-input  autocomplete="off" :disabled="true" v-model="info.workerId">{{info.workerId}}</el-input>
         </el-form-item>
 
         <el-form-item label="姓名：" :label-width="formLabelWidth">
-          <el-input  autocomplete="off"  :disabled="true" v-model="info.name">{{info.name}}</el-input>
+          <el-input  autocomplete="off"  :disabled="true" v-model="info.workerName">{{info.workerName}}</el-input>
         </el-form-item>
 
         <el-form-item label="性别：" :label-width="formLabelWidth" >
-          <el-input  autocomplete="off"  :disabled="true" v-model="info.sex">{{info.sex}}</el-input>
+          <el-input  autocomplete="off"  :disabled="true" v-model="info.workerSex">{{info.workerSex}}</el-input>
         </el-form-item>
 
         <el-form-item label="入职日期：" :label-width="formLabelWidth">
-          <el-input  autocomplete="off"  :disabled="true" v-model="info.date">{{info.date}}</el-input>
+          <el-input  autocomplete="off"  :disabled="true" v-model="info.workerDate">{{info.workerDate}}</el-input>
         </el-form-item>
 
         <el-form-item label="生日：" :label-width="formLabelWidth">
-          <el-input  autocomplete="off"  :disabled="true" v-model="info.birthday">{{info.birthday}}</el-input>
+          <el-input  autocomplete="off"  :disabled="true" v-model="info.workerBirthday">{{info.workerBirthday}}</el-input>
         </el-form-item>
 
         <el-form-item label="手机：" :label-width="formLabelWidth">
-          <el-input  autocomplete="off"  :disabled="true" v-model="info.tel">{{info.tel}}</el-input>
+          <el-input  autocomplete="off"  :disabled="true" v-model="info.workerTel">{{info.workerTel}}</el-input>
         </el-form-item>
 
         <el-form-item label="地址：" :label-width="formLabelWidth">
-          <el-input  autocomplete="off"  :disabled="true" v-model="info.address">{{info.address}}</el-input>
+          <el-input  autocomplete="off"  :disabled="true" v-model="info.workerAddress">{{info.workerAddress}}</el-input>
         </el-form-item>
 
         <el-form-item label="职位：" :label-width="formLabelWidth">
-          <el-input  autocomplete="off"  :disabled="true" v-model="info.position">{{info.position}}</el-input>
+          <el-input  autocomplete="off"  :disabled="true" v-model="info.positionName">{{info.positionName}}</el-input>
         </el-form-item>
 
-        <el-form-item label="工资：" :label-width="formLabelWidth">
+        <!-- <el-form-item label="工资：" :label-width="formLabelWidth">
           <el-input  autocomplete="off"  :disabled="true" v-model="info.salary">{{info.salary}}</el-input>
-        </el-form-item>
+        </el-form-item> -->
 
         <el-form-item label="在职状态：" :label-width="formLabelWidth">
-          <el-input  autocomplete="off"  :disabled="true" v-model="info.state">{{info.state}}</el-input>
+          <el-input  autocomplete="off"  :disabled="true" v-model="info.workerState">{{info.workerState}}</el-input>
         </el-form-item>
 
         <el-form-item label="备注：" :label-width="formLabelWidth">

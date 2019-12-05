@@ -21,10 +21,10 @@
         placeholder="请输入你要搜索的员工信息"
         v-model="searchinput"
         clearable
-        class="searchinput">
+        class="searchinput"
+        >
       </el-input>
-      <el-button type="success" icon="el-icon-search" @click="searchworker()" class="searchworker">搜索员工</el-button>
-      <el-button type="info" icon="el-icon-view" @click="looksalary">薪资概况</el-button>
+      <el-button type="success" icon="el-icon-search" @click="searchworker()" id="searchvalue">搜索员工</el-button>
       
       <span>共有<span class="worker-number"> {{tableData.length}} </span>名员工</span>
     </div>
@@ -42,21 +42,19 @@
           <th>地址</th>
           <th>入职日期</th>
           <th>职位</th>
-          <th>工资</th>
           <th>在职状态</th>
           <th>操作</th>
         </tr>
         <tr v-for="(item,index) in tableData" :key="index">
           <td><span class="check-span" @click="item.select=!item.select" :class="{'check-true':item.select}"></span></td>
-          <td>{{item.id}}</td>
-          <td>{{item.name}}</td>
-          <td>{{item.sex}}</td>
-          <td>{{item.tel}}</td>
-          <td>{{item.address}}</td>
-          <td>{{item.date}}</td>
-          <td>{{item.position}}</td>
-          <td>{{item.salary}}</td>
-          <td>{{item.state}}</td>
+          <td>{{item.workerId}}</td>
+          <td>{{item.workerName}}</td>
+          <td>{{item.workerSex}}</td>
+          <td>{{item.workerTel}}</td>
+          <td>{{item.workerAddress}}</td>
+          <td>{{item.workerDate}}</td>
+          <td>{{item.positionName}}</td>
+          <td>{{item.workerState}}</td>
           <td>
             <LookWorker :info='item'></LookWorker>
             <AlterWorker :info="item"></AlterWorker>
@@ -82,7 +80,6 @@ import AddWorker from "../components/AddWorker";
 import LookWorker from "../components/LookWorker";
 import AlterWorker from "../components/AlterWorker";
 
-
 export default {
   name: 'worker',
   components: {
@@ -92,48 +89,40 @@ export default {
   },
   data() {
     return {
-      tableData: [{
-        id:1,
-        date: '2016-05-01',
-        name: '王小虎',
-        sex:'男',
-        birthday:'2000-01-01',
-        address: '上海市普陀区金沙江路 1518 弄',
-        tel:'13344445555',
-        position:'服务员',
-        salary:'6666.00',
-        state:'在职',
-        remark:'我是王小虎'
-        },
-        {
-          id:2,
-          date: '2016-05-02',
-          name: '王老虎',
-          sex:'女',
-          birthday:'2000-01-02',
-          address: '上海市普陀区金沙江路 1518 弄',
-          tel:'13344445555',
-          position:'收营员',
-          salary:'7777.00',
-          state:'在职',
-          remark:'我是王老虎'
-        }, 
-        {
-          id:3,
-          date: '2016-05-03',
-          name: '王大虎',
-          sex:'保密',
-          birthday:'2000-01-03',
-          address: '上海市普陀区金沙江路 1518 弄',
-          tel:'13344445555',
-          position:'厨师',
-          salary:'8888.00',
-          state:'在职',
-          remark:'我是王大虎'
-        }
-      ],
+      tableData: [],
       //搜索输入框
-      searchinput:''
+      searchinput:'',
+      pickerOptions: {
+        shortcuts: [
+          {
+            text: "最近一周",
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+              picker.$emit("pick", [start, end]);
+            }
+          },
+          {
+            text: "最近一个月",
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+              picker.$emit("pick", [start, end]);
+            }
+          },
+          {
+            text: "最近三个月",
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
+              picker.$emit("pick", [start, end]);
+            }
+          }
+        ]
+      }
 
     }
   },
@@ -153,7 +142,20 @@ export default {
         type: 'warning'
       }).then(() => {
         console.log(i)
+        // console.log(String(i+1))
         this.tableData.splice(i,1)
+        // this.axios.post("/workerDelete",{
+        //   workerId:String(i+1)
+        // })
+        // .then(res => {
+        //   console.log("单个删除" ,res.data.data.list);
+        //   // this.tableData = res.data.data.list;
+        //   this.tableData.splice(i+1,1)
+        // })
+        // .catch(err => {
+        //   console.log(err);
+        // });
+
         this.$message({
           type: 'success',
           message: '删除成功!'
@@ -176,16 +178,25 @@ export default {
         this.tableData[i].select = !_isSelect;
       }
     },
-    //跳转查看员工收入页面
-    looksalary() {
-      this.$router.replace("/workersalary");
-    },
     //筛选搜索员工
     searchworker() {
-      
-      this.tableData = this.tableData.filter((item)=> {
+      /* this.tableData = this.tableData.filter((item)=> {
         return item.id = this.searchinput
+      }) */
+      var searchvalue = document.getElementById("searchvalue").value;
+      console.log("搜索框的值",searchvalue);
+      this.axios.post("/workerFindById",{
+        workerId:this.searchinput
       })
+      .then(res => {
+        console.log("搜索结果：",res.data.data);
+          this.tableData = this.tableData.filter((item)=> {
+          return item.workerId = searchvalue
+        })
+      })
+      .catch(err => {
+        console.log(err);
+      });
     },
     //添加员工
     addworkerinfo(data){
@@ -194,10 +205,36 @@ export default {
   },
   mounted: function(){
     var _this = this;
-    
     this.tableData.map(function (item) {
       _this.$set(item, 'select', false);
     });
+  },
+  created() {
+    this.axios
+    .post("/workerFindAll"
+    ,{
+      page:1,
+      limit:8,
+      // workerId:'1',
+      // workerName:'偏偏',
+      // workerSex:'男',
+      // workerBirthday:'2019-12-03',
+      // workerAddress:'国信安',
+      // workerTel:'13344445678',
+      // positionId:'1',
+      // workerState:'1',
+      // remark:'aaaaaaaa'
+
+    }
+    )
+    .then(res => {
+      console.log("获取员工信息：", res.data.data);
+      this.tableData = res.data.data.list;
+    })
+    .catch(err => {
+      console.log(err);
+    });
+
   }
   
   

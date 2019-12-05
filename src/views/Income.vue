@@ -10,27 +10,28 @@
     <el-form ref="form">
       <el-row>
         <el-col :span="6">
-          <el-form-item label="支付类型：" >
+          <el-form-item label="支付类型：">
             <el-select placeholder="支付类型" v-model="payType">
               <el-option label="全部" value="全部"></el-option>
               <el-option label="在线支付" value="在线支付"></el-option>
-              <el-option label="现金" value="现金"></el-option>
-             
+              <el-option label="现金支付" value="现金支付"></el-option>
             </el-select>
-         </el-form-item> 
+          </el-form-item>
         </el-col>
         <el-col :span="4">
-           <el-form-item>
-          
-         </el-form-item> 
+          <el-form-item></el-form-item>
         </el-col>
         <el-col :span="6">
           <el-form-item label="商品类型：">
-          <el-select placeholder="商品类型" v-model="goodsType">
-            <el-option label="全部" value="全部"></el-option>
-            <el-option label="面食" value="面食"></el-option>
-           
-          </el-select>
+            <el-select placeholder="商品类型" v-model="goodsType">
+              <el-option label="全部" value="全部"></el-option>
+              <el-option
+                :label="item.foodTypeName"
+                :value="item.foodTypeName"
+                v-for="(item,index) in payTypes"
+                :key="index"
+              ></el-option>
+            </el-select>
           </el-form-item>
         </el-col>
       </el-row>
@@ -63,39 +64,30 @@
       </el-row>
     </el-form>
 
-    <el-table stripe style="width: 90%; " border :data="tableData">
+    <el-table stripe style="width: 90%; " border :data="tableData.slice((currentPage3-1)*pageSize,currentPage3*pageSize)">
       <el-table-column prop="incomeId" label="收入id" align="center"></el-table-column>
 
-      <el-table-column prop="orderFoodPacks.foodName" label="商品名" align="center"></el-table-column>
+      <el-table-column prop="orderFoodPacks[0].foodName" label="商品名" align="center"></el-table-column>
 
-      <el-table-column
-        prop="orderFoodPacks.foodTypeName"
-        label="商品类型"
-        align="center"
-       >
-      </el-table-column>
+      <el-table-column prop="orderFoodPacks[0].foodTypeName" label="商品类型" align="center"></el-table-column>
 
-      <el-table-column prop="orderFoodPacks.foodPrice" label="单价/(元)" align="center"></el-table-column>
+      <el-table-column prop="orderFoodPacks[0].foodPrice" label="单价/(元)" align="center"></el-table-column>
 
-      <el-table-column prop="orderFoodPacks.foodNum" label="卖出数量/(份)" align="center"></el-table-column>
+      <el-table-column prop="orderFoodPacks[0].foodNum" label="卖出数量/(份)" align="center"></el-table-column>
 
-      <el-table-column prop="orderFoodPacks.foodNum*orderFoodPacks.foodPrice" label="总价/(元)" align="center"></el-table-column>
+      <el-table-column prop="orderPrice" label="总价/(元)" align="center"></el-table-column>
 
-      <el-table-column
-        prop="orderFoodPacks.paymentTypeName"
-        label="支付方式"
-        align="center"
-       >
-      </el-table-column>
+      <el-table-column prop="paymentTypeName" label="支付方式" align="center"></el-table-column>
 
       <el-table-column prop="orderTime" label="支付时间" width="190" align="center"></el-table-column>
     </el-table>
     <el-pagination
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
+      background
       :current-page.sync="currentPage3"
       :page-size="pageSize"
-      layout="prev, pager, next, jumper"
+      layout="prev, pager, next"
       :total="totalSize"
     ></el-pagination>
   </div>
@@ -104,38 +96,6 @@
 
 <script>
 import { formatDate } from "@/assets/js/formatDate.js";
-// var tableData = [
-//   {
-//     date: "2016-05-02 09:20:00",
-//     id: "1",
-//     goodsName: "二两面条",
-//     goodsType: "面食",
-//     price: "7",
-//     number: "2",
-//     totalPrice: "14",
-//     payment: "支付宝"
-//   },
-//   {
-//     date: "2016-05-02 09:20:00",
-//     id: "1",
-//     goodsName: "二两面条",
-//     goodsType: "小炒",
-//     price: "7",
-//     number: "2",
-//     totalPrice: "14",
-//     payment: "微信"
-//   },
-//   {
-//     date: "2016-05-02 09:20:00",
-//     id: "1",
-//     goodsName: "二两面条",
-//     goodsType: "面食",
-//     price: "7",
-//     number: "2",
-//     totalPrice: "14",
-//     payment: "现金"
-//   }
-// ];
 
 export default {
   name: "income",
@@ -146,9 +106,10 @@ export default {
       payType: "",
       goodsType: "",
       keyword: "",
-      currentPage3: 5,
-      totalSize: 1000,
-      pageSize: 20,
+      payTypes: [],
+      currentPage3: 1,
+      totalSize: 100,
+      pageSize: 10,
       pickerOptions: {
         shortcuts: [
           {
@@ -191,26 +152,39 @@ export default {
   },
   methods: {
     searchBtn() {
-      if (this.value2 != "") {
-        console.log(formatDate(this.value2[0], "yyyy-MM-dd hh:mm:ss"));
-        console.log(formatDate(this.value2[1], "yyyy-MM-dd hh:mm:ss"));
+      var orderTimeStart = formatDate(this.value2[0], "yyyy-MM-dd hh:mm:ss");
+      var orderTimeEnd = formatDate(this.value2[1], "yyyy-MM-dd hh:mm:ss");
+
+      console.log(orderTimeStart);
+      console.log(orderTimeEnd);
+      if (this.value2 == "") {
+        orderTimeStart = "";
+        orderTimeStart = "";
+      } else if (this.payType == "全部") {
+        this.payType = "";
+      } else if (this.goodsType == "全部") {
+        this.goodsType = "";
+      } else {
+        this.axios
+          .post("/income/allIncome", {
+            userId: 1,
+            orderTimeStart: orderTimeStart,
+            orderTimeEnd: orderTimeEnd,
+            foodName: this.keyword,
+            paymentName: this.payType,
+            foodTypeName: this.goodsType,
+            page: this.currentPage3,
+            pageSize: this.pageSize
+          })
+          .then(res => {
+            console.log("获取筛选信息：", res.data);
+            this.tableData = res.data.data.list;
+            this.totalSize = res.data.data.total;
+          })
+          .catch(err => {
+            console.log(err);
+          });
       }
-       console.log(this.payType);
-       console.log(this.goodsType);
-      console.log(this.keyword);
-      // this.axios
-      //   .get("/user/searchIncome",{
-      //     payType1:formatDate(this.value2[0], "yyyy-MM-dd hh:mm:ss"),
-      //     payType2:formatDate(this.value2[1], "yyyy-MM-dd hh:mm:ss"),
-      //     keywords:this.keyword
-      //   })
-      //   .then(res => {
-      //     console.log("获取筛选信息：", res.data);
-      //     this.tableData = res.data.data;
-      //   })
-      //   .catch(err => {
-      //     console.log(err);
-      //   });
     },
     filterTag(value, row) {
       return row.payment === value;
@@ -223,19 +197,39 @@ export default {
     },
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`);
+     
     }
   },
   created() {
     // this.tableData = tableData;
     this.axios
-      .get("/user/searchIncome?userId=1",{
-        page:this.currentPage3,
-        pageSize:this.pageSize
+      .post("/income/allIncome", {
+        userId: 1,
+        page: this.currentPage3,
+        pageSize: this.pageSize
       })
       .then(res => {
-        console.log("获取收入信息：", res.data);
+        console.log("获取收入信息：", res.data.data.list);
         this.tableData = res.data.data.list;
-        this.totalSize = res.data.data.list.total;
+        this.totalSize = res.data.data.total;
+        // this.currentPage3
+        // this.currentPage3 = res.data.data.list.page;
+      })
+      .catch(err => {
+        console.log(err);
+      });
+
+    this.axios
+      .post("/foodType/findTypeByUserId", {
+        userId: 1
+      })
+      .then(res => {
+        console.log("获取商品类型信息：", res.data);
+        this.payTypes = res.data.data;
+        console.log(res.data.data);
+        // this.tableData = res.data.data.list;
+        // this.totalSize = res.data.data.list.total;
+        // this.currentPage3 = res.data.data.list.page;
       })
       .catch(err => {
         console.log(err);

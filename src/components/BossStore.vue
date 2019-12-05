@@ -1,16 +1,16 @@
 <template>
   <div class="boss-store">
-    <button class="residepassword" :data-storeid="item.storeId" @click="residepassword">重置密码</button>
+    <button class="residepassword" :data-storeid="item.userId" @click="residepassword">重置密码</button>
     <div class="storeNumber">{{number+1}}号店铺</div>
     <div class="storeimg">
       <!-- <img src="../assets/images/store1.jpg" alt="店铺图片" /> -->
-      <img :src="item.storeImg" alt="店铺图片" />
+      <img src="../assets/images/duncai/t01e381c2d14f211eca.jpg" alt="店铺图片" />
     </div>
     <div class="storemsg">
       <p>店铺名称:{{item.storeName}}</p>
-      <p>主营类型:{{item.storeMainType}}</p>
-      <p>联系人:{{item.storeLinkPople}}</p>
-      <p>联系方式:{{item.storeLinkTel}}</p>
+      <p>主营类型:{{item.storeMain}}</p>
+      <p>联系人:{{admin.ownerName}}</p>
+      <p>联系方式:{{item.storeTel}}</p>
       <!-- 
         <p>营业时间:{{item.storeHour}}</p>
         <p>门面地址:{{item.storeAddress}}</p>
@@ -29,7 +29,9 @@ export default {
   template: {},
   props: {
     item: Object,
-    number: Number
+    number: Number,
+    allStoreIncome: Array,
+    admin: Object
   },
   data() {
     return {};
