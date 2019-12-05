@@ -421,8 +421,9 @@ export default {
           foodTypeId: String(this.modifiedFoodTypeId)
         })
         .then(res => {
-          // console.log("菜品列表url", res.data.data.url);
-          // console.log("菜品列表s", res.data.data.foods);
+          console.log("菜品信息",res);
+          console.log("菜品列表url", res.data.data.url);
+          console.log("菜品列表s", res.data.data.foods);
           const newFoodList = [];
           for (var i = 0; i < res.data.data.foods.length; i++) {
             var a = {
