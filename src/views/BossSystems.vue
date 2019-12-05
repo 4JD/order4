@@ -229,7 +229,7 @@
 </template>
 <script>
 // 获取老板登录的用户id
-const userId = sessionStorage.getItem("userId") | 37;
+const userId = sessionStorage.getItem("userId");// | 37;
 // 名下所有店铺信息查看，管理店铺
 import BossStore from "../components/BossStore";
 // 每店铺收益详情
@@ -339,6 +339,7 @@ export default {
   methods: {
     // 获取数据
     getDate() {
+      console.log("当前登录人员id",this.userId);
       /* ------------------------------查询老板信息的 AJAX 开始 --------------------------------- */
       this.axios
         .post("/owner/findOwner", {
