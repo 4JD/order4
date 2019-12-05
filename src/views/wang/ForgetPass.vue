@@ -16,17 +16,17 @@
                             <div class="icon1">
 
                                 <label>
-                                    <input type="text" placeholder="手机号"   v-model="telNumber">
+                                    <input type="text" maxlength="11" placeholder="手机号"   v-model="telNumber">
                                 </label>
 
                             </div>
                             <div class="icon1">
 
                                 <label>
-                                    <input type="text" class="yanzheng"  style="width: 60%" placeholder="请输入验证码" v-model="code">
+                                    <input type="text" class="yanzheng"  maxlength="6" style="width: 40%" placeholder="请输入验证码" v-model="code">
                                 </label>
 
-                                <button  type="button" class="yz-btn" @click="yanzhengma">获取验证码</button>
+                                <el-button round :disabled="upAndDown"   @click="yanzhengma">{{yanzhengTitle}}</el-button>
                             </div>
 
                             <div class="bottom">
@@ -57,7 +57,10 @@
           yanzheng:"",
           errText:false,
           errCont:"",
-          code:""
+          code:"",
+          yanzhengTitle:"点击获取验证码",
+          upAndDown:false
+
         }
       },
       methods:{
@@ -132,6 +135,8 @@
           }
         },
         yanzhengma(){
+
+
           if (this.telNumber==""){
             this.errText=true;
             this.errCont="手机号不能为空";
@@ -144,7 +149,15 @@
             }).then((res)=>{
 
               console.log(res)
-              if (res.data.code==1002) {
+               if(res.data.code==200){
+                this.yanzhengTitle="一分钟后可再次发送";
+                this.upAndDown=true;
+                setTimeout(()=>{
+                  this.yanzhengTitle="点击获取验证码";
+                  this.upAndDown=false
+                },60000)
+              }
+              else if (res.data.code==1002) {
                 this.errText=true;
                 this.errCont="系统维护";
                 setTimeout(()=>{

@@ -121,10 +121,9 @@
       inCome,
       Financial
     },
-    inject:['reload'],
       data() {
       return {
-        com: '',
+        com: "index",
         second:false,
         secondColor:"",
         upAndDown:"true"
@@ -145,9 +144,6 @@
         this.upAndDown=!this.upAndDown
       }
 
-    },
-    created(){
-      this.reload()
     }
   }
 </script>
@@ -195,8 +191,6 @@
         background-color: #23262E;
 
 
-
-
         li{
             width: 100%;
             height: 50px;
@@ -209,7 +203,6 @@
 
                 color: white;
                 font-size: 16px;
-
 
             }
             a:link{

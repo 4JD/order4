@@ -30,7 +30,7 @@
                             <div class="icon1">
 
                                 <label>
-                                    <input type="password" placeholder="密码" v-model="password" >
+                                    <input   maxlength="12" type="password" placeholder="密码" v-model="password" >
                                 </label>
                             </div>
 
@@ -75,12 +75,9 @@
       methods:{
 
           getLogin(){
-            if (this.username==1&&this.password==1){
-              console.log("登录成功")
-            }
-            else if(this.username=="") {
+             if(this.username=="") {
               this.errText=true;
-              this.errCont="账号不能为空";
+              this.errCont="手机号不能为空";
               setTimeout(()=>{
                 this.errText=false;
               },2000)
@@ -92,7 +89,7 @@
               },2000)
             }else if (this.username.length!=11){
               this.errText=true;
-              this.errCont="用户名长度不够";
+              this.errCont="手机号长度不够";
               setTimeout(()=>{
                 this.errText=false;
               },2000)
@@ -113,7 +110,7 @@
 
                   sessionStorage.setItem("userId", userId);
                   sessionStorage.setItem("userName", res.username);
-
+                  sessionStorage.setItem("token", token);
 
                   // var url = this.$route.query.redirect;
                   // url = url ? url : "/";
@@ -128,11 +125,6 @@
                   }
 
 
-
-
-
-                    sessionStorage.setItem("token", token);
-
                 } else if (res.data.code==1001||res.data.code==1002){
                   this.errText=true;
                   this.errCont="账号密码错误";
@@ -142,41 +134,13 @@
                   throw 'throw error'
                 }
 
-
-
               })
-
                 .catch(err=>{
                 console.log(err)
               });
 
             }
           },
-        // login(){
-        //
-        //     if (this.username==1&&this.password==1){
-        //       console.log("登录成功")
-        //     }
-        //     else if(this.username=="") {
-        //       this.errText=true;
-        //       this.errCont="账号不能为空";
-        //       setTimeout(()=>{
-        //         this.errText=false;
-        //       },2000)
-        //     }else if (this.password=="") {
-        //       this.errText=true;
-        //       this.errCont="密码不能为空";
-        //       setTimeout(()=>{
-        //         this.errText=false;
-        //       },2000)
-        //     }else {
-        //       this.errText=true;
-        //       this.errCont="账号密码错误";
-        //       setTimeout(()=>{
-        //         this.errText=false;
-        //       },2000)
-        //     }
-        // }
       }
 
     }
