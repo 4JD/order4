@@ -89,7 +89,19 @@ export default {
         setTimeout(() => {
           this.errText = false;
         }, 2000);
-      } else {
+      } else if (this.form.payType == "") {
+        this.errText = true;
+        this.errCont = "类型不能为空";
+        setTimeout(() => {
+          this.errText = false;
+        }, 2000);
+      }else if(this.form.payUse == "") {
+        this.errText = true;
+        this.errCont = "用途不能为空";
+        setTimeout(() => {
+          this.errText = false;
+        }, 2000);
+      }else {
         this.$emit("add", {
           addpayTypeName: this.form.payType,
           addpayPrice: this.form.price,
