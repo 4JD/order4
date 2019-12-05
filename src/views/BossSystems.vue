@@ -476,12 +476,13 @@ export default {
           "newstoreHourB"
         )[0].value;
         const newStoreHour = newStoreHourA + "-" + newStoreHourB;
+        console.log(newStoreHourA,newStoreHourB);
         // console.log(newstoreNumber,newStoreName,newStorePassword2,newStoreAddress,newStoreRemark,newStoreTelA,newStoreHour);
         // 获取
         /* -------------------------新增店铺接口开始-------------------------- */
         this.axios
           .post("/store/addStore", {
-            ownerId: "5", //String(this.admin.ownerId),
+            ownerId:  String(this.admin.ownerId),//"5",
             storeName: newStoreName,
             storeAddress: newStoreAddress,
             storeRemark: newStoreRemark,
@@ -511,6 +512,7 @@ export default {
     */
     showStoreMsg(item) {
       this.showstoredetailmsg = item;
+      console.log("当前想编辑的店铺信息：",this.showstoredetailmsg);
       // 遮罩层的打开
       document.getElementsByClassName("zhezhao")[0].classList.remove("none");
       document.getElementsByClassName("zhezhao")[0].classList.add("show");
@@ -686,7 +688,10 @@ export default {
       /* --------------------------修改老板信息 AJAX 结束--------------------------- */
     },
     // 退出
-    exitadmin() {},
+    exitadmin() {
+      sessionStorage.removeItem("userId")
+      location.href("/login");
+    },
     // 修改密码 的点击事件
     editadminpassword() {
       // 修改密码弹框的 显示

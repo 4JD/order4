@@ -340,6 +340,9 @@ var allFoodList = [
     foodState: 2
   }
 ];
+// 获取当前登录人员id
+const userId = sessionStorage.getItem("userId");
+console.log("当前登录人员id",userId);
 
 export default {
   name: "menumanagement",
@@ -364,19 +367,38 @@ export default {
       // 编辑的菜品信息
       editFoodMsg: {},
       // 默认的菜品种类id
-      modifiedFoodTypeId: 5,
+      modifiedFoodTypeId: -1,
       // 上传的图片内容
-      myfile: ""
+      myfile: "",
+      // 当前登录人员id
+      userId,
+      // 当前登录店铺信息
+      storeMsg: {},
     };
   },
   methods: {
     // 获取数据
     getDate() {
+      /* ----------------------------------查找店铺信息的AJAX开始------------------------------ */
+      this.axios
+        .post("/store/findStore", {
+          // 参数 店铺id
+          storeId: String(this.userId)
+        })
+        .then(res => {
+          console.log("查找当前登录的店铺信息：",res);
+          // 给当前登录店铺信息赋值
+          this.storeMsg = res.data.data;
+        })
+        .catch(err => {
+          console.log(err);
+        });
+      /* ----------------------------------查找店铺信息的AJAX结束------------------------------ */
       // -------------------获取菜品标签的 AJAX 开始--------------------------------------
       this.axios
         .post("/foodType/foodTypeList", {
           // 参数 店铺id
-          storeId: "1"
+          storeId: String(this.userId)
         })
         .then(res => {
           // console.log(res.data);
@@ -524,12 +546,12 @@ export default {
               .post("/foodType/addFoodType", {
                 // 参数 菜品种类 id
 
-                foodTypeName: value,
-                storeId: "1",
+                foodTypeName: String(value),
+                storeId: String(this.storeMsg.storeId),
                 foodTypeRemark: "我是菜品备注"
               })
               .then(res => {
-                console.log(res);
+                console.log("新增菜品种类返回的数据：",res);
                 // 更新数据
                 this.getDate();
                 // 给菜品列表复制
