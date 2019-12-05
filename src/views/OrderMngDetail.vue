@@ -113,6 +113,10 @@ export default {
     this.list = this.shoppingCar
     console.log("shoppingCar2",this.list[0])
     console.log("ITEMS",this.list[0].foodName)
+    var foodId = String(this.list[0].foodId)
+    var foodNum = String(this.list[0].foodNum)
+    var storeId = String(this.list[0].storeId)
+    console.log("食品id",foodId)
 
     /* 店铺Id */
     this.axios
@@ -120,12 +124,12 @@ export default {
         deskNum: String(this.list[0].deskNum),
         foodOrders: [
           {
-            foodId: String(this.list[0].foodId),
-            foodNum: String(this.list[0].foodNum)
+            foodId: foodId,
+            foodNum: foodNum
           }
         ],
         orderRemark: "123",
-        storeId: "61"
+        storeId: storeId
       })
       .then(res => {
         var myOrderData = res.data.data;

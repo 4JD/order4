@@ -165,6 +165,7 @@ export default {
           newFood.foodState = items.foodState;
           newFood.deskNum = 1;
           newFood.foodNum = 1;
+          newFood.storeId = 61
 
           foodItems.push(newFood);
         });
