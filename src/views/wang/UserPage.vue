@@ -4,27 +4,12 @@
 
         <div class="header">
             <div  class="head-cont" >
-                <h1>的管理系统</h1>
+                <h1>点餐管理系统</h1>
 
                 <div class="adminedit">
                     <a href="/login" >退出</a>
                 </div>
-<!--                <div class="head-left">-->
-<!--                    <img  class="log" src="../../assets/images/wang/tick.png" alt="">-->
-<!--                    XXXX管理系统-->
 
-<!--                </div>-->
-
-<!--                <div class="head-right">-->
-
-<!--                    <img  class="icon " src="" alt="头像">-->
-
-<!--                    <a href="javascript:;" >姓名</a>-->
-
-<!--                    <a href="javascript:;" @click="quit">注销</a>-->
-
-
-<!--                </div>-->
             </div>
         </div>
 
@@ -32,7 +17,7 @@
             <div class="main-left">
 
                 <ul>
-                    <li :class="{on :com==='index'}" @click="com= 'index'">
+                    <li :class="{on :com==='index'}" @click="com='index'">
                         <i class="el-icon-thumb"></i>
                         <a href="javascript:;">柜台点餐</a>
                     </li>
@@ -107,8 +92,6 @@
     import  inCome from "../Income"
     import   Financial from  "../Financial"
 
-
-
   export default {
     name: "UserPage",
     components: {
@@ -123,7 +106,7 @@
     },
       data() {
       return {
-        com: "index",
+        com:"index",
         second:false,
         secondColor:"",
         upAndDown:"true"

@@ -229,7 +229,7 @@
 </template>
 <script>
 // 获取老板登录的用户id
-const userId = sessionStorage.getItem("userId") | 4;
+const userId = sessionStorage.getItem("userId");// | 37;
 // 名下所有店铺信息查看，管理店铺
 import BossStore from "../components/BossStore";
 // 每店铺收益详情
@@ -328,7 +328,7 @@ export default {
         storeExpend: -199.0,
         storeUser: "fairy-liyu"
       },
-      // 当前登录老板的id
+      // 登录人员的id
       userId,
       // 当前登录老板的信息
       admin,
@@ -339,11 +339,12 @@ export default {
   methods: {
     // 获取数据
     getDate() {
+      console.log("当前登录人员id",this.userId);
       /* ------------------------------查询老板信息的 AJAX 开始 --------------------------------- */
       this.axios
         .post("/owner/findOwner", {
           // 参数 用户id
-          ownerId: "37" //String(this.userId)
+          ownerId: String(this.userId) // "37"
         })
         .then(res => {
           console.log("询老板信息的 AJAX ", res);
@@ -357,7 +358,7 @@ export default {
       this.axios
         .post("/store/findStores", {
           // 参数 老板id
-          ownerId: "37"
+          ownerId: String(this.userId) //"37"
         })
         .then(res => {
           console.log("获取店铺数据", res);
@@ -475,12 +476,13 @@ export default {
           "newstoreHourB"
         )[0].value;
         const newStoreHour = newStoreHourA + "-" + newStoreHourB;
+        console.log(newStoreHourA,newStoreHourB);
         // console.log(newstoreNumber,newStoreName,newStorePassword2,newStoreAddress,newStoreRemark,newStoreTelA,newStoreHour);
         // 获取
         /* -------------------------新增店铺接口开始-------------------------- */
         this.axios
           .post("/store/addStore", {
-            ownerId: "5", //String(this.admin.ownerId),
+            ownerId:  String(this.admin.ownerId),//"5",
             storeName: newStoreName,
             storeAddress: newStoreAddress,
             storeRemark: newStoreRemark,
@@ -510,6 +512,7 @@ export default {
     */
     showStoreMsg(item) {
       this.showstoredetailmsg = item;
+      console.log("当前想编辑的店铺信息：",this.showstoredetailmsg);
       // 遮罩层的打开
       document.getElementsByClassName("zhezhao")[0].classList.remove("none");
       document.getElementsByClassName("zhezhao")[0].classList.add("show");
@@ -685,7 +688,10 @@ export default {
       /* --------------------------修改老板信息 AJAX 结束--------------------------- */
     },
     // 退出
-    exitadmin() {},
+    exitadmin() {
+      sessionStorage.removeItem("userId")
+      location.href("/login");
+    },
     // 修改密码 的点击事件
     editadminpassword() {
       // 修改密码弹框的 显示
@@ -715,8 +721,8 @@ export default {
       this.axios
         .post("/owner/editPassword", {
           // 修改的老板  id
-          userId: "37", // 改为userID
-          password:String(
+          userId: String(this.userId), //"37", // 改为userID
+          password: String(
             document.getElementsByClassName("nowpassword")[0].value
           ),
           newPwd: String(
