@@ -22,12 +22,12 @@
 
         <div class="item-order">
           <div>
-            <img alt="food" :src="item.photourl" />
+            <img alt="food" :src="item.foodPhoto" />
           </div>
           <div class="lineH">
             <h3>{{item.foodName}}</h3>
             <p>
-              <span>12</span>号桌
+              <span>{{item.deskNum}}</span>号桌
             </p>
           </div>
           <div class="lineH">
@@ -114,7 +114,7 @@ export default {
       this.addOrderMng(this.item);
       console.log("加入", this.item);
       
-      this.$message("生成订单")
+      this.$message("生成订单成功")
     },
     dateFormat: function(time) {
       var date = new Date(time);

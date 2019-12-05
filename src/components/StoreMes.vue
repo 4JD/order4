@@ -56,17 +56,21 @@ export default {
     };
   },
   created() {
+    var userId = sessionStorage.getItem('userId');
     this.axios
       .post("/store/findStore",{
-        storeId:"39"
+        storeId:String(userId)
       })
       .then(res => {
         console.log("获取店铺信息：", res.data.data);
-        this.storeMes = res.data.data;
+        this.storeMsg = res.data.data;
       })
       .catch(err => {
         console.log(err);
       });
+
+     
+
   }
 };
 </script>

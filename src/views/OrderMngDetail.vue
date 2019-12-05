@@ -15,13 +15,13 @@
           </div>
 
           <div class="del-btn">
-            <button class="BtnStyle" type="button" @click="delBtn">删除</button>
+            <button class="BtnStyle" type="button" @click="delBtn(item.orderNum)">删除</button>
           </div>
         </div>
 
         <div class="item-order" v-for="(item,index) in shoppingCar" :key="index">
           <div>
-            <img alt="Vue logo" :src="item.photourl" />
+            <img alt="foodPhoto" :src="item.foodPhoto" />
           </div>
           <div>
             <h3>{{item.foodName}}</h3>
@@ -48,25 +48,44 @@ export default {
   name: "orderMngDetail",
   data() {
     return {
-      
+      list:[]
     };
   },
   components: {
     // HelloWorld
   },
   computed: {
-    ...mapState(["shoppingCar","hOrderList"])
+    ...mapState(["shoppingCar", "hOrderList"])
   },
-  methods:{
-    ...mapMutations(["delThisOrder","save_orderData"]),
-    delBtn(){
-
+  methods: {
+    ...mapMutations(["delThisOrder", "save_orderData"]),
+    delBtn(orderNum) {
+      this.$confirm("确认删除?", "提示", {
+        confirmButtonText: "确认",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          this.delHorder(orderNum);
+          this.$message({
+            type: "success",
+            message: "删除成功"
+          });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "取消删除"
+          });
+        });
     },
     dateFormat: function(time) {
       var date = new Date(time);
       var year = date.getFullYear();
-      var month = date.getMonth() + 1 < 10 ? "0" +
-       (date.getMonth() + 1) : date.getMonth() + 1;
+      var month =
+        date.getMonth() + 1 < 10
+          ? "0" + (date.getMonth() + 1)
+          : date.getMonth() + 1;
       var day = date.getDate() < 10 ? "0" + date.getDate() : date.getDate();
       var hours =
         date.getHours() < 10 ? "0" + date.getHours() : date.getHours();
@@ -74,48 +93,65 @@ export default {
         date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes();
       var seconds =
         date.getSeconds() < 10 ? "0" + date.getSeconds() : date.getSeconds();
-      return (year + "-" + month + "-" + day + " " + hours + ":" + minutes + ":" + seconds);
-    }
+      return (
+        year +
+        "-" +
+        month +
+        "-" +
+        day +
+        " " +
+        hours +
+        ":" +
+        minutes +
+        ":" +
+        seconds
+      );
+    },
   },
   created() {
+    console.log("shoppingCar",this.shoppingCar)
+    this.list.push(this.shoppingCar)
+    console.log("shoppingCar2",this.list)
+
     /* 店铺Id */
-    this.axios
-    .post("/user/placeOrder2", {
-      "deskNum":"12",    //桌号
-      "foodOrders":[    //菜品列表
-        {
-          "foodId":1,   //菜品Id
-          "foodNum":1   //菜品数量
-        },
-        {
-          "foodId":2,
-          "foodNum":1
-        }
-      ],
-      "orderRemark":"不吃辣",    //备注
-      "storeId":"1"
-    })
-    .then(res => {
-      var myOrderData = res.data.data
-      var orderData = [ ]
-      myOrderData.forEach((items) => {
-        var neworderData = {};
-        neworderData.orderNum = items.orderNum
-        neworderData.deskNum = items.deskNum
-        neworderData.orderTime = items.orderTime
-        neworderData.storeId = items.storeId
-        neworderData.orderRemark = items.orderRemark
-
-        orderData.push( neworderData )
+    /* this.axios
+      .post("/user/placeOrder2", {
+        deskNum: "1",
+        foodOrders: [
+          {
+            foodId: "3",
+            foodNum: "1"
+          },
+          {
+            foodId: "4",
+            foodNum: "1"
+          }
+        ],
+        orderRemark: "123",
+        storeId: "1"
       })
-      console.log("orderData",orderData)
-      this.save_orderData( orderData )
+      .then(res => {
+        var myOrderData = res.data.data;
+        var orderData = [];
+        for (var items in myOrderData) {
+          var neworderData = {};
+          neworderData.orderNum = items.orderNum;
+          neworderData.deskNum = items.deskNum;
+          neworderData.orderTime = items.orderTime;
+          neworderData.storeId = items.storeId;
+          neworderData.orderRemark = items.orderRemark;
 
-      console.log(res)
-    })
-    .catch(err => {
-      console.log(err)
-    })
+          console.log("push之前", neworderData);
+          orderData.push(neworderData);
+        }
+        console.log("orderData", orderData);
+        this.save_orderData(orderData);
+
+        console.log(res.data);
+      })
+      .catch(err => {
+        console.log(err);
+      }); */
   }
 };
 </script>
