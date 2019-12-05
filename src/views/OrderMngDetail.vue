@@ -66,8 +66,11 @@ export default {
   created() {
     /* 店铺Id */
     /* this.axios
-    .post("/foodType/foodTypeList", {
-      "storeId": "1"
+    .post("/user/placeOrder2", {
+      "storeId": "1",
+      "deskNum":"12",
+      "foodId":"",
+      "foodNum":"",
     })
     .then(res => {
       console.log(res)
