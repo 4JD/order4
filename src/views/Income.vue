@@ -168,7 +168,7 @@ export default {
       } else {
         this.axios
           .post("/income/allIncome", {
-            userId: 1,
+            userId: sessionStorage.getItem("userId"),
             orderTimeStart: orderTimeStart,
             orderTimeEnd: orderTimeEnd,
             foodName: this.keyword,
@@ -205,7 +205,7 @@ export default {
     // this.tableData = tableData;
     this.axios
       .post("/income/allIncome", {
-        userId:1,
+        userId:sessionStorage.getItem("userId"),
         page: this.currentPage3,
         pageSize: this.pageSize
       })
@@ -222,7 +222,7 @@ export default {
 
     this.axios
       .post("/foodType/findTypeByUserId", {
-        userId:1
+        userId:sessionStorage.getItem("userId")
       })
       .then(res => {
         console.log("获取商品类型信息：", res.data);

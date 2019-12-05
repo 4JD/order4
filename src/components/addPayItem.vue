@@ -98,27 +98,7 @@ export default {
         });
         this.dialogFormVisible = false;
 
-        // var price = Number(this.form.price);
-        // console.log(typeof price);
-        // console.log(typeof this.form.payType);
-        // console.log(typeof this.form.payUse);
-        // // console.log(typeof price);
-        // this.axios
-        //   .post("/pay/addPay", {
-        //     userName: "admin",
-        //     addpayTypeId: this.form.payType,
-        //     addpayPrice: price,
-        //     addpayName: "随便用",
-        //     addpayUse: this.form.payUse,
-        //     addpayRemark:this.form.remark
-        //   })
-        //   .then(res => {
-        //     console.log("获取添加信息：", res.data);
-
-        //   })
-        //   .catch(err => {
-        //     console.log(err);
-        //   });
+       
       }
 
       this.form.payType = "";
