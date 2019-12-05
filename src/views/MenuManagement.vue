@@ -32,7 +32,7 @@
         list-type="picture"
         :auto-upload="false"
       >
-        <el-button class="clickupload" size="small" type="primary" @click="clickUpload">点击上传</el-button>
+        <el-button class="clickupload" size="small" type="primary">点击上传</el-button>
         <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb；如：</div>
       </el-upload>
 
@@ -47,20 +47,20 @@
         <i class="el-icon-close"></i>
       </span>
       <h3>编辑菜品</h3>
-      <input type="text" class="editfoodname" :value="editFoodMsg.foodName" />
+      <input type="text" class="editfoodname"   v-model="editFoodMsg.foodName"/>
       菜品种类:
-      <select name="editfoodtype" class="editfoodtype" :value="editFoodMsg.foodType">
+      <select name="editfoodtype" class="editfoodtype"  v-model="editFoodMsg.foodTypeId">
         <option
           v-for="(item, index) in foodTypeList"
           :key="index"
-          :value="item.foodTypeName"
+          :value="item.foodTypeId"
         >{{item.foodTypeName}}</option>
       </select>
       菜品状态：
       <select
         class="foodstate"
-        :value="editFoodMsg.foodState"
         :data-foodid="editFoodMsg.foodId"
+        v-model="editFoodMsg.foodState"
       >
         <option value="1">在售</option>
         <option value="2">已售完</option>
@@ -70,21 +70,17 @@
         type="number"
         name="editfoodpricex"
         class="editfoodpricex"
-        :value="editFoodMsg.foodPrice"
+        v-model="editFoodMsg.foodPrice"
+        
       />
       <input
         type="text"
         name="editfoodremark"
         class="editfoodremark"
-        :value="editFoodMsg.foodRemark"
+        v-model="editFoodMsg.foodRemark"
       />
-      <!-- 菜品图片: -->
-      <!-- <div class="editfoodimg">
-        <img :src="editFoodMsg.foodPhoto" alt />
-        <input type="file" name="editimg" class="editimg" />
-      </div>-->
       <el-upload
-      ref="uploadedit"
+        ref="uploadedit"
         class="upload-demo"
         action="abcdk"
         :on-preview="handlePreview"
@@ -368,7 +364,7 @@ export default {
       // 编辑的菜品信息
       editFoodMsg: {},
       // 默认的菜品种类id
-      modifiedFoodTypeId: 0,
+      modifiedFoodTypeId: 5,
       // 上传的图片内容
       myfile: ""
     };
@@ -388,7 +384,8 @@ export default {
           // 给数据菜品种类复制
           this.foodTypeList = res.data.data;
           // 给第一个复制
-          this.modifiedFoodTypeId = res.data.data[0].foodTypeId;
+          this.modifiedFoodTypeId = String(res.data.data[0].foodTypeId);
+          console.log(this.modifiedFoodTypeId);
         })
         .catch(err => {
           console.log(err);
@@ -402,10 +399,10 @@ export default {
           foodTypeId: String(this.modifiedFoodTypeId)
         })
         .then(res => {
-          console.log("菜品列表url",res.data.data.url);
-          console.log("菜品列表s",res.data.data.foods);
+          console.log("菜品列表url", res.data.data.url);
+          console.log("菜品列表s", res.data.data.foods);
           const newFoodList = [];
-          for(var i=0;i<res.data.data.foods.length;i++) {
+          for (var i = 0; i < res.data.data.foods.length; i++) {
             var a = {
               foodId: res.data.data.foods[i].foodId,
               foodName: res.data.data.foods[i].foodName,
@@ -418,40 +415,18 @@ export default {
               saleId: res.data.data.foods[i].saleId,
               saleState: res.data.data.foods[i].saleState,
               tasteId: res.data.data.foods[i].tasteId
-            }
+            };
             newFoodList.push(a);
           }
           // 给菜品列表复制
           this.foodList = newFoodList;
-          console.log(this.foodList)
+          console.log(this.foodList);
         })
         .catch(err => {
           console.log(err);
         });
 
       // -------------------------获取菜品的 AJAX 结束-------------------------------------
-    },
-    // 点击上传
-    clickUpload() {
-      // 获取图片的name
-      const myname = document
-        .getElementsByClassName("upload-demo")[0]
-        .getAttribute("name");
-      console.log(myname);
-      /* this.axios
-            .post("/file/upload", {
-              // 参数 myfile
-              myfile: myname
-            })
-            .then(res => {
-              console.log("传图片的内容name",res);
-              // 更新数据
-              this.getDate();
-              //
-            })
-            .catch(err => {
-              console.log(err);
-            }); */
     },
     // 删除菜品
     delFood(e) {
@@ -590,6 +565,65 @@ export default {
       document.getElementsByClassName("zhezhao")[0].classList.remove("none");
       document.getElementsByClassName("zhezhao")[0].classList.add("show");
     },
+    // 上传添加菜品图片图片
+    enteraddfoodList(uploadimg) {
+      console.log(uploadimg.file);
+      this.myfile = uploadimg.file;
+      // 点击确定过后要进行的操作
+      // 获取菜品名称
+      const addfoodName = document.getElementsByClassName("isaddfoodName")[0]
+        .value;
+      // 清空
+      document.getElementsByClassName("isaddfoodName")[0].value = "";
+      // 获取菜品种类
+      const addfoodType = document.getElementsByClassName("isaddfoodType")[0]
+        .value;
+      // 获取菜品 简介
+      const addfoodRemark = document.getElementsByClassName(
+        "isaddfoodRemark"
+      )[0].value;
+      // 清空
+      document.getElementsByClassName("isaddfoodRemark")[0].value = "";
+      // 获取菜品价格
+      const addfoodPrice = document.getElementsByClassName("isaddfoodpricex")[0]
+        .value;
+      // // 获取菜品图片名字
+      // const addfoodImg = document.getElementsByClassName("upload-demo")[0]
+      //   .value;
+
+      // 新的文件数组
+      let addFoodFormDate = new FormData();
+      addFoodFormDate.append("foodName", addfoodName);
+      addFoodFormDate.append("foodTypeId", addfoodType);
+      addFoodFormDate.append("foodRemark", addfoodRemark);
+      addFoodFormDate.append("foodPrice", addfoodPrice);
+      addFoodFormDate.append("myFile", this.myfile);
+
+      /* -----------------------------------------------确定添加菜品的接口 开始-------------------------------------------- */
+      this.axios
+        .post("/food/addFood", addFoodFormDate, {
+          header: {
+            "Content-Type": "multipart/form-data"
+          }
+        })
+        .then(res => {
+          console.log("添加菜品的数据", res);
+          this.$message(res.data.msg);
+          // 更新数据
+          this.getDate();
+        })
+        .catch(err => {
+          console.log(err);
+        });
+      /* -----------------------------------------------确定添加菜品的接口 结束-------------------------------------------- */
+
+      // 与点击遮罩层一样的作用
+      this.closezhezhao();
+    },
+    // 上传添加菜品图片图片
+    uploadImages() {
+      this.$refs.upload.submit();
+    },
     // 搜索菜品
     searchFood() {
       // 获取搜索框里的内容
@@ -606,9 +640,30 @@ export default {
             foodName: searchTxt
           })
           .then(res => {
-            // console.log(res.data.data);
+            console.log("菜品列表url", res.data.data.url);
+            console.log("菜品列表s", res.data.data.foods);
+            const newFoodList = [];
+            for (var i = 0; i < res.data.data.foods.length; i++) {
+              var a = {
+                foodId: res.data.data.foods[i].foodId,
+                foodName: res.data.data.foods[i].foodName,
+                foodPhoto: res.data.data.url + res.data.data.foods[i].foodPhoto,
+                foodPrice: res.data.data.foods[i].foodPrice,
+                foodRemark: res.data.data.foods[i].foodRemark,
+                foodState: res.data.data.foods[i].foodState,
+                foodTypeId: res.data.data.foods[i].foodTypeId,
+                foodTypeName: res.data.data.foods[i].foodTypeName,
+                saleId: res.data.data.foods[i].saleId,
+                saleState: res.data.data.foods[i].saleState,
+                tasteId: res.data.data.foods[i].tasteId
+              };
+              newFoodList.push(a);
+            }
             // 跟新渲染的数据
-            this.foodList = res.data.data;
+            this.foodList = newFoodList;
+            console.log("搜到的数据：", this.foodList);
+            // 搜索到了之后清空搜索框
+            document.getElementById("searchtxt").value = "";
           })
           .catch(err => {
             console.log(err);
@@ -651,9 +706,36 @@ export default {
     },
     // 编辑菜品上传图片
     editfoodimg(editfile) {
-      console.log(editfile.file)
+      console.log("编辑时用到的file文件", editfile.file);
+      console.log("当前编辑的数据", this.editFoodMsg);
+      const editFoodFormDate = new FormData();
+      editFoodFormDate.append("foodId",this.editFoodMsg.foodId);
+      editFoodFormDate.append("foodName",this.editFoodMsg.foodName);
+      editFoodFormDate.append("foodPrice",this.editFoodMsg.foodPrice);
+      editFoodFormDate.append("foodRemark",this.editFoodMsg.foodRemark);
+      editFoodFormDate.append("foodTypeId",this.editFoodMsg.foodTypeId);
+      editFoodFormDate.append("myFile",editfile.file);
+      /* ------------------------------编辑菜品的数据 开始------------------------------------- */
+      this.axios
+        .post("/food/editFood", editFoodFormDate, {
+          header: {
+            "Content-Type": "multipart/form-data"
+          }
+        })
+        .then(res => {
+          console.log("编辑菜品后返回的数据", res);
+          this.$message(res.data.msg);
+          // 更新数据
+          this.getDate();
+          // 关闭遮罩层
+          this.closezhezhao();
+        })
+        .catch(err => {
+          console.log(err);
+        });
+      /* ------------------------------编辑菜品的数据 结束------------------------------------- */
     },
-    // 点击 确认 编辑按钮点击
+    // 点击 编辑菜品 确认按钮按钮点击
     entereditfood() {
       this.$refs.uploadedit.submit();
     },
@@ -686,69 +768,6 @@ export default {
       console.log(file);
     },
     // 传输照片结束
-    // 上传图片
-    enteraddfoodList(uploadimg) {
-      console.log(uploadimg.file);
-      this.myfile = uploadimg.file;
-          // 点击确定过后要进行的操作
-          // 获取菜品名称
-          const addfoodName = document.getElementsByClassName(
-            "isaddfoodName"
-          )[0].value;
-          // 清空
-          document.getElementsByClassName("isaddfoodName")[0].value = "";
-          // 获取菜品种类
-          const addfoodType = document.getElementsByClassName(
-            "isaddfoodType"
-          )[0].value;
-          // 获取菜品 简介
-          const addfoodRemark = document.getElementsByClassName(
-            "isaddfoodRemark"
-          )[0].value;
-          // 清空
-          document.getElementsByClassName("isaddfoodRemark")[0].value = "";
-          // 获取菜品价格
-          const addfoodPrice = document.getElementsByClassName(
-            "isaddfoodpricex"
-          )[0].value;
-          // // 获取菜品图片名字
-          // const addfoodImg = document.getElementsByClassName("upload-demo")[0]
-          //   .value;
-
-          // 新的文件数组
-          let addFoodFormDate = new FormData();
-          addFoodFormDate.append("foodName", addfoodName);
-          addFoodFormDate.append("foodTypeId", addfoodType);
-          addFoodFormDate.append("foodRemark", addfoodRemark);
-          addFoodFormDate.append("foodPrice", addfoodPrice);
-          addFoodFormDate.append("myFile", this.myfile);
-
-          /* -----------------------------------------------确定添加菜品的接口 开始-------------------------------------------- */
-          this.axios
-            .post("/food/addFood", addFoodFormDate, {
-              header: {
-                "Content-Type": "multipart/form-data"
-              }
-            })
-            .then(res => {
-              console.log("添加菜品的数据",res);
-              this.$message(res.data.msg);
-              // 更新数据
-              this.getDate();
-            })
-            .catch(err => {
-              console.log(err);
-            });
-          /* -----------------------------------------------确定添加菜品的接口 结束-------------------------------------------- */
-
-          // 与点击遮罩层一样的作用
-          this.closezhezhao();
-       
-    },
-    // 上传图片
-    uploadImages() {
-      this.$refs.upload.submit();
-    },
     // 点击取消添加菜品按钮时
     closeaddfoodbox() {
       // 与点击遮罩层一样的作用
@@ -758,7 +777,6 @@ export default {
     closeeditfoodbox() {
       this.closezhezhao();
     },
-    
     // 点击遮罩层时
     closezhezhao() {
       // 添加产品的弹窗关闭
@@ -775,10 +793,11 @@ export default {
     }
   },
   mounted() {
+    // 给第一个菜品种类列表添加样式
     document.getElementsByClassName("taglist")[0].classList.add("istag");
     // 默认的菜品id
-    this.modifiedFoodTypeId = this.foodTypeList[0].foodTypeId;
-    console.log(this.modifiedFoodTypeId);
+    // this.modifiedFoodTypeId = this.foodTypeList[0].foodTypeId;
+    // console.log(this.modifiedFoodTypeId);
   },
   created() {
     // 获取数据

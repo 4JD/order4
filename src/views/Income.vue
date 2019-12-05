@@ -152,6 +152,7 @@ export default {
   },
   methods: {
     searchBtn() {
+      console.log(this.value2);
       var orderTimeStart = formatDate(this.value2[0], "yyyy-MM-dd hh:mm:ss");
       var orderTimeEnd = formatDate(this.value2[1], "yyyy-MM-dd hh:mm:ss");
 
@@ -204,7 +205,7 @@ export default {
     // this.tableData = tableData;
     this.axios
       .post("/income/allIncome", {
-        userId: 1,
+        userId:1,
         page: this.currentPage3,
         pageSize: this.pageSize
       })
@@ -221,7 +222,7 @@ export default {
 
     this.axios
       .post("/foodType/findTypeByUserId", {
-        userId: 1
+        userId:1
       })
       .then(res => {
         console.log("获取商品类型信息：", res.data);

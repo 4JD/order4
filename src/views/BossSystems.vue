@@ -229,7 +229,7 @@
 </template>
 <script>
 // 获取老板登录的用户id
-const userId = sessionStorage.getItem("userId") | 4;
+const userId = sessionStorage.getItem("userId") | 37;
 // 名下所有店铺信息查看，管理店铺
 import BossStore from "../components/BossStore";
 // 每店铺收益详情
@@ -328,7 +328,7 @@ export default {
         storeExpend: -199.0,
         storeUser: "fairy-liyu"
       },
-      // 当前登录老板的id
+      // 登录人员的id
       userId,
       // 当前登录老板的信息
       admin,
@@ -343,7 +343,7 @@ export default {
       this.axios
         .post("/owner/findOwner", {
           // 参数 用户id
-          ownerId: "37" //String(this.userId)
+          ownerId: String(this.userId) // "37"
         })
         .then(res => {
           console.log("询老板信息的 AJAX ", res);
@@ -357,7 +357,7 @@ export default {
       this.axios
         .post("/store/findStores", {
           // 参数 老板id
-          ownerId: "37"
+          ownerId: String(this.userId) //"37"
         })
         .then(res => {
           console.log("获取店铺数据", res);
@@ -715,8 +715,8 @@ export default {
       this.axios
         .post("/owner/editPassword", {
           // 修改的老板  id
-          userId: "37", // 改为userID
-          password:String(
+          userId: String(this.userId), //"37", // 改为userID
+          password: String(
             document.getElementsByClassName("nowpassword")[0].value
           ),
           newPwd: String(
