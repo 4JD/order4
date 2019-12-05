@@ -110,7 +110,12 @@
         <br />地 &nbsp;&nbsp; 址:
         <input type="address" v-model="showstoredetailmsg.storeAddress" />
         <br />店铺简介:
-        <textarea class="storeremark" cols="30" rows="10" v-model="showstoredetailmsg.remark"></textarea>
+        <textarea
+          class="storeremark"
+          cols="30"
+          rows="10"
+          v-model="showstoredetailmsg.storeRemark"
+        ></textarea>
       </div>
       <div class="closeorenter">
         <button type="button" class="closestoredetail" @click="closestoredetailbox">取消</button>
@@ -232,120 +237,6 @@ import BossShowAllEarnings from "../components/BossShowAllEarnings";
 // 店铺收入比例信息
 import BossShowStoreMsg from "../components/BossShowStoreMsg";
 // 当前登录老板的店铺数据
-/* var allstorelist = [
-  {
-    storeId: 1,
-    storeImg: require("../assets/images/store1.jpg"),
-    storeAddress: "四川省.成都市.高新区.天府二街.云华路333号",
-    storeName: "内江牛肉面",
-    storeRemark: "辣的爽，辣的棒，辣的呱呱叫，快来尝，快来试，永生不能忘。",
-    storeLinkPople: "张富贵",
-    storeLinkTel: "19191891881",
-    storeHour: "9:00-23:00",
-    storeMainType: "面食品",
-    codeName: 12,
-    storeIncome: 999.0,
-    storeExpend: -199.0,
-    storeUser: "fairy-liyu",
-    storePassword: "1291010010"
-  },
-  {
-    storeId: 2,
-    storeImg: require("../assets/images/store1.jpg"),
-    storeName: "内江牛肉面",
-    storeAddress: "四川省.成都市.高新区.天府二街.云华路333号",
-    storeRemark: "辣的爽，辣的棒，辣的呱呱叫，快来尝，快来试，永生不能忘。",
-    storeLinkPople: "张二娃",
-    storeLinkTel: "19191891881",
-    storeHour: "9:00-23:00",
-    storeMainType: "面食品",
-    codeName: 12,
-    storeIncome: 999.0,
-    storeExpend: -199.0,
-    storeUser: "fairy-liyu",
-    storePassword: "1291010010"
-  },
-  {
-    storeId: 3,
-    storeImg: require("../assets/images/store1.jpg"),
-    storeName: "内江牛肉面",
-    storeAddress: "四川省.成都市.高新区.天府二街.云华路333号",
-    storeRemark: "辣的爽，辣的棒，辣的呱呱叫，快来尝，快来试，永生不能忘。",
-    storeLinkPople: "风车车",
-    storeLinkTel: "19191891881",
-    storeHour: "9:00-23:00",
-    storeMainType: "面食品",
-    codeName: 12,
-    storeIncome: 999.0,
-    storeExpend: -199.0,
-    storeUser: "fairy-liyu",
-    storePassword: "1291010010"
-  },
-  {
-    storeId: 4,
-    storeImg: require("../assets/images/store1.jpg"),
-    storeName: "内江牛肉面",
-    storeAddress: "四川省.成都市.高新区.天府二街.云华路333号",
-    storeRemark: "辣的爽，辣的棒，辣的呱呱叫，快来尝，快来试，永生不能忘。",
-    storeLinkPople: "main宝儿",
-    storeLinkTel: "19191891881",
-    storeHour: "9:00-23:00",
-    storeMainType: "面食品",
-    codeName: 12,
-    storeIncome: 999.0,
-    storeExpend: -199.0,
-    storeUser: "fairy-liyu",
-    storePassword: "1291010010"
-  },
-  {
-    storeId: 5,
-    storeImg: require("../assets/images/store1.jpg"),
-    storeName: "内江牛肉面",
-    storeAddress: "四川省.成都市.高新区.天府二街.云华路333号",
-    storeRemark: "辣的爽，辣的棒，辣的呱呱叫，快来尝，快来试，永生不能忘。",
-    storeLinkPople: "东来阁",
-    storeLinkTel: "19191891881",
-    storeHour: "9:00-23:00",
-    storeMainType: "面食品",
-    codeName: 12,
-    storeIncome: 999.0,
-    storeExpend: -199.0,
-    storeUser: "fairy-liyu",
-    storePassword: "1291010010"
-  },
-  {
-    storeId: 6,
-    storeImg: require("../assets/images/store1.jpg"),
-    storeName: "内江牛肉面",
-    storeAddress: "四川省.成都市.高新区.天府二街.云华路333号",
-    storeRemark: "辣的爽，辣的棒，辣的呱呱叫，快来尝，快来试，永生不能忘。",
-    storeLinkPople: "张富贵",
-    storeLinkTel: "19191891881",
-    storeHour: "9:00-23:00",
-    storeMainType: "面食品",
-    codeName: 12,
-    storeIncome: 999.0,
-    storeExpend: -199.0,
-    storeUser: "fairy-liyu",
-    storePassword: "1291010010"
-  },
-  {
-    storeId: 7,
-    storeImg: require("../assets/images/store1.jpg"),
-    storeName: "内江牛肉面",
-    storeAddress: "四川省.成都市.高新区.天府二街.云华路333号",
-    storeRemark: "辣的爽，辣的棒，辣的呱呱叫，快来尝，快来试，永生不能忘。",
-    storeLinkPople: "张富贵",
-    storeLinkTel: "19191891881",
-    storeHour: "9:00-23:00",
-    storeMainType: "面食品",
-    codeName: 12,
-    storeIncome: 999.0,
-    storeExpend: -199.0,
-    storeUser: "fairy-liyu",
-    storePassword: "1291010010"
-  }
-]; */
 var allstorelist = [
   {
     storeId: 1,
@@ -442,7 +333,7 @@ export default {
       // 当前登录老板的信息
       admin,
       // 所有店铺收益情况
-      allStoreIncome : [],
+      allStoreIncome: []
     };
   },
   methods: {
@@ -455,7 +346,7 @@ export default {
           ownerId: "37" //String(this.userId)
         })
         .then(res => {
-          console.log("询老板信息的 AJAX ",res);
+          console.log("询老板信息的 AJAX ", res);
           this.admin = res.data.data;
         })
         .catch(err => {
@@ -466,12 +357,12 @@ export default {
       this.axios
         .post("/store/findStores", {
           // 参数 老板id
-          ownerId: "41"
+          ownerId: "37"
         })
         .then(res => {
           console.log("获取店铺数据", res);
-          this.storelist = res.data.data
-          console.log("当前店铺的数据",this.storelist)
+          this.storelist = res.data.data;
+          console.log("当前店铺的数据", this.storelist);
         })
         .catch(err => {
           console.log(err);
@@ -489,16 +380,16 @@ export default {
           //   console.log("店铺收入支出pays",res.data.data.pays);
           //   console.log("店铺收入支出profits",res.data.data.profits[0]);
 
-          for(var i=0;i<res.data.data.incomes.length;i++) {
+          for (var i = 0; i < res.data.data.incomes.length; i++) {
             const a = {
               storeId: res.data.data.incomes[i].store_id,
               storeName: res.data.data.incomes[i].store_name,
-              storeIncome:res.data.data.incomes[i].all_price,
+              storeIncome: res.data.data.incomes[i].all_price,
               storeExpend: res.data.data.pays[i].all_price
             };
             storeIncome.push(a);
           }
-          console.log("收入支出arr",storeIncome);
+          console.log("收入支出arr", storeIncome);
           this.allStoreIncome = storeIncome;
         })
         .catch(err => {
@@ -542,93 +433,76 @@ export default {
     },
     // 新增店铺的确定按钮点击事件
     enternewstroebox() {
-
-      const patTel = /^(13[0-9]|14[5|7]|15[0|1|2|3|5|6|7|8|9]|18[0|1|2|3|5|6|7|8|9])\d{8}$/;
-      if(document.getElementsByClassName("newstorepassword1")[0].value != document.getElementsByClassName("newstorepassword2")[0].value) {
+      const patTel = /^1[3456789]\d{9}$/;
+      if (
+        document.getElementsByClassName("newstorepassword1")[0].value !=
+        document.getElementsByClassName("newstorepassword2")[0].value
+      ) {
         this.$message("两次密码不一致！");
-      } else if(!patTel.test(document.getElementsByClassName("newstoretel")[0].value && !patTel.test(document.getElementsByClassName("newstoretelA")[0].value))) {
+      } else if (
+        !patTel.test(document.getElementsByClassName("newstoretel")[0].value)
+      ) {
         this.$message("电话号码格式不正确！");
       } else {
-          
-          this.$confirm("确定新建一个店铺吗?", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
-      })
-        .then(() => {
-          this.$message({
-            type: "success",
-            message: "新建成功!"
-          });
-          // 点击确定过后要进行的操作
-          // 获取店铺号码
-          const newstoreNumber = document.getElementsByClassName(
-            "newstoretel"
-          )[0].value;
-          // 获取店铺名
-          const newStoreName = document.getElementsByClassName(
-            "newstorename"
-          )[0].value;
-          // 获取店铺密码
-          const newStorePassword2 = document.getElementsByClassName(
-            "newstorepassword2"
-          )[0].value;
-          // 获取店铺地址
-          const newStoreAddress = document.getElementsByClassName(
-            "newstoreaddress"
-          )[0].value;
-          // 获取店铺简介
-          const newStoreRemark = document.getElementsByClassName(
-            "newstoreremark"
-          )[0].value;
-          // 获取店铺联系方式
-          const newStoreTelA = document.getElementsByClassName(
-            "newstoretelA"
-          )[0].value;
-          // 获取时间段
+        // 点击确定过后要进行的操作
+        // 获取店铺号码
+        const newstoreNumber = document.getElementsByClassName("newstoretel")[0]
+          .value;
+        // 获取店铺名
+        const newStoreName = document.getElementsByClassName("newstorename")[0]
+          .value;
+        // 获取店铺密码
+        const newStorePassword2 = document.getElementsByClassName(
+          "newstorepassword2"
+        )[0].value;
+        // 获取店铺地址
+        const newStoreAddress = document.getElementsByClassName(
+          "newstoreaddress"
+        )[0].value;
+        // 获取店铺简介
+        const newStoreRemark = document.getElementsByClassName(
+          "newstoreremark"
+        )[0].value;
+        // 获取店铺联系方式
+        const newStoreTelA = document.getElementsByClassName("newstoretelA")[0]
+          .value;
+        // 获取时间段
 
-          const newStoreHourA = document.getElementsByClassName(
-            "newstoreHourA"
-          )[0].value;
-          const newStoreHourB = document.getElementsByClassName(
-            "newstoreHourB"
-          )[0].value;
-          const newStoreHour = newStoreHourA + "-" + newStoreHourB;
-          // console.log(newstoreNumber,newStoreName,newStorePassword2,newStoreAddress,newStoreRemark,newStoreTelA,newStoreHour);
-          // 获取
-          /* -------------------------新增店铺接口开始-------------------------- */
-          this.axios
-            .post("/store/addStore", {
-              ownerId: "4",
-              storeName: newStoreName,
-              storeAddress: newStoreAddress,
-              storeRemark: newStoreRemark,
-              userTel: newstoreNumber,
-              password: newStorePassword2,
-              storeTel: newStoreTelA,
-              storeHour: newStoreHour
-            })
-            .then(res => {
-              console.log(res);
-              // 更新数据
-              this.getDate();
-              //
-            })
-            .catch(err => {
-              console.log(err);
-            });
-          /* -------------------------新增店铺接口结束------------------------- */
-          // 与点击遮罩层一样的作用
-          this.closezhezhao();
-        })
-        .catch(() => {
-          this.$message({
-            type: "info",
-            message: "已取消新建"
+        const newStoreHourA = document.getElementsByClassName(
+          "newstoreHourA"
+        )[0].value;
+        const newStoreHourB = document.getElementsByClassName(
+          "newstoreHourB"
+        )[0].value;
+        const newStoreHour = newStoreHourA + "-" + newStoreHourB;
+        // console.log(newstoreNumber,newStoreName,newStorePassword2,newStoreAddress,newStoreRemark,newStoreTelA,newStoreHour);
+        // 获取
+        /* -------------------------新增店铺接口开始-------------------------- */
+        this.axios
+          .post("/store/addStore", {
+            ownerId: "5", //String(this.admin.ownerId),
+            storeName: newStoreName,
+            storeAddress: newStoreAddress,
+            storeRemark: newStoreRemark,
+            userTel: newstoreNumber,
+            password: newStorePassword2,
+            storeTel: newStoreTelA,
+            storeHour: newStoreHour
+          })
+          .then(res => {
+            console.log(res);
+            this.$message(res.data.msg);
+            // 更新数据
+            this.getDate();
+            //
+          })
+          .catch(err => {
+            console.log(err);
           });
-        });
+        /* -------------------------新增店铺接口结束------------------------- */
+        // 与点击遮罩层一样的作用
+        this.closezhezhao();
       }
-      
     },
 
     /*  
@@ -673,7 +547,7 @@ export default {
               storeId: String(delstoreid)
             })
             .then(res => {
-              console.log("删除店铺的数据",res);
+              console.log("删除店铺的数据", res);
               // 更新数据
               this.getDate();
               //
@@ -704,7 +578,7 @@ export default {
     店铺详情的弹窗的确认按钮
     */
     enterstoredetailbox() {
-      console.log("当前修改的店铺数据",this.showstoredetailmsg);
+      console.log("当前修改的店铺数据", this.showstoredetailmsg);
       /* ---------------------------修改店铺详情AJAX 开始------------------------ */
       this.axios
         .post("/store/editStore", {
@@ -718,7 +592,7 @@ export default {
           storeRemark: this.showstoredetailmsg.storeRemark
         })
         .then(res => {
-          console.log("编辑修改的数据",res);
+          console.log("编辑修改的数据", res);
           // 提示
           this.$message(res.data.msg);
           // 更新数据
@@ -787,46 +661,28 @@ export default {
     },
     // 确认修改个人信息弹窗
     enterbossbox() {
-      this.$confirm("修改个人信息, 是否继续?", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
-      })
-        .then(() => {
-          this.$message({
-            type: "success",
-            message: "修改成功!"
-          });
-
-          /* ------------------------修改老板信息 AJAX开始---------------------- */
-          this.axios
-            .post("/owner/editOwner", {
-              // 参数 ownerid
-              ownerId: String(this.admin.ownerId),
-              ownerName: String(this.admin.ownerName),
-              ownerSex: String(this.admin.ownerSex),
-              ownerAddress: String(this.admin.ownerAddress),
-              remark: String(this.admin.remark)
-            })
-            .then(res => {
-              console.log(res);
-              this.$message(res.data.msg);
-              // 更新数据
-              this.getDate();
-               // 点击遮罩层一样的效果
-              this.closezhezhao();
-            })
-            .catch(err => {
-              console.log(err);
-            });
-          /* --------------------------修改老板信息 AJAX 结束--------------------------- */
+      /* ------------------------修改老板信息 AJAX开始---------------------- */
+      this.axios
+        .post("/owner/editOwner", {
+          // 参数 ownerid
+          ownerId: String(this.admin.ownerId),
+          ownerName: String(this.admin.ownerName),
+          ownerSex: String(this.admin.ownerSex),
+          ownerAddress: String(this.admin.ownerAddress),
+          remark: String(this.admin.remark)
         })
-        .catch(() => {
-          this.$message({
-            type: "info",
-            message: "已取消修改"
-          });
+        .then(res => {
+          console.log(res);
+          this.$message(res.data.msg);
+          // 更新数据
+          this.getDate();
+          // 点击遮罩层一样的效果
+          this.closezhezhao();
+        })
+        .catch(err => {
+          console.log(err);
         });
+      /* --------------------------修改老板信息 AJAX 结束--------------------------- */
     },
     // 退出
     exitadmin() {},
@@ -853,48 +709,34 @@ export default {
     },
     // 修改密码弹窗的 确定事件
     entereditpasswordbox() {
-      
-       this.$confirm("确定修改密码吗?", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
-      })
-        .then(() => {
-          this.$message({
-            type: "success",
-            message: "修改成功!"
-          });
-
-          console.log("admin",admin);
-          // 点击确定过后要进行的操作
-          /* ----------------------修改密码的AJAX 开始--------------------- */
+      console.log("admin", admin);
+      // 点击确定过后要进行的操作
+      /* ----------------------修改密码的AJAX 开始--------------------- */
       this.axios
         .post("/owner/editPassword", {
           // 修改的老板  id
-          userId: "39",// 改为userID
-          userPassword: String(document.getElementsByClassName("newpassword")[0].value),
+          userId: "37", // 改为userID
+          password:String(
+            document.getElementsByClassName("nowpassword")[0].value
+          ),
+          newPwd: String(
+            document.getElementsByClassName("newpassword")[0].value
+          )
         })
         .then(res => {
-          console.log("修改后的密码数据",res);
-
+          console.log("修改后的密码数据", res);
+          this.$message(res.data.msg);
           // 更新数据
           this.getDate();
           //
         })
         .catch(err => {
           console.log(err);
-        }); 
+        });
       // --------------------修改密码的AJAX 结束-----------------------
 
-          // 与点击遮罩层一样的作用
-          this.closezhezhao();
-        })
-        .catch(() => {
-          this.$message({
-            type: "info",
-            message: "已取消修改"
-          });
-        });
+      // 与点击遮罩层一样的作用
+      this.closezhezhao();
     },
     // 重置密码 点击事件，子组件调用
     residepassword(storeId) {
@@ -907,9 +749,9 @@ export default {
           userId: String(storeId)
         })
         .then(res => {
-          console.log("重置密码：",res);
+          console.log("重置密码：", res);
           // 提示
-           this.$message(res.data.msg);
+          this.$message(res.data.msg);
         })
         .catch(err => {
           console.log(err);
@@ -951,7 +793,7 @@ export default {
       document
         .getElementsByTagName("body")[0]
         .setAttribute("style", "overflow:auto;");
-    },
+    }
   },
   // created()
   created() {
