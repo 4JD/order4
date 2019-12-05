@@ -16,7 +16,7 @@
                             <div class="icon1">
 
                                 <label>
-                                    <input type="password" placeholder="输入密码" v-model="password">
+                                    <input type="password" maxlength="12" placeholder="输入密码" v-model="password">
                                 </label>
 
 
@@ -24,7 +24,7 @@
                             <div class="icon1">
 
                                 <label>
-                                    <input type="password" placeholder="确认密码" v-model="passwordAgain">
+                                    <input type="password" maxlength="12" placeholder="确认密码" v-model="passwordAgain">
                                 </label>
 
                             </div>
@@ -59,7 +59,6 @@
 
           telNumber:"",
           password:"",
-
           passwordAgain:"",
 
           errText:false,
@@ -82,9 +81,9 @@
               this.errText=false;
             },2000)
           }else if (this.password==this.passwordAgain) {
-             this.axios.post("/resetpass",{
-               telNumber:sessionStorage.getItem("telNumber"),
-               password:this.password
+             this.axios.post("/updatePassword",{
+               userTel:sessionStorage.getItem("userTel"),
+               userPassword:this.password
              })
                .then((res)=>{
                  console.log(res)

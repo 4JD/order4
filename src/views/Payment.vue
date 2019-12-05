@@ -12,9 +12,13 @@
         <el-col :span="6">
           <el-form-item label="支出类型：">
             <el-select placeholder="支出类型" v-model="payType">
-              <el-option v-for="item in payTypes" :key="item" :label="item.addpayTypeName" :value="item.addpayTypeName" ></el-option>
-
-          
+              <el-option label="全部" value="全部"></el-option>
+              <el-option
+                v-for="(item,index) in payTypes"
+                :key="index"
+                :label="item.addpayTypeName"
+                :value="item.addpayTypeId"
+              ></el-option>
             </el-select>
           </el-form-item>
         </el-col>
@@ -49,7 +53,12 @@
       </el-row>
     </el-form>
 
-    <el-table stripe style="width: 90%; " border :data="tableData">
+    <el-table
+      stripe
+      style="width: 90%; "
+      border
+      :data="tableData.slice((currentPage3-1)*pageSize,currentPage3*pageSize)"
+    >
       <el-table-column prop="addpayId" label="支出id" align="center"></el-table-column>
 
       <el-table-column prop="addpayTypeName" label="支出类型" align="center"></el-table-column>
@@ -78,7 +87,6 @@
 import addPayItem from "@/components/addPayItem.vue";
 import { formatDate } from "@/assets/js/formatDate.js";
 
-
 export default {
   name: "payment",
   components: {
@@ -88,10 +96,10 @@ export default {
     return {
       value3: "",
       currentPage3: 1,
-      totalSize: 1000,
-      pageSize: 20,
+      totalSize: 100,
+      pageSize: 10,
       payType: "",
-      payTypes:[],
+      payTypes: [],
       pickerOptions: {
         shortcuts: [
           {
@@ -138,72 +146,78 @@ export default {
     },
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`);
+      this.axios
+        .post("/pay/searchPay", {
+          userName: "admin",
+          page: this.currentPage3,
+          pageSize: this.pageSize
+        })
+        .then(res => {
+          console.log("获取当前支出信息：", res.data);
+          this.tableData = res.data.data.list;
+
+          // this.totalSize = res.data.data.total;
+        });
     },
     pushItem(data) {
       this.tableData.push(data);
       console.log("父组件接收" + data);
     },
     searchBtn() {
-      if (this.value3 != "") {
-        console.log(formatDate(this.value3[0], "yyyy-MM-dd"));
-        console.log(formatDate(this.value3[1], "yyyy-MM-dd"));
-      }
+      console.log(formatDate(this.value3[0], "yyyy-MM-dd"));
+      console.log(formatDate(this.value3[1], "yyyy-MM-dd"));
+
       console.log(this.payType);
       if (this.payType == "全部") {
         this.payType = "";
       }
-   
-      // this.axios
-      //   .post("/user/searchPay", {
-      //     userName:'admin',
-      //     orderTimeStart: formatDate(this.value3[0], "yyyy-MM-dd"),
-      //     orderTimeEnd: formatDate(this.value3[1], "yyyy-MM-dd"),
-      //     page: this.currentPage3,
-      //     pageSize: this.pageSize,
-      //     foodTypeName:this.payType,
 
-      //   })
-      //   .then(res => {
-      //     console.log("获取支出信息：", res.data);
-      //     this.tableData = res.data.data;
-      //   })
-      //   .catch(err => {
-      //     console.log(err);
-      //   });
+      this.axios
+        .post("/pay/searchPay", {
+          "userName": "admin",
+          "addpayDateStart": formatDate(this.value3[0], "yyyy-MM-dd hh:mm:ss"),
+          "addpayDateEnd": formatDate(this.value3[1], "yyyy-MM-dd hh:mm:ss"),
+          "page": this.currentPage3,
+          "pageSize": this.pageSize,
+          "addpayTypeId": this.payType
+        })
+        .then(res => {
+          console.log("获取支出搜索信息：", res.data);
+          this.tableData = res.data.data.list;
+        })
+        .catch(err => {
+          console.log(err);
+        });
     }
   },
   created() {
     // this.tableData = tableData;
     this.axios
-      .post("/user/searchPay", {
-        userName:'admin',
-        page: this.currentPage3,
-        pageSize: this.pageSize
+      .post("/pay/searchPay", {
+        "userName": "admin",
+        "page": this.currentPage3,
+        "pageSize": this.pageSize
       })
       .then(res => {
         console.log("获取支出信息：", res.data);
         this.tableData = res.data.data.list;
-        // this.totalSize = res.data.data.list.total;
-     
+        this.totalSize = res.data.data.total;
       })
       .catch(err => {
         console.log(err);
       });
 
     this.axios
-      .post("/addpay/findAllType")
+      .post("/payType/findAllType")
       .then(res => {
         console.log("获取支付类型信息：", res.data);
         // this.tableData = res.data.data.list;
         this.payTypes = res.data.data;
         console.log(res.data.data);
-      
       })
       .catch(err => {
         console.log(err);
       });
-
-      
   }
 };
 </script>

@@ -8,13 +8,13 @@
         :class="activeClass == index ? 'active':'back'"
         v-for="(item,index) in currentFoodType('')" 
         :key="index" 
-        @click="chooseType(item.typeId); getItem(index)">
-        {{item.typeName}}</li>
+        @click="chooseType(item.foodTypeId); getItem(index)">
+        {{item.foodTypeName}}</li>
       </ul>
 
       <div class="navBottom">
         <router-link to="/orderdetail">
-          <button type="button" class="BtnStyle"> 前往付款 >> </button>
+          <button type="button" class="BtnStyle"> 前往付款 <i class="el-icon-right"></i></button>
         </router-link>
       </div>
     </div>
@@ -28,12 +28,12 @@
       >
         <div class="foodItems">
           <div class="index-items-img">
-            <img alt="Vue logo" :src="item.photourl" />
+            <img alt="Vue logo" :src="item.foodPhoto" />
           </div>
           <div class="underImg">
             <h3>{{item.foodName}}</h3>
             <p>
-              <span>{{item.price}}</span>元
+              <span>{{item.foodPrice}}</span>元
             </p>
             <el-button class="BtnStyle" @click="c1(item)" type="primary">购买</el-button>
             <el-drawer
@@ -51,13 +51,13 @@
                 </div>
                 <div>
                   <h3>{{item1.foodName}}</h3>
-                  <p>{{item1.price}}元</p>
+                  <p>{{item1.foodPrice}}元</p>
                   <div class="count-btn">
                     <button type="button" @click="subs()"> - </button>
                     <span> {{item1.count}} </span>
                     <button type="button" @click="add()"> + </button>
                   </div>
-                  <p>{{item1.price * item1.count}}</p>
+                  <p>{{item1.foodPrice * item1.count}}</p>
                 </div>
               </div>
               <div class="forsure-btn">
@@ -91,39 +91,71 @@ export default {
     };
   },
   computed: {
-    ...mapState(["count"]),
-    ...mapGetters(["currentFoodItems", "currentFoodType"])
-  },
-  created() {
-    this.getFoodItemsSync(), this.getFoodTypeSync()
-    this.save_foodList({a : 2})
+    ...mapState([ "count" ]),
+    ...mapGetters([ "currentFoodItems", "currentFoodType"])
+  }, 
+  created() { 
+    /* this.getFoodItemsSync(), this.getFoodTypeSync()  */
+    this.save_foodList({ a : 2 })
 
-    /* 获取数据 */
-    /* this.axios
+    /*  获取菜品数据 */
+    this.axios
+    .post("/food/foodList", {
+      "foodTypeId": "1"
+    })
+    .then( res => {
+      /* 数据传入vuex */
+      var myData = res.data.data
+      var foodItems = [ ]
+      myData.forEach((items) => {
+        var newFood = {};
+        newFood.foodId = items.foodId
+        newFood.foodName = items.foodName
+        newFood.foodPhoto = items.foodPhoto
+        newFood.foodPrice = items.foodPrice
+        newFood.foodTypeId = items.foodTypeId
+        newFood.count = 1
+        newFood.foodState = items.foodState
+        newFood.deskNum = 12
+
+        foodItems.push( newFood )
+      })
+      console.log("foodItems",foodItems)
+      this.save_foodList( foodItems )
+      console.log( res )
+    })
+    .catch( err => {
+      console.log( err )
+    })
+
+    /*  获取菜类数据 */
+    this.axios
     .post("/foodType/foodTypeList", {
       "storeId": "1"
     })
-    .then(res => {
-      var myData = res.data.data
-      var foodItems = []
-      myData.forEach((items) => {
-        var newFood = {}
-        newFood.foodId = myData.foodId
+    .then( res => {
+      /* 数据传入vuex */
+      var myTypeData = res.data.data
+      var foodType = [ ]
+      myTypeData.forEach((items) => {
+        var newFoodType = {};
+        newFoodType.foodTypeId = items.foodTypeId
+        newFoodType.foodTypeName = items.foodTypeName
+        newFoodType.foodTypeState = items.foodTypeState
 
-        foodItems.push(newFood)
+        foodType.push( newFoodType )
       })
-    
-      this.save_foodList(foodItems)
-
-      console.log(res)
+      console.log("foodType",foodType)
+      this.save_foodType( foodType )
+      console.log( res )
     })
-    .catch(err => {
-      console.log(err)
-    }) */
+    .catch( err => {
+      console.log( err )
+    })
   },
   methods: {
     ...mapActions(["getFoodItemsSync", "getFoodTypeSync",]),
-    ...mapMutations(["addOrder","save_foodList"]),
+    ...mapMutations(["addOrder","save_foodList","save_foodType"]),
     c1: function(item) {
       this.drawer = true
       this.item1 = item
@@ -138,7 +170,7 @@ export default {
       }
     },
     addFoodBtn() {
-      console.log("aaaa",this.item1)
+      console.log("加入", this.item1)
       this.addOrder(this.item1)
 
       this.$message({
@@ -190,6 +222,7 @@ ul li {
   width: 100px;
   float: left;
   margin-top: 40px;
+  margin-left: 50px;
 
   .typeList:hover{
     cursor: pointer;

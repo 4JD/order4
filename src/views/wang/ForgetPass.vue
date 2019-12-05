@@ -16,17 +16,17 @@
                             <div class="icon1">
 
                                 <label>
-                                    <input type="text" placeholder="手机号"   v-model="telNumber">
+                                    <input type="text" maxlength="11" placeholder="手机号"   v-model="telNumber">
                                 </label>
 
                             </div>
                             <div class="icon1">
 
                                 <label>
-                                    <input type="text" class="yanzheng"  style="width: 60%" placeholder="请输入验证码" v-model="yanzheng">
+                                    <input type="text" class="yanzheng"  maxlength="6" style="width: 40%" placeholder="请输入验证码" v-model="code">
                                 </label>
 
-                                <button class="yz-btn" @click="yanzhengma">获取验证码</button>
+                                <el-button round :disabled="upAndDown"   @click="yanzhengma">{{yanzhengTitle}}</el-button>
                             </div>
 
                             <div class="bottom">
@@ -57,39 +57,86 @@
           yanzheng:"",
           errText:false,
           errCont:"",
-          code:""
+          code:"",
+          yanzhengTitle:"点击获取验证码",
+          upAndDown:false
+
         }
       },
       methods:{
         forget(){
 
-          if (this.username==1&&this.password==1){
-            console.log("登录成功")
-          }
-          else if(this.telNumber=="") {
+          if(this.telNumber=="") {
             this.errText=true;
             this.errCont="账号不能为空";
             setTimeout(()=>{
               this.errText=false;
             },2000)
-          }else if (this.yanzheng=="") {
+          }else if (this.code=="") {
             this.errText=true;
             this.errCont="验证码不能为空";
             setTimeout(()=>{
               this.errText=false;
             },2000)
-          }else if (this.yanzheng!=this.code) {
-            this.errText=true;
-            this.errCont="验证码错误";
-            setTimeout(()=>{
-              this.errText=false;
-            },2000)
-          }else {
-            sessionStorage.setItem("telNumber", this.telNumber);
-             this.$router.replace("/resetPass")
+          }
+          else {
+            this.axios.post("/telCode",{
+              tel:this.telNumber,
+              code:this.code
+            })
+              .then((res)=>{
+              console.log(res);
+              if (res.data.code==1001){
+                this.errText=true;
+                this.errCont="还未发送验证码";
+                setTimeout(()=>{
+                  this.errText=false;
+                },2000)
+                throw '还未发送验证码'
+              }else if (res.data.code==1002){
+                this.errText=true;
+                this.errCont="验证码超时";
+                setTimeout(()=>{
+                  this.errText=false;
+                },2000)
+                throw '验证码超时'
+              }
+              else if (res.data.code==1003){
+                this.errText=true;
+                this.errCont="验证码错误";
+                setTimeout(()=>{
+                  this.errText=false;
+                },2000)
+                throw '验证码错误'
+              }else if (res.data.code==200){
+                sessionStorage.setItem("userTel", this.telNumber);
+                this.$router.replace("/resetPass")
+              }
+              else if (res.data.code==1005){
+                this.errText=true;
+                this.errCont="此号码今日验证次数用完";
+                setTimeout(()=>{
+                  this.errText=false;
+                },2000)
+                throw '此号码今日验证次数用完'
+              }
+              else if (res.data.code==1006){
+                this.errText=true;
+                this.errCont="今日验证次数用完";
+                setTimeout(()=>{
+                  this.errText=false;
+                },2000)
+                throw '今日验证次数用完'
+              }
+            })
+              
+
+
           }
         },
         yanzhengma(){
+
+
           if (this.telNumber==""){
             this.errText=true;
             this.errCont="手机号不能为空";
@@ -97,11 +144,51 @@
               this.errText=false;
             },2000)
           }else {
-            this.axios.post("/yanzheng",{
-              telNumber:this.telNumber
+            this.axios.post("/sendMessage",{
+              userTel:this.telNumber
             }).then((res)=>{
+
               console.log(res)
-              this.code=res.data.code
+               if(res.data.code==200){
+                this.yanzhengTitle="一分钟后可再次发送";
+                this.upAndDown=true;
+                setTimeout(()=>{
+                  this.yanzhengTitle="点击获取验证码";
+                  this.upAndDown=false
+                },60000)
+              }
+              else if (res.data.code==1002) {
+                this.errText=true;
+                this.errCont="系统维护";
+                setTimeout(()=>{
+                  this.errText=false;
+                },2000)
+                throw '系统维护'
+              }
+              else if(res.data.code==1001) {
+                this.errText=true;
+                this.errCont="手机号已注册";
+                setTimeout(()=>{
+                  this.errText=false;
+                },2000)
+                throw '手机号已注册'
+              }
+              else if(res.data.code==1003) {
+                this.errText=true;
+                this.errCont="验证码发送失败，请重试";
+                setTimeout(()=>{
+                  this.errText=false;
+                },2000)
+                throw '验证码发送失败，请重试'
+              }
+              else if(res.data.code==1004) {
+                this.errText=true;
+                this.errCont="手机号格式错误";
+                setTimeout(()=>{
+                  this.errText=false;
+                },2000)
+                throw '手机号格式错误'
+              }
             })
           }
         }

@@ -6,7 +6,7 @@
 
     <el-dialog title="请在下方添加支出" :visible.sync="dialogFormVisible">
       <el-form :model="form" ref="Form" label-width="100px" class="demo-ruleForm">
-        <el-form-item label="支出类型" :label-width="formLabelWidth">
+        <el-form-item label="支出类型" >
           <el-select v-model="form.payType" placeholder="请选择支出类型">
             <el-option
               v-for="(item,index) in payTypes"
@@ -16,10 +16,10 @@
             ></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="具体用途" :label-width="formLabelWidth">
+        <el-form-item label="具体用途" >
           <el-input type="text" v-model="form.payUse"></el-input>
         </el-form-item>
-        <el-form-item label="支出金额" :label-width="formLabelWidth">
+        <el-form-item label="支出金额" >
           <el-input
             v-model="form.price"
             autocomplete="off"
@@ -27,7 +27,7 @@
             onkeypress="return event.keyCode>=48&&event.keyCode<=57"
           ></el-input>
         </el-form-item>
-        <el-form-item label="支出备注" :label-width="formLabelWidth">
+        <el-form-item label="支出备注" >
           <el-input type="textarea" v-model="form.remark"></el-input>
         </el-form-item>
       </el-form>
@@ -47,13 +47,14 @@ export default {
     return {
       dialogFormVisible: false,
       payTypes: [],
+       errText: false,
+        errCont: "",
       form: {
         price: "",
         payType: "",
         remark: "",
         payUse: "",
-        errText: false,
-        errCont: ""
+       
       }
     };
   },
@@ -65,7 +66,7 @@ export default {
   },
   created() {
     this.axios
-      .post("/addpay/findAllType")
+      .post("/payType/findAllType")
       .then(res => {
         console.log("获取支付类型信息：", res.data);
         // this.tableData = res.data.data.list;
@@ -97,17 +98,18 @@ export default {
         console.log(typeof this.form.payUse);
         // console.log(typeof price);
         this.axios
-          .post("/user/addPay", {
+          .post("/pay/addPay", {
             userName: "admin",
             addpayTypeId: this.form.payType,
             addpayPrice: price,
             addpayName: "随便用",
-            addpayUse: this.form.payUse
+            addpayUse: this.form.payUse,
+            addpayRemark:this.form.remark
           })
           .then(res => {
             console.log("获取添加信息：", res.data);
             this.axios
-              .post("/user/searchPay", {
+              .post("/pay/searchPay", {
                 userName: "admin",
                 page: this.currentPage3,
                 pageSize: this.pageSize
@@ -140,10 +142,10 @@ export default {
       //   }
       // });
 
-      // (this.ruleForm.type = "工资"),
-      //   (this.ruleForm.name = "张三"),
-      //   (this.ruleForm.price = ""),
-      //   (this.ruleForm.remark = "");
+      this.form.payType = "工资";
+    
+        this.form.price = "";
+        this.form.remark = "";
     }
   }
 };

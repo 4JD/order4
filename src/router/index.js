@@ -112,7 +112,7 @@ const routes = [
     path: '/userPage',
     name: 'userPage',
     component: () => import('../views/wang/UserPage.vue')
-  }
+  },
 ];
 
 const router = new VueRouter({

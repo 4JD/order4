@@ -3,35 +3,35 @@
     <h1>历史订单</h1>
     <div class="ordered-mng">
       <div class="ordered-item">
-        <div class="item-top">
+        <div v-for="(item,index) in hOrderList" :key="index" class="item-top">
           <div class="edx">
-            <p>2019-10-16 11:45:32</p>
+            <p>{{dateFormat(item.orderTime)}}</p>
           </div>
           <div class="edx">
             <p>
               订单号:
-              <span>1515165145</span>
+              <span>{{item.orderNum}}</span>
             </p>
           </div>
 
           <div class="del-btn">
-            <button class="BtnStyle" type="button">删除</button>
+            <button class="BtnStyle" type="button" @click="delBtn">删除</button>
           </div>
         </div>
 
-        <div class="item-order">
+        <div class="item-order" v-for="(item,index) in shoppingCar" :key="index">
           <div>
-            <img alt="Vue logo" src="../assets/logo.png" />
+            <img alt="Vue logo" :src="item.photourl" />
           </div>
           <div>
-            <h3>超级至尊披萨</h3>
+            <h3>{{item.foodName}}</h3>
             <p>
-              <span>12</span>号桌
+              <span>{{item.deskNum}}</span>号桌
             </p>
           </div>
           <div>
             <p>
-              <span>93</span> 元
+              <span>{{item.count * item.foodPrice}}</span> 元
             </p>
           </div>
         </div>
@@ -42,15 +42,80 @@
 
 <script>
 // import HelloWorld from '@/components/HelloWorld.vue'
-/* import { mapState, mapMutations } from "vuex"; */
+import { mapState, mapMutations } from "vuex";
 
 export default {
-  name: "orderDetail",
-  data(){
-
+  name: "orderMngDetail",
+  data() {
+    return {
+      
+    };
   },
   components: {
     // HelloWorld
+  },
+  computed: {
+    ...mapState(["shoppingCar","hOrderList"])
+  },
+  methods:{
+    ...mapMutations(["delThisOrder","save_orderData"]),
+    delBtn(){
+
+    },
+    dateFormat: function(time) {
+      var date = new Date(time);
+      var year = date.getFullYear();
+      var month = date.getMonth() + 1 < 10 ? "0" +
+       (date.getMonth() + 1) : date.getMonth() + 1;
+      var day = date.getDate() < 10 ? "0" + date.getDate() : date.getDate();
+      var hours =
+        date.getHours() < 10 ? "0" + date.getHours() : date.getHours();
+      var minutes =
+        date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes();
+      var seconds =
+        date.getSeconds() < 10 ? "0" + date.getSeconds() : date.getSeconds();
+      return (year + "-" + month + "-" + day + " " + hours + ":" + minutes + ":" + seconds);
+    }
+  },
+  created() {
+    /* 店铺Id */
+    this.axios
+    .post("/user/placeOrder2", {
+      "deskNum":"12",    //桌号
+      "foodOrders":[    //菜品列表
+        {
+          "foodId":1,   //菜品Id
+          "foodNum":1   //菜品数量
+        },
+        {
+          "foodId":2,
+          "foodNum":1
+        }
+      ],
+      "orderRemark":"不吃辣",    //备注
+      "storeId":"1"
+    })
+    .then(res => {
+      var myOrderData = res.data.data
+      var orderData = [ ]
+      myOrderData.forEach((items) => {
+        var neworderData = {};
+        neworderData.orderNum = items.orderNum
+        neworderData.deskNum = items.deskNum
+        neworderData.orderTime = items.orderTime
+        neworderData.storeId = items.storeId
+        neworderData.orderRemark = items.orderRemark
+
+        orderData.push( neworderData )
+      })
+      console.log("orderData",orderData)
+      this.save_orderData( orderData )
+
+      console.log(res)
+    })
+    .catch(err => {
+      console.log(err)
+    })
   }
 };
 </script>
@@ -58,8 +123,8 @@ export default {
 <style lang="less" scoped>
 @import "../assets/css/base.less";
 
-.orderMng{
-  h1{
+.orderMng {
+  h1 {
     margin-left: 10%;
   }
 }

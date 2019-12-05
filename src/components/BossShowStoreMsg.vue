@@ -9,7 +9,7 @@ export default {
   name: "bossshowstoremsg",
   template: {},
   props: {
-      storelist: Array,
+      allStoreIncome: Array,
   },
   data() {
     return {
@@ -18,7 +18,7 @@ export default {
   },
   methods: {},
     mounted() {
-      console.log(this.storelist);
+      console.log("数据",this.allStoreIncome);
          // 获取店铺名字
       var storeNames = [];
        // 获取店铺收入
@@ -27,7 +27,7 @@ export default {
       var storeExpends = [];
       // 利润数组
       var liruns =[];
-      this.storelist.forEach(function(item) {
+      this.allStoreIncome.forEach(function(item) {
         // 店铺名字数组
         storeNames.push(item.storeName);
         // 店铺收入数组
@@ -35,11 +35,11 @@ export default {
         // 店铺支出数组
         storeExpends.push(item.storeExpend);
         // 店铺利润数组
-        const lirun = Number(item.storeIncome)+Number(item.storeExpend);
+        const lirun = Number(item.storeIncome) - Number(item.storeExpend);
         liruns.push(lirun);
       });
 
-      // console.log(storeNames,storeIncomes,storeExpends,liruns);
+      console.log(storeNames,storeIncomes,storeExpends,liruns);
     var myChart = this.echarts.init(document.getElementById("echarts"));
     myChart.setOption({
       tooltip: {
