@@ -367,7 +367,7 @@ export default {
       // 编辑的菜品信息
       editFoodMsg: {},
       // 默认的菜品种类id
-      modifiedFoodTypeId: -1,
+      modifiedFoodTypeId: 19,
       // 上传的图片内容
       myfile: "",
       // 当前登录人员id
