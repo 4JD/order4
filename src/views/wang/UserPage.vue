@@ -117,10 +117,10 @@
       quit(){
         this.$router.replace("/login")
       },  handleOpen(key, keyPath) {
-        console.log(key, keyPath);
+        //console.log(key, keyPath);
       },
       handleClose(key, keyPath) {
-        console.log(key, keyPath);
+        //console.log(key, keyPath);
       },
       secondMenu(){
         this.second=!this.second;

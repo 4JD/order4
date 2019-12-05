@@ -86,7 +86,7 @@
                userPassword:this.password
              })
                .then((res)=>{
-                 console.log(res)
+                 //console.log(res)
                  this.errText=true;
                  this.errCont="修改成功";
                  setTimeout(()=>{

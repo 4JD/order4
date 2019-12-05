@@ -85,7 +85,7 @@
               code:this.code
             })
               .then((res)=>{
-              console.log(res);
+              /* console.log(res); */
               if (res.data.code==1001){
                 this.errText=true;
                 this.errCont="还未发送验证码";
@@ -148,7 +148,7 @@
               userTel:this.telNumber
             }).then((res)=>{
 
-              console.log(res);
+              /* console.log(res); */
                if(res.data.code==200){
                 this.yanzhengTitle="一分钟后可再次发送";
                 this.upAndDown=true;

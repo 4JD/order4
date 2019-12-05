@@ -77,7 +77,7 @@
 <script>
 // 获取当前登录人员id
 const userId = sessionStorage.getItem("userId");
-console.log("当前登录人员id",userId);
+/* console.log("当前登录人员id",userId); */
 
 
 /* import IndexItems from "@/components/IndexItems.vue"; */
@@ -114,13 +114,13 @@ export default {
           storeId: String(this.userId)
         })
         .then(res => {
-          console.log("查找当前登录的店铺信息：",res);
+          /* console.log("查找当前登录的店铺信息：",res); */
           // 给当前登录店铺信息赋值
           this.storeMsg = res.data.data;
-          console.log("当前店铺信息",this.storeMsg)
+          /* console.log("当前店铺信息",this.storeMsg) */
         })
         .catch(err => {
-          console.log(err);
+          /* console.log(err); */
         });
       /* ----------------------------------查找店铺信息的AJAX结束------------------------------ */
     /* this.getFoodItemsSync(), this.getFoodTypeSync()  */
@@ -149,7 +149,7 @@ export default {
           };
           newFoodList.push(a);
         }
-        console.log(newFoodList);
+        /* console.log(newFoodList); */
 
         /* 数据传入vuex */
         var myData = newFoodList;
@@ -169,12 +169,12 @@ export default {
 
           foodItems.push(newFood);
         });
-        console.log("foodItems", foodItems);
+        /* console.log("foodItems", foodItems); */
         this.save_foodList(foodItems);
-        console.log(res);
+        /* console.log(res); */
       })
       .catch(err => {
-        console.log(err);
+        /* console.log(err); */
       });
 
     /*  获取菜类数据 */
@@ -194,12 +194,12 @@ export default {
 
           foodType.push(newFoodType);
         });
-        console.log("foodType", foodType);
+        /* console.log("foodType", foodType); */
         this.save_foodType(foodType);
-        console.log(res);
+        /* console.log(res); */
       })
       .catch(err => {
-        console.log(err);
+        /* console.log(err); */
       });
   },
   methods: {
@@ -208,7 +208,7 @@ export default {
     c1: function(item) {
       this.drawer = true;
       this.item1 = item;
-      console.log(item);
+      /* console.log(item); */
     },
     add() {
       this.item1.count += 1;
@@ -219,7 +219,7 @@ export default {
       }
     },
     addFoodBtn() {
-      console.log("加入", this.item1);
+      /* console.log("加入", this.item1); */
       this.addOrder(this.item1);
 
       this.$message({

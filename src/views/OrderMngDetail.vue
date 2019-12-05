@@ -109,10 +109,10 @@ export default {
     },
 
     axio: function(){
-      console.log("shoppingCar", this.shoppingCar);
+      /* console.log("shoppingCar", this.shoppingCar); */
     /*     var z = this.shoppingCar.deskNum; */ 
     var list = JSON.parse(JSON.stringify(this.shoppingCar));
-    console.log("LIST", list);
+    /* console.log("LIST", list); */
     /* 店铺Id */
     this.axios
       .post("/user/placeOrder2", {
@@ -132,16 +132,16 @@ export default {
           neworderData.storeId = items.storeId;
           neworderData.orderRemark = items.orderRemark;
 
-          console.log("push之前", neworderData);
+          /* console.log("push之前", neworderData); */
           orderData.push(neworderData);
         }
-        console.log("orderData", orderData);
+        /* console.log("orderData", orderData); */
         this.save_orderData(orderData);
 
-        console.log(res.data);
+        /* console.log(res.data); */
       })
       .catch(err => {
-        console.log(err);
+        /* console.log(err); */
       });
     }
   },

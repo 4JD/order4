@@ -89,7 +89,7 @@ export default {
     ...mapMutations(["delOrderN", "addOrderMng"]),
     /* 删除 */
     delOrder(foodId) {
-      console.log(foodId);
+      /* console.log(foodId); */
       this.$confirm("确认删除?", "提示", {
         confirmButtonText: "确认",
         cancelButtonText: "取消",
@@ -112,7 +112,7 @@ export default {
     /* 付款 */
     payBtn() {
       this.addOrderMng(this.item);
-      console.log("加入", this.item);
+      /* console.log("加入", this.item); */
       
       this.$message("生成订单成功")
     },

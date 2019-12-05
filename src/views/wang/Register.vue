@@ -158,7 +158,7 @@
               code:this.yanzheng
             })
               .then((res)=>{
-                console.log(res);
+                //console.log(res);
                  if (res.data.code==1001){
                   this.errText=true;
                   this.errCont="还未发送验证码";
@@ -231,7 +231,7 @@
             })
 
               .catch(err=>{
-                console.log(err)
+                //console.log(err)
               })
 
 
@@ -239,7 +239,7 @@
 
         },
         yanzhengma(){
-          console.log("点击验证码");
+          //console.log("点击验证码");
 
           if (this.usertel==""){
             this.errText=true;
@@ -252,7 +252,7 @@
               userTel:this.usertel
             })
               .then((res)=>{
-                console.log(res.data);
+                //console.log(res.data);
                 if (res.data.code==200){
                   this.yanzhengTitle="一分钟后可再次发送";
                   this.upAndDown=true;

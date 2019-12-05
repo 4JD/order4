@@ -102,10 +102,10 @@
                 userPassword: this.password
               }).
               then((res)=>{
-                console.log(res.data);
+                /* console.log(res.data); */
 
                 if (res.data.code==200){
-                  console.log(res.data)
+                  //console.log(res.data)
                   var token = res.data.data.token;
                   var userId=res.data.data.userId;
 
@@ -137,7 +137,7 @@
 
               })
                 .catch(err=>{
-                console.log(err)
+                //console.log(err)
               });
 
             }
