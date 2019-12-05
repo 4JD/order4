@@ -124,8 +124,9 @@ export default new Vuex.Store({
     foodItems: [],
     foodType: [],
     shoppingCar: [],
-    orderMng: [],
-    foodList: []
+    /* orderMng: [], */
+    foodList: [],
+    hOrderList: []
   },
   getters: {
     currentFoodItems: (state) => (s) => {
@@ -151,7 +152,7 @@ export default new Vuex.Store({
       state.shoppingCar.push(n)
     },
 
-    /* 确认付款 删除 */
+    /* orderDetail删除 */
     delOrderN(state, n) {
       var p
       state.shoppingCar.forEach((items, index) => {
@@ -184,6 +185,9 @@ export default new Vuex.Store({
     /* 传入菜类 */
     save_foodType(state, data) {
       state.foodType = data
+    },
+    save_orderData(state, data){
+      state.hOrderList = data
     }
   },
   actions: {
