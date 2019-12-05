@@ -147,7 +147,7 @@ export default {
       
     // },
     addWorker() {
-      console.log("添加的人",this.addform)
+      // console.log("添加的人",this.addform)
       this.$emit('add',{
         workerId:this.addform.id,
         workerName:this.addform.name,

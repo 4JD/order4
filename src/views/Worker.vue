@@ -145,17 +145,17 @@ export default {
   methods: {
     //单个删除员工
     del(i) {
-      console.log("单个删除命令",i)
+      // console.log("单个删除命令",i)
       this.axios.post("/workerDelete",{
         workerId:String(i)
       })
-      .then(res => {
-        console.log("单个删除" ,res.data);
+      .then(() => {
+        // console.log("单个删除" ,res.data);
         this.getWorker();
       })
-      .catch(err => {
-        console.log(err);
-      });
+      // .catch(err => {
+      //   // console.log(err);
+      // });
     },
     //批量删除员工
     delAll() {
@@ -186,13 +186,13 @@ export default {
         workerState:data.workerState,
         remark:data.remark
       })
-      .then(res => {
-        console.log("添加" ,res.data);
+      .then(() => {
+        // console.log("添加" ,res.data);
         this.getWorker();
       })
-      .catch(err => {
-        console.log(err);
-      });
+      // .catch(err => {
+      //   // console.log(err);
+      // });
 
 
       // this.tableData.push(data)
@@ -208,19 +208,19 @@ export default {
       }
       )
       .then(res => {
-        console.log("获取员工信息：", res.data.data);
+        // console.log("获取员工信息：", res.data.data);
         this.tableData = res.data.data.list;
         this.totalSize = res.data.data.total;
         this.totalnumber = res.data.data.total;
       })
-      .catch(err => {
-        console.log(err);
-      });
+      // .catch(err => {
+      //   // console.log(err);
+      // });
     },
 
     //修改
     edit(data) {
-      console.log(data.workerBirthday)
+      // console.log(data.workerBirthday)
       this.axios.post("/workerUpdate",{
         workerId:data.workerId,
         workerName:data.workerName,
@@ -233,22 +233,23 @@ export default {
         workerState:data.workerState,
         remark:data.remark
       })
-      .then(res => {
-        console.log("修改" ,res.data);
+      .then(() => {
+        // console.log("修改" ,res.data);
+        
         this.getWorker();
       })
-      .catch(err => {
-        console.log(err);
-      });
+      // .catch(err => {
+      //   console.log(err);
+      // });
     },
 
 
-    handleSizeChange(val) {
-      console.log(`每页 ${val} 条`);
+    handleSizeChange() {
+      // console.log(`每页 ${val} 条`);
       
     },
-    handleCurrentChange(val) {
-      console.log(`当前页: ${val}`);
+    handleCurrentChange() {
+      // console.log(`当前页: ${val}`);
       this.getWorker();
     }
   },
