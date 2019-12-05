@@ -81,7 +81,7 @@ export default new Vuex.Store({
     save_foodType(state, data) {
       state.foodType = data
     },
-    save_orderData(state, data){
+    save_orderData(state, data) {
       state.hOrderList = data
     }
   },
@@ -97,5 +97,7 @@ export default new Vuex.Store({
         commit('getFoodType', foodType)
       }, 0)
     } */
+
+    
   }
 })

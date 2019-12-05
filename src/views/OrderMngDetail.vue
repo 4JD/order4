@@ -48,7 +48,7 @@ export default {
   name: "orderMngDetail",
   data() {
     return {
-      list:[]
+      list:{}
     };
   },
   components: {
@@ -110,25 +110,22 @@ export default {
   },
   created() {
     console.log("shoppingCar",this.shoppingCar)
-    this.list.push(this.shoppingCar)
-    console.log("shoppingCar2",this.list)
+    this.list = this.shoppingCar
+    console.log("shoppingCar2",this.list[0])
+    console.log("ITEMS",this.list[0].foodName)
 
     /* 店铺Id */
-    /* this.axios
+    this.axios
       .post("/user/placeOrder2", {
-        deskNum: "1",
+        deskNum: String(this.list[0].deskNum),
         foodOrders: [
           {
-            foodId: "3",
-            foodNum: "1"
-          },
-          {
-            foodId: "4",
-            foodNum: "1"
+            foodId: String(this.list[0].foodId),
+            foodNum: String(this.list[0].foodNum)
           }
         ],
         orderRemark: "123",
-        storeId: "1"
+        storeId: "61"
       })
       .then(res => {
         var myOrderData = res.data.data;
@@ -151,7 +148,7 @@ export default {
       })
       .catch(err => {
         console.log(err);
-      }); */
+      });
   }
 };
 </script>
