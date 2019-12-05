@@ -7,36 +7,36 @@
       <el-col :span="12" class="Mes">
         <ul class="mesList">
           <li>
-            <span class="mesName">管理员：</span>
-            <span>{{this.storeMes.ownerId}}</span>
+            <div class="mesName">管理员：</div>
+            <div class="mesValue">{{this.storeMes.ownerId}}</div>
           </li>
           <li>
-            <span class="mesName">联系电话：</span>
-            <span>{{this.storeMes.storeTel}}</span>
+            <div class="mesName">联系电话：</div>
+            <div class="mesValue">{{this.storeMes.storeTel}}</div>
           </li>
            <li>
-            <span class="mesName">店铺名：</span>
-            <span>{{this.storeMes.storeName}}</span>
+            <div class="mesName">店铺名：</div>
+            <div class="mesValue">{{this.storeMes.storeName}}</div>
           </li>
            <li>
-            <span class="mesName">主要菜品：</span>
-            <span>{{this.storeMes.storeMain}}</span>
+            <div class="mesName">主要菜品：</div>
+            <div class="mesValue">{{this.storeMes.storeMain}}</div>
           </li>
           <li>
-            <span class="mesName">注册地址：</span>
-            <span>{{this.storeMes.storeAddress}}</span>
+            <div class="mesName">注册地址：</div>
+            <div class="mesValue">{{this.storeMes.storeAddress}}</div>
           </li>
           <li>
-            <span class="mesName">注册时间：</span>
-            <span>{{this.storeMes.registerTime}}</span>
+            <div class="mesName">注册时间：</div>
+            <div class="mesValue">{{this.storeMes.registerTime}}</div>
           </li>
           <li>
-            <span class="mesName">营业时间：</span>
-            <span>{{this.storeMes.storeHour}}</span>
+            <div class="mesName">营业时间：</div>
+            <div class="mesValue">{{this.storeMes.storeHour}}</div>
           </li>
           <li>
-            <span class="mesName">备注：</span>
-            <span>{{this.storeMes.Remark}}</span>
+            <div class="mesName">备注：</div>
+            <div class="mesValue">{{this.storeMes.Remark}}</div>
           </li>
          
         </ul>
@@ -77,11 +77,18 @@ export default {
   font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB",
     "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
 }
-// .mesName {
-//   display: inline-block;
-//   width: 50%;
-//   float: right;
-// }
+.mesName {
+  display: inline-block;
+  width: 50%;
+  float: left;
+  text-align: right;
+}
+.mesValue {
+  display: inline-block;
+  width: 45%;
+  float: right;
+  text-align: left;
+}
 ul li {
   line-height: 40px;
 }

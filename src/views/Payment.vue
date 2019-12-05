@@ -148,7 +148,7 @@ export default {
       console.log(`当前页: ${val}`);
       this.axios
         .post("/pay/searchPay", {
-          userName: "admin",
+          userName: sessionStorage.getItem('userName'),
           page: this.currentPage3,
           pageSize: this.pageSize
         })
@@ -163,7 +163,7 @@ export default {
   // console.log( data.addpayTypeName);
       this.axios
         .post("/pay/addPay", {
-          userName: "admin",
+          userName: sessionStorage.getItem('userName'),
           addpayTypeId: data.addpayTypeName,
           addpayPrice: data.addpayPrice,
           addpayName: "随便用",
@@ -174,7 +174,7 @@ export default {
           console.log("获取添加信息：", res.data);
          this.axios
       .post("/pay/searchPay", {
-        userName: "admin",
+        userName: sessionStorage.getItem('userName'),
         page: this.currentPage3,
         pageSize: this.pageSize
       })
@@ -203,7 +203,7 @@ export default {
 
       this.axios
         .post("/pay/searchPay", {
-          userName: "admin",
+          userName: sessionStorage.getItem('userName'),
           addpayDateStart: formatDate(this.value3[0], "yyyy-MM-dd hh:mm:ss"),
           addpayDateEnd: formatDate(this.value3[1], "yyyy-MM-dd hh:mm:ss"),
           page: this.currentPage3,
@@ -224,7 +224,7 @@ export default {
     // this.tableData = tableData;
     this.axios
       .post("/pay/searchPay", {
-        userName: "admin",
+        userName: sessionStorage.getItem('userName'),
         page: this.currentPage3,
         pageSize: this.pageSize
       })

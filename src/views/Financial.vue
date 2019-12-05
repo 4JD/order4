@@ -101,7 +101,7 @@ export default {
 
     this.axios
       .post("/profits/findAllPrice", {
-        userId: 1,
+        userId: sessionStorage.getItem("userId"),
         date: formatDate(new Date(), "yyyy-MM-dd")
       })
       .then(res => {
@@ -129,7 +129,7 @@ export default {
         var currentMon = formatDate(this.value2, "yyyy-MM");
         this.axios
           .post("/profits/findByMonth", {
-            userId: 1,
+            userId:sessionStorage.getItem("userId"),
             date: formatDate(this.value2, "yyyy-MM-dd")
           })
           .then(res => {
@@ -154,7 +154,7 @@ export default {
 
       this.axios
         .post("/profits/findAllPrice", {
-          userId: 1,
+          userId: sessionStorage.getItem("userId"),
           date: formatDate(this.value1, "yyyy-MM-dd")
         })
         .then(res => {
@@ -179,7 +179,7 @@ export default {
     // console.log("获取到没"+dateHalfItem);
     this.axios
       .post("/profits/findHalfYear", {
-        userId: 1
+        userId: sessionStorage.getItem("userId")
       })
       .then(res => {
         console.log("获取半年利润信息：", res.data);
